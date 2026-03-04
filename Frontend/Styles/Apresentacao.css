@@ -1,0 +1,234 @@
+/* ── Reset ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: #1E293B;
+  line-height: 1.6;
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Container ── */
+.container {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Barra azul do topo ── */
+.barra-topo {
+  height: 5px;
+  background: linear-gradient(90deg, #2563EB 0%, #1D4ED8 100%);
+}
+
+/* ══════════════════════════════════
+   SEÇÃO — Como a TechLaço Funciona
+   ══════════════════════════════════ */
+.como-funciona {
+  padding: 80px 0 64px;
+  background: #ffffff;
+}
+
+.cabecalho-secao {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.titulo-secao {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.subtitulo-secao {
+  font-family: 'DM Sans', sans-serif;
+  color: #64748B;
+  font-size: 1rem;
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+/* ── Grade de Funcionalidades ── */
+.grade-funcionalidades {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.cartao {
+  background: #ffffff;
+  border: 2px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 32px 28px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cartao:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* Bordas coloridas por cartão */
+.cartao.borda-azul {
+  border-color: #2563EB;
+}
+
+.cartao.borda-laranja {
+  border-color: #F97316;
+}
+
+.cartao.borda-amarelo {
+  border-color: #F59E0B;
+}
+
+/* ── Ícone do Cartão ── */
+.icone-cartao {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.icone-cartao.fundo-azul {
+  background: #2563EB;
+}
+
+.icone-cartao.fundo-vermelho {
+  background: #EF4444;
+}
+
+.icone-cartao.fundo-amarelo {
+  background: #F59E0B;
+}
+
+.icone-cartao svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ── Texto do Cartão ── */
+.titulo-cartao {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 8px;
+}
+
+.descricao-cartao {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  color: #64748B;
+  line-height: 1.6;
+}
+
+/* ══════════════════════════════════
+   SEÇÃO — Serviços
+   ══════════════════════════════════ */
+.servicos {
+  padding: 48px 0 80px;
+  background: #F8FAFC;
+}
+
+.servicos .titulo-secao {
+  margin-bottom: 10px;
+}
+
+.servicos .cabecalho-secao {
+  margin-bottom: 40px;
+}
+
+/* ── Grade de Serviços ── */
+.grade-servicos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.tag-servico {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  transition: all 0.25s ease;
+  cursor: default;
+}
+
+.tag-servico:hover {
+  border-color: #F97316;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ── Ícone de Check ── */
+.icone-check {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icone-check svg {
+  width: 28px;
+  height: 28px;
+}
+
+.tag-servico span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1E293B;
+}
+
+/* ══════════════════════════════════
+   RESPONSIVO
+   ══════════════════════════════════ */
+@media (max-width: 768px) {
+  .grade-funcionalidades {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+  }
+
+  .grade-servicos {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .titulo-secao {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grade-servicos {
+    grid-template-columns: 1fr;
+  }
+
+  .titulo-secao {
+    font-size: 1.5rem;
+  }
+
+  .cartao {
+    padding: 24px 20px;
+  }
+}
