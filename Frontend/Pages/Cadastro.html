@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Styles/Cadastro.css">
+    <title>Cadastre-se</title>
+</head>
+<body>
+    <main>
+        <section class="logotipo">
+            <div id="logo">T</div>
+            <h1>TechLaço</h1>
+        </section>
+
+        <section class="cadastro">
+            <div id="titulo">
+                <h1>Crie sua conta</h1>
+                <h3>Junte-se à TechLaço e comece sua jornada</h3>
+            </div>
+
+            <form action="" method="post">
+                <div id="nomeSobrenome">
+                    <div id="primeiroNome">
+                        <label for="nome">Nome</label>
+                        <input id="nome" type="text" placeholder="João">
+                    </div>
+
+                    <div id="segundoNome">
+                        <label for="sobrenome">Sobrenome</label>
+                        <input id="sobrenome" type="text" placeholder="Silva">
+                    </div>
+                </div>
+
+                <div id="inputEmail">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="seu@email.com">
+                </div>
+
+                <div id="inputSenha">
+                    <label for="senha">Senha</label>
+                    <input type="password" name="senha" id="senha" placeholder="suaSenha">
+                    <span>Mínimo de 8 caracteres</span>
+                </div>
+
+                <button type="submit">Criar Conta</button>
+
+                <span id="possuiConta">Já tem uma conta? <a href="./Login.html">Entrar</a></span>
+            </form>
+        </section>
+
+        <section class="voltar">
+            <img src="../Assets/Icons/arrow-left.svg" alt="seta pra esqueda">
+            <a href="./Apresentação.html">
+                <p>Voltar para a página inicial</p>
+            </a>
+        </section>
+    </main>
+</body>
+</html>

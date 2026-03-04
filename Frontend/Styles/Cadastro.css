@@ -1,0 +1,169 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: "Inter";
+    src: url('../Assets/Fonts/Inter-VariableFont_opsz\,wght.ttf') format("ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main {
+    width: 100%;
+    height: 100vh;
+    padding: 24px;
+    background-image: linear-gradient(to bottom, #0066CC, #004C99);
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    gap: 30px;
+}
+
+.logotipo {
+    display: flex; 
+    gap: 12px;
+    justify-content: space-between;
+    padding: 10px;
+    
+    font-family: "Inter";
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.logotipo > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgb(255, 255, 255);
+    border-radius: 14px;
+    padding: 0px 15px;
+    
+    color: #0066CC;
+    font-weight: bold;
+    font-size: 2.5rem;
+}
+
+.cadastro {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 40px;
+
+    width: 100%;
+    max-width: 600px;
+
+    justify-content: center;
+    background-color: white;
+    font-family: "Inter";
+    padding: 30px 20px;
+    border-radius: 16px;
+
+    box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+.cadastro div#titulo {
+    display: flex;
+    flex-flow: column nowrap;
+    
+    text-align: center;
+    color: #101828;
+    gap: 8px;
+}
+
+
+.cadastro div#titulo > h1 {
+    font-weight: 800;
+}
+.cadastro div#titulo > h3 {
+    color: #4A5565;
+}
+
+.cadastro > form {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 20px;
+}
+
+div#nomeSobrenome {
+    display: flex;
+    gap: 10px;
+}
+div#primeiroNome, div#segundoNome, div#inputEmail, div#inputSenha {
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+    gap: 5px;
+    font-weight: bolder;
+    font-size: 0.9rem;
+}
+
+input {
+    padding: 12px;
+    border: 1px solid #D1D5DC;
+    border-radius: 10px;
+    width: 100%;
+}
+
+input:focus-visible {
+    border: 1px solid #0066CC;
+}
+
+div#inputSenha > span {
+    margin-top: 2px;
+    color: #6A7282;
+    font-size: 0.75rem;
+}
+
+button {
+    border: none;
+    background-color: #0066CC;
+    color: white;
+    font-family: "Inter";
+    padding: 10px 0px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+button:hover {
+    background-color: #005ab4;
+    cursor: pointer;
+}
+
+.cadastro > form > span#possuiConta {
+    align-self: center;
+    color: #4A5565;
+    font-size: 0.9rem;
+}
+.cadastro > form > span#possuiConta > a {
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.voltar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+
+    color: white;
+    font-family: "Inter";
+    font-weight: 500;
+}
+
+.voltar > a {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+
+.voltar > a:hover {
+    text-decoration: underline;
+}
