@@ -30,9 +30,8 @@ body {
   padding: 0 24px;
 }
 
-/* ══════════════════════════════════
-   SEÇÃO — Como a TechLaço Funciona
-   ══════════════════════════════════ */
+
+
 .como-funciona {
   padding: 80px 0 64px;
   background: #ffffff;
@@ -61,7 +60,6 @@ body {
   line-height: 1.65;
 }
 
-/* ── Grade de Funcionalidades ── */
 .grade-funcionalidades {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -83,7 +81,6 @@ body {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
-/* Bordas coloridas por cartão */
 .cartao.borda-azul {
   border-color: #2563EB;
 }
@@ -96,7 +93,7 @@ body {
   border-color: #F59E0B;
 }
 
-/* ── Ícone do Cartão ── */
+
 .icone-cartao {
   width: 48px;
   height: 48px;
@@ -124,7 +121,6 @@ body {
   height: 22px;
 }
 
-/* ── Texto do Cartão ── */
 .titulo-cartao {
   font-family: 'Inter';
   font-size: 1.05rem;
@@ -140,9 +136,7 @@ body {
   line-height: 1.6;
 }
 
-/* ══════════════════════════════════
-   SEÇÃO — Serviços
-   ══════════════════════════════════ */
+
 .servicos {
   padding: 48px 0 80px;
   background: #F8FAFC;
@@ -156,7 +150,7 @@ body {
   margin-bottom: 40px;
 }
 
-/* ── Grade de Serviços ── */
+
 .grade-servicos {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -183,7 +177,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* ── Ícone de Check ── */
+
 .icone-check {
   width: 28px;
   height: 28px;
@@ -205,9 +199,7 @@ body {
   color: #1E293B;
 }
 
-/* ══════════════════════════════════
-   RESPONSIVO
-   ══════════════════════════════════ */
+
 @media (max-width: 768px) {
   .grade-funcionalidades {
     grid-template-columns: 1fr;
