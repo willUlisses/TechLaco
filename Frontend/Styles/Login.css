@@ -22,7 +22,7 @@ main {
     flex-flow: column nowrap;
     align-items: center;
 
-    gap: 30px;
+    gap: 50px;
 }
 
 .logotipo {
@@ -77,7 +77,6 @@ main {
     gap: 8px;
 }
 
-
 .cadastro div#titulo > h1 {
     font-weight: 800;
 }
@@ -91,11 +90,7 @@ main {
     gap: 20px;
 }
 
-div#nomeSobrenome {
-    display: flex;
-    gap: 10px;
-}
-div#primeiroNome, div#segundoNome, div#inputEmail, div#inputSenha {
+div#inputEmail, div#inputSenha {
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
@@ -105,21 +100,15 @@ div#primeiroNome, div#segundoNome, div#inputEmail, div#inputSenha {
 }
 
 input {
+    outline: none;
     padding: 12px;
     border: 1px solid #D1D5DC;
     border-radius: 10px;
     width: 100%;
-    outline: none;
 }
 
-input:focus-visible {
+input:focus {
     border: 1px solid #0066CC;
-}
-
-div#inputSenha > span {
-    margin-top: 2px;
-    color: #6A7282;
-    font-size: 0.75rem;
 }
 
 button {
@@ -131,6 +120,7 @@ button {
     font-size: 1.25rem;
     font-weight: bold;
     border-radius: 10px;
+    outline: none;
 }
 
 button:hover {
@@ -143,12 +133,12 @@ button:focus {
 }
 
 
-.cadastro > form > span#possuiConta {
+.cadastro > form > span#naoPossuiConta {
     align-self: center;
     color: #4A5565;
     font-size: 0.9rem;
 }
-.cadastro > form > span#possuiConta > a {
+.cadastro > form > span#naoPossuiConta > a {
     text-decoration: none;
     font-weight: 500;
     color: #005ab4;
