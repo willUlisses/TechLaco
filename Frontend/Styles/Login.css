@@ -154,6 +154,7 @@ button:focus {
     color: white;
     font-family: "Inter";
     font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .voltar > a {
