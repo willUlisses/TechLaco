@@ -77,13 +77,54 @@ main {
     gap: 8px;
 }
 
-
 .cadastro div#titulo > h1 {
     font-weight: 800;
 }
 .cadastro div#titulo > h3 {
     color: #4A5565;
+    font-weight: 400;
 }
+
+.cadastro > div#tiposDeCadastro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 10px;
+    background-color: #F3F4F6;
+    border-radius: 14px;
+    padding: 4px;
+}
+
+.cardOpcaoCadastro {
+    background-color: rgba(255, 255, 255, 0); 
+    color: #4A5565;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px 0px;
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: background-color .3s ease;
+}
+
+.cardOpcaoCadastro:hover {
+    cursor: pointer;
+}
+
+.cardOpcaoCadastro > img {
+    width: 20px;
+    height: 20px;
+}
+
+.cardOpcaoCadastroAtivo {
+    background-color: rgba(255, 255, 255, 100);
+    color: #005ab4;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
 
 .cadastro > form {
     display: flex;
