@@ -22,7 +22,7 @@ main {
     flex-flow: column nowrap;
     align-items: center;
 
-    gap: 30px;
+    gap: 20px;
 }
 
 .logotipo {
@@ -34,7 +34,7 @@ main {
     font-family: "Inter";
     color: white;
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
 }
 
 .logotipo > div {
@@ -44,17 +44,17 @@ main {
 
     background-color: rgb(255, 255, 255);
     border-radius: 14px;
-    padding: 0px 15px;
+    padding: 0px 12px;
     
     color: #0066CC;
     font-weight: bold;
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 
 .cadastro {
     display: flex;
     flex-flow: column nowrap;
-    gap: 40px;
+    gap: 20px;
 
     width: 100%;
     max-width: 600px;
@@ -62,7 +62,7 @@ main {
     justify-content: center;
     background-color: white;
     font-family: "Inter";
-    padding: 30px 20px;
+    padding: 20px 20px;
     border-radius: 16px;
 
     box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.25);
@@ -83,6 +83,7 @@ main {
 .cadastro div#titulo > h3 {
     color: #4A5565;
     font-weight: 400;
+    font-size: 1.1rem;
 }
 
 .cadastro > div#tiposDeCadastro {
@@ -101,6 +102,7 @@ main {
     border-radius: 10px;
     text-align: center;
     padding: 10px 0px;
+    font-weight: 500;
 
     display: flex;
     flex-flow: row nowrap;
@@ -157,6 +159,32 @@ input:focus-visible {
     border: 1px solid #0066CC;
 }
 
+.transicaoInput {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s ease, opacity 0.3s ease, margin 0.5s ease;
+    opacity: 0;
+    overflow: hidden;
+
+    margin-top: -20px;
+}
+
+.transicaoInput.ativo {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    margin-top: 0px;
+}
+
+div#inputGithub {
+    min-height: 0;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+    font-weight: bolder;
+    font-size: 0.9rem;
+}
+
 div#inputSenha > span {
     margin-top: 2px;
     color: #6A7282;
@@ -187,7 +215,7 @@ button:focus {
 .cadastro > form > span#possuiConta {
     align-self: center;
     color: #4A5565;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 .cadastro > form > span#possuiConta > a {
     text-decoration: none;
@@ -204,6 +232,7 @@ button:focus {
     color: white;
     font-family: "Inter";
     font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .voltar > a {
