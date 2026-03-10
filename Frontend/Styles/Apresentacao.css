@@ -1,22 +1,20 @@
 ﻿@charset "UTF-8";
 
 @font-face {
-    font-family: "Inter";
-    src: url('../Assets/Fonts/Inter-VariableFont_opsz\,wght.ttf') format("ttf");
-    font-weight: normal;
-    font-style: normal;
+      font-family: "Inter";
+      src: url('../Assets/Fonts/Inter-VariableFont_opsz\,wght.ttf') format("truetype");
+      font-weight: normal;
+      font-style: normal;
 }
-
-
 /* ── Reset ── */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Inter';
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
   color: #1E293B;
   line-height: 1.6;
   background: #ffffff;
@@ -30,7 +28,7 @@ body {
   padding: 0 24px;
 }
 
-/* ── Header + Hero (Marcos) ── */
+/* ── Header + HeroSection (Marcos) ── */
 #marcos {
   background: #0b5db5;
 }
@@ -64,18 +62,19 @@ body {
 }
 
 .intro-logo-box {
-  width: 30px;
-  height: 30px;
-  border-radius: 7px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   background: #0d63c1;
   color: #fff;
-  font: 800 1.2rem/1 Inter, sans-serif;
-  display: grid;
-  place-items: center;
+  font: 800 2rem Inter;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .intro-logo-name {
-  font: 700 1.9rem/1 Inter, sans-serif;
+  font: 900 1.4rem Inter;
   color: #1f2937;
 }
 
@@ -85,7 +84,7 @@ body {
 
 .intro-nav a {
   color: #111827;
-  font: 500 0.95rem/1.2 Inter, sans-serif;
+  font: 500 1rem/1.2 Inter;
 }
 
 .intro-nav a:hover {
@@ -94,19 +93,21 @@ body {
 
 .intro-header-actions,
 .intro-actions {
-  gap: 10px;
+  gap: 15px;
 }
 
 .intro-btn,
 .intro-cta {
-  border-radius: 8px;
-  font: 700 0.9rem/1 Inter, sans-serif;
+  border-radius: 10px;
+  font: 600 1.1rem Inter;
+  box-shadow: 4px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .intro-btn {
   min-width: 86px;
   text-align: center;
-  padding: 8px 14px;
+  letter-spacing: 1px;
+  padding: 10px 25px;
   color: #fff;
 }
 
@@ -123,20 +124,23 @@ body {
 }
 
 .intro-btn-login:hover {
-  background: #e6660f;
+  background: #dd6210;
 }
 
 .intro-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 42px 0 48px;
 }
 
 .intro-hero {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 34px;
+  margin: 0;
   padding: 42px 18px;
-  border: 1px dashed rgba(186, 220, 255, 0.25);
 }
 
 .intro-copy h1 {
@@ -178,7 +182,6 @@ body {
   min-height: 320px;
   overflow: hidden;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow: 0 16px 36px rgba(2, 22, 59, 0.3);
 }
 
@@ -189,8 +192,6 @@ body {
   object-fit: cover;
   display: block;
 }
-
-
 
 .como-funciona {
   padding: 80px 0 64px;
@@ -373,12 +374,7 @@ body {
     justify-content: center;
     gap: 16px;
   }
-
-  .intro-hero {
-    grid-template-columns: 1fr;
-    padding: 28px 14px;
-  }
-
+  
   .intro-image {
     min-height: 250px;
   }
