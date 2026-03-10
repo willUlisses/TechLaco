@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 
 @font-face {
     font-family: "Inter";
@@ -28,6 +28,166 @@ body {
   max-width: 1060px;
   margin: 0 auto;
   padding: 0 24px;
+}
+
+/* ── Header + Hero (Marcos) ── */
+#marcos {
+  background: #0b5db5;
+}
+
+#marcos a {
+  text-decoration: none;
+}
+
+.intro-header {
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.intro-header-inner,
+.intro-logo,
+.intro-nav,
+.intro-header-actions,
+.intro-actions {
+  display: flex;
+  align-items: center;
+}
+
+.intro-header-inner {
+  min-height: 66px;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.intro-logo {
+  gap: 8px;
+}
+
+.intro-logo-box {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: #0d63c1;
+  color: #fff;
+  font: 800 1.2rem/1 Inter, sans-serif;
+  display: grid;
+  place-items: center;
+}
+
+.intro-logo-name {
+  font: 700 1.9rem/1 Inter, sans-serif;
+  color: #1f2937;
+}
+
+.intro-nav {
+  gap: 34px;
+}
+
+.intro-nav a {
+  color: #111827;
+  font: 500 0.95rem/1.2 Inter, sans-serif;
+}
+
+.intro-nav a:hover {
+  color: #0d63c1;
+}
+
+.intro-header-actions,
+.intro-actions {
+  gap: 10px;
+}
+
+.intro-btn,
+.intro-cta {
+  border-radius: 8px;
+  font: 700 0.9rem/1 Inter, sans-serif;
+}
+
+.intro-btn {
+  min-width: 86px;
+  text-align: center;
+  padding: 8px 14px;
+  color: #fff;
+}
+
+.intro-btn-signup {
+  background: #0d63c1;
+}
+
+.intro-btn-login {
+  background: #f97316;
+}
+
+.intro-btn-signup:hover {
+  background: #0a56ab;
+}
+
+.intro-btn-login:hover {
+  background: #e6660f;
+}
+
+.intro-wrap {
+  padding: 42px 0 48px;
+}
+
+.intro-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 34px;
+  padding: 42px 18px;
+  border: 1px dashed rgba(186, 220, 255, 0.25);
+}
+
+.intro-copy h1 {
+  margin-bottom: 16px;
+  color: #fff;
+  font: 700 clamp(2rem, 4vw, 3rem) / 1.06 Inter, sans-serif;
+}
+
+.intro-copy p {
+  margin-bottom: 24px;
+  max-width: 56ch;
+  color: #d5e9ff;
+  font: 400 1rem/1.5 Inter, sans-serif;
+}
+
+.intro-cta {
+  padding: 11px 16px;
+}
+
+.intro-cta-primary {
+  background: #ff7a1a;
+  color: #fff;
+}
+
+.intro-cta-secondary {
+  background: #fff;
+  color: #0d63c1;
+}
+
+.intro-cta-primary:hover {
+  background: #ef6c0d;
+}
+
+.intro-cta-secondary:hover {
+  background: #f5f9ff;
+}
+
+.intro-image {
+  min-height: 320px;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 16px 36px rgba(2, 22, 59, 0.3);
+}
+
+.intro-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+  display: block;
 }
 
 
@@ -201,6 +361,28 @@ body {
 
 
 @media (max-width: 768px) {
+  .intro-header-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 12px 24px;
+  }
+
+  .intro-nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .intro-hero {
+    grid-template-columns: 1fr;
+    padding: 28px 14px;
+  }
+
+  .intro-image {
+    min-height: 250px;
+  }
+
   .grade-funcionalidades {
     grid-template-columns: 1fr;
     max-width: 340px;
@@ -228,3 +410,4 @@ body {
     padding: 24px 20px;
   }
 }
+
