@@ -82,6 +82,7 @@ main {
 }
 .cadastro div#titulo > h3 {
     color: #4A5565;
+    font-weight: 400;
 }
 
 .cadastro > form {
@@ -153,6 +154,7 @@ button:focus {
     color: white;
     font-family: "Inter";
     font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .voltar > a {
