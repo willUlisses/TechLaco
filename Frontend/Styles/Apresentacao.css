@@ -6,7 +6,7 @@
       font-weight: normal;
       font-style: normal;
 }
-/* ── Reset ── */
+
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -21,16 +21,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Container ── */
 .container {
   max-width: 1060px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-/* ── Header + HeroSection (Marcos) ── */
+/* Parte do Marcos: */
 #marcos {
-  background: #0b5db5;
+  background-image: linear-gradient(to bottom, #0066CC, #004C99);
 }
 
 #marcos a {
@@ -193,6 +192,7 @@ body {
   display: block;
 }
 
+/* Parte do Portela: */
 .como-funciona {
   padding: 80px 0 64px;
   background: #ffffff;
@@ -311,7 +311,6 @@ body {
   margin-bottom: 40px;
 }
 
-
 .grade-servicos {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -358,6 +357,126 @@ body {
   font-size: 0.9rem;
   font-weight: 600;
   color: #1E293B;
+}
+
+/* Parte do Daniel:*/
+.faixa-azul {
+    background-image: linear-gradient(to bottom, #0066CC, #004C99);
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    padding: 80px 0px;
+}
+
+.conteudo-azul {
+    color: white;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.conteudo-azul h2 {
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+
+.botao-laranja {
+    background-color: #cc5632;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.25);
+    transition: all .3s ease;
+}
+
+.botao-laranja:hover, .botao-laranja:focus {
+  background-color: #ff6e40;
+  transform: translateY(-2px);
+}
+
+.rodape-fundo {
+    background-color: #111827;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.rodape-flex {
+    display: flex;
+    justify-content: space-around;
+}
+
+.coluna-logo {
+    width: 25%;
+}
+
+.logo-flex {
+    display: flex;
+    align-items: center;
+}
+
+.FundoLogo {
+    background-color: #0265d2;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.nome-logo {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.texto-cinza {
+    color: #9ca3af;
+    font-size: 14px;
+    margin-top: 10px;
+    line-height: 1.5;
+}
+
+.coluna-links h3 {
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.coluna-links ul {
+    list-style-type: none;
+}
+
+.coluna-links ul li {
+    margin-bottom: 12px;
+}
+
+.coluna-links ul li a {
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.coluna-links ul li a:hover {
+    color: white;
+}
+.linha-direitos {
+    display: flex;
+    flex-flow: column nowrap;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: space-evenly;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.85rem;
+    border-top: 1px solid #374151; 
+    padding-top: 20px;
+    margin-top: 10px;
+    width: 90%;
 }
 
 
