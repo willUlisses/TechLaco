@@ -1,3 +1,5 @@
+## Equipe: Daniel Vasconcellos, João Portela, Marcos Vinicius e William Ulisses
+
 <h1 align="center">🤝 TechLaço</h1>
 
 > **Conectando o microempreendedor brasileiro ao talento da nova geração de TI.**
