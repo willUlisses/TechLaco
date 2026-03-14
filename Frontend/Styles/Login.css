@@ -91,15 +91,6 @@ main {
     gap: 20px;
 }
 
-div#inputEmail, div#inputSenha {
-    display: flex;
-    flex: 1;
-    flex-flow: column nowrap;
-    gap: 5px;
-    font-weight: bolder;
-    font-size: 0.9rem;
-}
-
 input {
     outline: none;
     padding: 12px;
@@ -111,6 +102,27 @@ input {
 input:focus {
     border: 1px solid #0066CC;
 }
+
+div#inputEmail, div#inputSenha {
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+    gap: 5px;
+    font-weight: bolder;
+    font-size: 0.9rem;
+}
+
+div#inputSenha > span {
+    margin-top: 2px;
+    color: #6A7282;
+    font-size: 0.75rem;
+}
+
+div#inputSenha > span:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 
 button {
     border: none;

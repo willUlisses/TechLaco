@@ -145,14 +145,14 @@ body {
 .intro-copy h1 {
   margin-bottom: 16px;
   color: #fff;
-  font: 700 clamp(2rem, 4vw, 3rem) / 1.06 Inter, sans-serif;
+  font: 700 clamp(2rem, 4vw, 3rem) / 1.06 "Inter";
 }
 
 .intro-copy p {
   margin-bottom: 24px;
   max-width: 56ch;
   color: #d5e9ff;
-  font: 400 1rem/1.5 Inter, sans-serif;
+  font: 400 1.1rem/1.5 "Inter";
 }
 
 .intro-cta {
@@ -162,19 +162,21 @@ body {
 .intro-cta-primary {
   background: #ff7a1a;
   color: #fff;
+  transition: transform 0.3s ease;
 }
 
 .intro-cta-secondary {
   background: #fff;
   color: #0d63c1;
+  transition: transform 0.3s ease;
 }
 
 .intro-cta-primary:hover {
-  background: #ef6c0d;
+  transform: translateY(-3px);
 }
 
 .intro-cta-secondary:hover {
-  background: #f5f9ff;
+  transform: translateY(-3px);
 }
 
 .intro-image {
@@ -194,38 +196,49 @@ body {
 
 /* Parte do Portela: */
 .como-funciona {
-  padding: 80px 0 64px;
+  padding: 70px 0 64px;
   background: #ffffff;
+  height: 85vh;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .cabecalho-secao {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
   text-align: center;
-  margin-bottom: 56px;
+  
+  gap: 10px;
+  margin-bottom: 110px;
 }
 
 .titulo-secao {
   font-family: 'Inter';
-  font-size: 2.25rem;
+  font-size: 3rem;
   font-weight: 700;
   color: #0F172A;
-  margin-bottom: 14px;
-  letter-spacing: -0.01em;
 }
 
 .subtitulo-secao {
   font-family: 'Inter';
   color: #64748B;
-  font-size: 1rem;
+  font-size: 1.1rem;
   max-width: 440px;
   margin: 0 auto;
   line-height: 1.65;
+}
+
+span#span-subtitulo-secao {
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .grade-funcionalidades {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
-  max-width: 860px;
+  max-width: 70vw; /* modifiquei pra 70vw pra ficar maior o espaço e ser adaptável*/
   margin: 0 auto;
 }
 
@@ -235,6 +248,10 @@ body {
   border-radius: 16px;
   padding: 32px 28px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
 }
 
 .cartao:hover {
@@ -256,13 +273,12 @@ body {
 
 
 .icone-cartao {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
 }
 
 .icone-cartao.fundo-azul {
@@ -278,25 +294,22 @@ body {
 }
 
 .icone-cartao svg {
-  width: 22px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
 }
 
 .titulo-cartao {
   font-family: 'Inter';
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #0F172A;
-  margin-bottom: 8px;
 }
 
 .descricao-cartao {
   font-family: 'Inter';
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #64748B;
-  line-height: 1.6;
 }
-
 
 .servicos {
   padding: 48px 0 80px;
@@ -365,7 +378,7 @@ body {
     display: flex;
     justify-content: center; 
     align-items: center; 
-    padding: 80px 0px;
+    padding: 60px 0px;
 }
 
 .conteudo-azul {
@@ -373,7 +386,7 @@ body {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .conteudo-azul h2 {
