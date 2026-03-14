@@ -28,11 +28,11 @@ body {
 }
 
 /* Parte do Marcos: */
-#marcos {
+#start-section {
   background-image: linear-gradient(to bottom, #0066CC, #004C99);
 }
 
-#marcos a {
+#start-section a {
   text-decoration: none;
 }
 
