@@ -123,6 +123,28 @@ div#inputSenha > span:hover {
     text-decoration: underline;
 }
 
+input.erro-validacao {
+    border: 1px solid #EF4444 !important;
+    background-color: #FEF2F2;
+    animation: tremer 0.3s ease-in-out;
+}
+
+input.erro-validacao::placeholder {
+    color: #F87171;
+}
+
+input.erro-validacao:focus-visible {
+    border: 1px solid #DC2626 !important;
+    outline: none;
+}
+
+@keyframes tremer {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
 
 button {
     border: none;
