@@ -191,6 +191,29 @@ div#inputSenha > span {
     font-size: 0.75rem;
 }
 
+/* Estilos pra caso o cara esqueça de preencher um input obrigatprio*/
+input.erro-validacao {
+    border: 1px solid #EF4444 !important;
+    background-color: #FEF2F2;
+    animation: tremer 0.3s ease-in-out;
+}
+
+input.erro-validacao::placeholder {
+    color: #F87171;
+}
+
+input.erro-validacao:focus-visible {
+    border: 1px solid #DC2626 !important;
+    outline: none;
+}
+
+@keyframes tremer {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
 button {
     border: none;
     background-color: #0066CC;
