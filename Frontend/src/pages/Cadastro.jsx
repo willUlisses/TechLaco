@@ -1,61 +1,77 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { Link } from 'react-router-dom'
 import Logo from '../components/ui/Logo'
 import InputField from '../components/ui/InputField'
 import BackLink from '../components/ui/BackLink'
-import { useFormValidation } from '../hooks/useFormValidation'
 
 import blueBriefcase from '../assets/icons/blue-briefcase.svg'
 import grayBriefcase from '../assets/icons/gray-briefcase.svg'
 import blueCode from '../assets/icons/blue-code.svg'
 import grayCode from '../assets/icons/gray-code.svg'
 
+const cadastroSchema = z
+  .object({
+    tipo: z.enum(['contratar', 'construir']),
+    nome: z.string().min(1, 'Nome é obrigatório'),
+    sobrenome: z.string().min(1, 'Sobrenome é obrigatório'),
+    github: z.string().optional(),
+    email: z
+      .string()
+      .min(1, 'Email é obrigatório')
+      .email('Digite um email válido'),
+    senha: z
+      .string()
+      .min(8, 'A senha deve ter no mínimo 8 caracteres'),
+  })
+  .superRefine((data, ctx) => {
+    if (data.tipo === 'construir' && !data.github?.trim()) {
+      ctx.addIssue({
+        path: ['github'],
+        code: z.ZodIssueCode.custom,
+        message: 'O link do GitHub é obrigatório para freelancers',
+      })
+    }
+    if (data.tipo === 'construir' && data.github && !data.github.startsWith('https://github.com/')) {
+      ctx.addIssue({
+        path: ['github'],
+        code: z.ZodIssueCode.custom,
+        message: 'Informe um link válido e.g: https://github.com/...',
+      })
+    }
+  })
+
 export default function Cadastro() {
   const [tipo, setTipo] = useState('contratar')
   const [showGithub, setShowGithub] = useState(false)
-  const [form, setForm] = useState({
-    nome: '', sobrenome: '', github: '', email: '', senha: ''
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(cadastroSchema),
+    defaultValues: { tipo: 'contratar' },
   })
-
-  // Hook receives the fields we will always validate
-  const campos = ['nome', 'sobrenome', 'email', 'senha']
-  const { errors, clearFieldError, validateAll } = useFormValidation(campos)
-
-  function handleChange(campo) {
-    return (e) => {
-      setForm(prev => ({ ...prev, [campo]: e.target.value }))
-      clearFieldError(campo)
-    }
-  }
 
   function handleTipo(novoTipo) {
     setTipo(novoTipo)
+    setValue('tipo', novoTipo)           // sincroniza com react-hook-form
     const isConstruir = novoTipo === 'construir'
     setShowGithub(isConstruir)
-    if (!isConstruir) setForm(prev => ({ ...prev, github: '' }))
+    if (!isConstruir) setValue('github', '') // limpa o campo ao trocar para contratar
   }
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    // For validateAll, pass only the required fields depending on the toggle state
-    // We didn't add github directly to `campos` array so the hook won't automatically require it there.
-    // If we wanted to require github, we would need to dynamically switch the validation rules.
-    const camposParaValidar = { nome: form.nome, sobrenome: form.sobrenome, email: form.email, senha: form.senha }
-    const valido = validateAll(camposParaValidar)
-    
-    // Additional simple validation for github if needed:
-    if (tipo === 'construir' && (!form.github || form.github.trim() === '')) {
-      alert("Para construir, é obrigatório preencher o GitHub.")
-      return; 
-    }
-
-    if (valido) {
-      console.log('Cadastro:', { tipo, ...form })
-    }
+  function onSubmit(data) {
+    // data já chegou validado pelo Zod
+    console.log('Cadastro:', data)
   }
 
   return (
-    <main className="w-full min-h-screen px-4 py-8 bg-gradient-to-b from-[#0066CC] to-[#004C99] flex flex-col items-center justify-center gap-6">
+    <main className="w-full min-h-screen px-4 py-8 bg-linear-to-b from-[#0066CC] to-[#004C99] flex flex-col items-center justify-center gap-6">
       <Logo variant="auth" />
 
       <section className="w-full max-w-[620px] bg-white rounded-[20px] p-[35px] shadow-[0px_25px_50px_rgba(0,0,0,0.3)] flex flex-col gap-6 max-sm:p-5">
@@ -64,7 +80,7 @@ export default function Cadastro() {
           <h3 className="text-[#64748B] font-normal text-[1.1rem]">Junte-se à TechLaço e revolucione o seu trabalho</h3>
         </div>
 
-        {/* Toggle tipo de cadastro */}
+        {/* Toggle tipo de cadastro — controlado por estado local + setValue */}
         <div className="grid grid-cols-2 bg-[#F1F5F9] rounded-[14px] p-1.5 border border-[#E2E8F0] shadow-inner mb-2">
           {[
             { id: 'contratar', label: 'Quero Contratar', iconAtivo: blueBriefcase, iconInativo: grayBriefcase },
@@ -77,49 +93,42 @@ export default function Cadastro() {
               className={`rounded-[10px] py-[12px] font-semibold text-[0.95rem] flex items-center justify-center gap-2 cursor-pointer transition-all border-none outline-none
                 ${tipo === id ? 'bg-white text-[#0066CC] shadow-[0_2px_8px_rgba(0,0,0,0.08)]' : 'bg-transparent text-[#64748B] hover:text-[#0F172A]'}`}
             >
-              {/* O erro do copy command pode ter afetado os SVGs se copiados erroneamente, mas esperamos que funcionem adequadamente no DOM ou se importados */}
               <img src={tipo === id ? iconAtivo : iconInativo} alt="" className="w-5 h-5 opacity-90" />
               {label}
             </button>
           ))}
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          {/* Nome e Sobrenome lado a lado */}
-          <div className="flex gap-[12px] max-sm:flex-col">
-            <div className="w-full">
-              <InputField
-                id="nome"
-                label="Nome"
-                placeholder="Seu primeiro nome"
-                required
-                value={form.nome}
-                hasError={errors.nome}
-                onChange={handleChange('nome')}
-              />
-            </div>
-            <div className="w-full">
-              <InputField
-                id="sobrenome"
-                label="Sobrenome"
-                placeholder="Último sobrenome"
-                required
-                value={form.sobrenome}
-                hasError={errors.sobrenome}
-                onChange={handleChange('sobrenome')}
-              />
-            </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+          <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
+            <InputField
+              id="nome"
+              label="Nome"
+              placeholder="João"
+              hasError={!!errors.nome}
+              errorMessage={errors.nome?.message}
+              {...register('nome')}
+            />
+            <InputField
+              id="sobrenome"
+              label="Sobrenome"
+              placeholder="Silva"
+              hasError={!!errors.sobrenome}
+              errorMessage={errors.sobrenome?.message}
+              {...register('sobrenome')}
+            />
           </div>
 
-          {/* Campo GitHub animado */}
-          <div className={`overflow-hidden transition-all duration-[400ms] ease-out ${showGithub ? 'max-h-40 opacity-100 mt-1 mb-1 scale-y-100 origin-top' : 'max-h-0 opacity-0 -mt-5 scale-y-95 origin-top'}`}>
+          {/* Campo GitHub — animado, obrigatório só se tipo === 'construir' */}
+          <div className={`overflow-hidden transition-all duration-400 ease-out ${showGithub ? 'max-h-40 opacity-100 mt-1 mb-1 scale-y-100 origin-top' : 'max-h-0 opacity-0 -mt-5 scale-y-95 origin-top'}`}>
             <InputField
               id="github"
               label="Link do seu GitHub"
               type="url"
               placeholder="https://github.com/seu-perfil"
-              value={form.github}
-              onChange={handleChange('github')}
+              hasError={!!errors.github}
+              errorMessage={errors.github?.message}
+              {...register('github')}
             />
           </div>
 
@@ -128,10 +137,9 @@ export default function Cadastro() {
             label="E-mail profissional"
             type="email"
             placeholder="seu.nome@empresa.com"
-            required
-            value={form.email}
-            hasError={errors.email}
-            onChange={handleChange('email')}
+            hasError={!!errors.email}
+            errorMessage={errors.email?.message}
+            {...register('email')}
           />
 
           <InputField
@@ -139,11 +147,10 @@ export default function Cadastro() {
             label="Senha forte"
             type="password"
             placeholder="••••••••"
-            required
-            value={form.senha}
-            hasError={errors.senha}
             hint="A senha deve conter ao menos 8 caracteres"
-            onChange={handleChange('senha')}
+            hasError={!!errors.senha}
+            errorMessage={errors.senha?.message}
+            {...register('senha')}
           />
 
           <button

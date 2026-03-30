@@ -1,32 +1,35 @@
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { Link } from 'react-router-dom'
 import Logo from '../components/ui/Logo'
 import InputField from '../components/ui/InputField'
 import BackLink from '../components/ui/BackLink'
-import { useFormValidation } from '../hooks/useFormValidation'
+
+const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, 'Email é obrigatório')
+    .email('Digite um email válido'),
+  senha: z
+    .string()
+    .min(8, 'A senha deve ter no mínimo 8 caracteres'),
+})
 
 export default function Login() {
-  const [form, setForm] = useState({ email: '', senha: '' })
-  const { errors, clearFieldError, validateAll } = useFormValidation(['email', 'senha'])
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(loginSchema) })
 
-  function handleChange(campo) {
-    return (e) => {
-      setForm(prev => ({ ...prev, [campo]: e.target.value }))
-      clearFieldError(campo)
-    }
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault()
-    const valido = validateAll(form)
-    if (valido) {
-      // submeter dados de login
-      console.log('Login:', form)
-    }
+  function onSubmit(data) {
+    // data já chegou validado pelo Zod
+    console.log('Login:', data)
   }
 
   return (
-    <main className="w-full min-h-screen px-6 py-10 bg-gradient-to-b from-[#0066CC] to-[#004C99] flex flex-col items-center justify-center gap-[50px]">
+    <main className="w-full min-h-screen px-6 py-10 bg-linear-to-b from-[#0066CC] to-[#004C99] flex flex-col items-center justify-center gap-[50px]">
       <div className="absolute top-10 mx-auto">
         <Logo variant="auth" />
       </div>
@@ -37,16 +40,15 @@ export default function Login() {
           <h3 className="text-[#64748B] font-normal text-[1.1rem]">Entre na sua conta para continuar</h3>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <InputField
             id="email"
             label="E-mail profissional"
             type="email"
             placeholder="seu@novoemail.com"
-            required
-            value={form.email}
-            hasError={errors.email}
-            onChange={handleChange('email')}
+            hasError={!!errors.email}
+            errorMessage={errors.email?.message}
+            {...register('email')}
           />
 
           <InputField
@@ -54,11 +56,10 @@ export default function Login() {
             label="Senha secreta"
             type="password"
             placeholder="••••••••"
-            required
-            value={form.senha}
-            hasError={errors.senha}
             hint="Esqueci minha senha"
-            onChange={handleChange('senha')}
+            hasError={!!errors.senha}
+            errorMessage={errors.senha?.message}
+            {...register('senha')}
           />
 
           <button
