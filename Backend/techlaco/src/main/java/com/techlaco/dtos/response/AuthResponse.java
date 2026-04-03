@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record LoginResponse(
+public record AuthResponse(
         @NotBlank String token,
         @NotNull Long id,
         @NotBlank String email,
