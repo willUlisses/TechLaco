@@ -2,6 +2,7 @@ package com.techlaco.entities;
 
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CheckConstraint;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -39,7 +40,6 @@ public class PerfilFreelancer {
     @JoinColumn(name = "usuario_id",  nullable = false, unique = true)
     private Usuario usuario;
 
-    @Column(nullable = false)
     private String especialidade;
 
     private String faculdade;
@@ -51,5 +51,8 @@ public class PerfilFreelancer {
 
     @OneToMany(mappedBy = "perfilFreelancer",fetch = FetchType.LAZY)
     private List<Candidatura> candidaturas = new ArrayList<>();
+
+    @Column()
+    private String githubUrl;
 
 }
