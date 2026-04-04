@@ -1,4 +1,7 @@
 package com.techlaco.repositories;
 
-public interface CandidaturasRepository {
+import com.techlaco.entities.Candidatura;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CandidaturasRepository extends JpaRepository<Candidatura, Long> {
 }
