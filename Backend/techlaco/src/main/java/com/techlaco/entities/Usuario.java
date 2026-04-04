@@ -80,11 +80,6 @@ public class Usuario implements UserDetails {
         return this.perfilFreelancer != null;
     }
 
-    @Transient
-    public boolean isFreelancerAndCliente() {
-        return isCliente() && isFreelancer();
-    }
-
     // Configuração UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
