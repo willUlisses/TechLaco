@@ -31,8 +31,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorized -> authorized
                         .requestMatchers(HttpMethod.POST, "/auth/cadastro").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll())
-
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/usuarios/me").authenticated()
+                )
                 .addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
     }
