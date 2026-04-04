@@ -8,6 +8,7 @@ import com.techlaco.entities.PerfilCliente;
 import com.techlaco.entities.PerfilFreelancer;
 import com.techlaco.entities.Usuario;
 import com.techlaco.exceptions.BadRequestException;
+import com.techlaco.exceptions.NotFoundException;
 import com.techlaco.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,7 +77,7 @@ public class AuthService {
     }
 
     public AuthResponse logar(LoginRequest loginRequest) {
-        Usuario usuario = usuarioRepository.findByEmail(loginRequest.email()).orElseThrow(() -> new BadRequestException("Usuário não cadastrado"));
+        Usuario usuario = usuarioRepository.findByEmail(loginRequest.email()).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha());
         Authentication authManager = this.authenticationManager.authenticate(usernamePassword);
