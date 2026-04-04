@@ -3,7 +3,7 @@ package com.techlaco.controllers;
 import com.techlaco.dtos.request.CadastroRequest;
 import com.techlaco.dtos.request.LoginRequest;
 import com.techlaco.dtos.response.AuthResponse;
-import com.techlaco.dtos.response.DadosUsuarioResponse;
+import com.techlaco.dtos.response.UsuarioLogadoResponse;
 import com.techlaco.entities.Usuario;
 import com.techlaco.services.AuthService;
 import com.techlaco.services.TokenService;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,9 +49,10 @@ public class AuthController {
         return new ResponseEntity<>(authService.logar(request), HttpStatus.OK);
     }
 
-    public ResponseEntity<DadosUsuarioResponse> obterUsuarioLogado(@AuthenticationPrincipal Usuario usuario){
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioLogadoResponse> obterUsuarioLogado(@AuthenticationPrincipal Usuario usuario){
 
-        DadosUsuarioResponse response = new DadosUsuarioResponse(
+        UsuarioLogadoResponse response = new UsuarioLogadoResponse(
                 usuario.getId(),
                 usuario.getEmail(),
                 usuario.getNome(),
