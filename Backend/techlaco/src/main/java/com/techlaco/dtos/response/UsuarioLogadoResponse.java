@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record DadosUsuarioResponse(
+public record UsuarioLogadoResponse(
         @NotNull Long id,
         @NotBlank String email,
         @NotBlank String nome,
