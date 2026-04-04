@@ -1,8 +1,6 @@
 package com.techlaco.entities;
 
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.CheckConstraint;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,9 +41,6 @@ public class PerfilFreelancer {
     private String especialidade;
 
     private String faculdade;
-
-    @Column(name = "preco_hora", precision = 10, scale = 2)
-    private BigDecimal precoHora;
 
     private String bio;
 
