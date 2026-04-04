@@ -13,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,9 +47,11 @@ public class Usuario implements UserDetails {
     @Column(nullable = false, length = 60)
     private String sobrenome;
 
+    @Email
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
+    @Size(min = 8)
     @Column(nullable = false)
     @JsonIgnore
     private String senha;
