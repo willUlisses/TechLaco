@@ -2,7 +2,7 @@ package com.techlaco.services;
 
 import com.techlaco.dtos.request.CadastroRequest;
 import com.techlaco.dtos.request.LoginRequest;
-import com.techlaco.dtos.response.DadosUsuarioResponse;
+import com.techlaco.dtos.response.AuthResponse;
 import com.techlaco.entities.Enums.UserRole;
 import com.techlaco.entities.PerfilCliente;
 import com.techlaco.entities.PerfilFreelancer;
@@ -75,14 +75,14 @@ public class AuthService {
         return usuarioRepository.save(usuario);
     }
 
-    public DadosUsuarioResponse logar(LoginRequest loginRequest) {
+    public AuthResponse logar(LoginRequest loginRequest) {
         Usuario usuario = usuarioRepository.findByEmail(loginRequest.email()).orElseThrow(() -> new BadRequestException("Usuário não cadastrado"));
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha());
         Authentication authManager = this.authenticationManager.authenticate(usernamePassword);
         String token = tokenService.gerarToken((Usuario) Objects.requireNonNull(authManager.getPrincipal()));
 
-        return new DadosUsuarioResponse(
+        return new AuthResponse(
                 token,
                 usuario.getId(),
                 usuario.getEmail(),
