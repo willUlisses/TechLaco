@@ -1,5 +1,6 @@
 package com.techlaco.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.techlaco.entities.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -13,7 +14,11 @@ public record UsuarioCompletoResponse(
      List<String> role,
      Boolean isCliente,
      Boolean isFreelancer,
+
+     @JsonProperty("perfilFreelancer")
      PerfilFreelancerResponse perfilFreelancerResponse,
+
+     @JsonProperty("perfilCliente")
      PerfilClienteResponse perfilClienteResponse
 ) {
     public static UsuarioCompletoResponse from(Usuario usuario) {
