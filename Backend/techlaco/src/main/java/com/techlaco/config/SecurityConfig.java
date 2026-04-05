@@ -34,10 +34,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/me").authenticated()
                         .requestMatchers(HttpMethod.GET, "/usuarios/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/perfis/cliente/me").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/perfis/cliente/me").authenticated()
                 )
                 .addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
     }
+
     // Bean do administrardor de autenticações
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration)
