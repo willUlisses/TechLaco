@@ -95,7 +95,7 @@ export default function Navbar({ user = { nome: 'Ana Silva' } }) {
         </NavLink>
 
         {/* Nav central */}
-        <nav className="flex items-center gap-1 max-md:hidden">
+        <nav className="flex items-center gap-3 max-md:hidden">
           <NavLink
             to="/"
             end
