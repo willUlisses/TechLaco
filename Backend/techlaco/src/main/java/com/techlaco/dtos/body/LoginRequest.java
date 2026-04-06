@@ -1,4 +1,4 @@
-package com.techlaco.dtos.request;
+package com.techlaco.dtos.body;
 
 import jakarta.validation.constraints.NotBlank;
 
