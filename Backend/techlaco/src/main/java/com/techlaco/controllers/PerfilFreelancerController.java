@@ -2,12 +2,15 @@ package com.techlaco.controllers;
 
 import com.techlaco.dtos.request.FiltroBuscarFreelancer;
 import com.techlaco.dtos.response.PageResponse;
-import com.techlaco.dtos.response.PageablePerfilFreelancerResponse;
+import com.techlaco.dtos.response.PerfilFreelancerCompletoResponse;
+import com.techlaco.entities.Usuario;
 import com.techlaco.services.PerfilFreelancerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +23,7 @@ public class PerfilFreelancerController {
     private final PerfilFreelancerService perfilFreelancerService;
 
     @GetMapping
-    public ResponseEntity<PageResponse<PageablePerfilFreelancerResponse>> buscarFreelancers(
+    public ResponseEntity<PageResponse<PerfilFreelancerCompletoResponse>> buscarFreelancers(
             @RequestParam(required = false) String busca,
             @RequestParam(defaultValue = "0") Integer pagina,
             @RequestParam(defaultValue = "10") Integer limite) {
@@ -32,6 +35,16 @@ public class PerfilFreelancerController {
                 .build();
 
         return new ResponseEntity<>(perfilFreelancerService.listarFreelancers(filtro, pagina, limiteSeguro), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PerfilFreelancerCompletoResponse> buscarPerfilFreelancerPorId(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(perfilFreelancerService.buscarPerfilFreelancer(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<PerfilFreelancerCompletoResponse> getPerfilFreelancerLogado(@AuthenticationPrincipal Usuario usuario) {
+        return new ResponseEntity<>(perfilFreelancerService.getPerfilFreelancerLogado(usuario), HttpStatus.OK);
     }
 
 }
