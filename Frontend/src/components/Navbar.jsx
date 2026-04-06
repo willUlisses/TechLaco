@@ -34,7 +34,7 @@ function DropdownMenu({ label, icon: Icon, links, activeColor }) {
         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors cursor-pointer border-none outline-none
           ${isActive
             ? 'bg-[#0D63C1] text-white'
-            : 'text-[#374151] hover:bg-[#F1F5F9]'
+            : 'text-[#374151] hover:bg-[#EFF6FF] hover:text-[#0D63C1]'
           }`}
       >
         <Icon size={15} />
@@ -101,7 +101,7 @@ export default function Navbar({ user = { nome: 'Ana Silva' } }) {
             end
             className={({ isActive }) =>
               `flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium no-underline transition-colors
-              ${isActive ? 'bg-[#0D63C1] text-white' : 'text-[#374151] hover:bg-[#F1F5F9]'}`
+              ${isActive ? 'bg-[#0D63C1] text-white' : 'text-[#374151] hover:bg-[#EFF6FF] hover:text-[#0D63C1]'}`
             }
           >
             <Home size={15} />
@@ -124,7 +124,7 @@ export default function Navbar({ user = { nome: 'Ana Silva' } }) {
             to="/dashboard"
             className={({ isActive }) =>
               `flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium no-underline transition-colors
-              ${isActive ? 'bg-[#0D63C1] text-white' : 'text-[#374151] hover:bg-[#F1F5F9]'}`
+              ${isActive ? 'bg-[#0D63C1] text-white' : 'text-[#374151] hover:bg-[#EFF6FF] hover:text-[#0D63C1]'}`
             }
           >
             <LayoutDashboard size={15} />

@@ -1,69 +1,87 @@
 import React from 'react'
-import { Search, FileText, Briefcase, ChevronRight } from 'lucide-react'
+import { BriefcaseBusiness, ChevronRight, FileText, Search } from 'lucide-react'
+
+const items = [
+  {
+    title: 'Buscar Projetos',
+    description: 'Explore oportunidades que combinam com suas habilidades e especialidades',
+    badge: '12 novos hoje',
+    icon: Search,
+    tone: 'blue',
+    href: '#buscar-projetos',
+  },
+  {
+    title: 'Minhas Candidaturas',
+    description: 'Acompanhe o andamento de cada candidatura enviada',
+    badge: '5 ativas',
+    icon: FileText,
+    tone: 'green',
+    href: '#minhas-candidaturas',
+  },
+  {
+    title: 'Meus Projetos',
+    description: 'Veja projetos em andamento e contratos em aberto',
+    badge: '3 em andamento',
+    icon: BriefcaseBusiness,
+    tone: 'blue',
+    href: '#meus-projetos',
+  },
+]
+
+const toneClasses = {
+  blue: {
+    box: 'bg-[#EDF4FF] text-[#0066CC]',
+    badge: 'bg-[#EDF4FF] text-[#0066CC]',
+    arrow: 'group-hover:text-[#0066CC]',
+  },
+  green: {
+    box: 'bg-[#ECFBF3] text-[#00A86B]',
+    badge: 'bg-[#ECFBF3] text-[#00A86B]',
+    arrow: 'group-hover:text-[#00A86B]',
+  },
+}
+
+function MainActionCard({ title, description, badge, icon: Icon, tone, href }) {
+  const styles = toneClasses[tone]
+
+  return (
+    <a
+      href={href}
+      className="group flex items-center gap-4 rounded-[14px] border border-[#E5E7EB] bg-white px-5 py-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:border-[#D7DCE3] hover:shadow-[0_12px_30px_-24px_rgba(15,23,42,0.45)]"
+    >
+      <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] ${styles.box}`}>
+        <Icon size={18} strokeWidth={2.1} />
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="mb-1 flex flex-wrap items-center gap-2">
+          <span className="text-[16px] font-medium text-[#101828]">{title}</span>
+          <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${styles.badge}`}>
+            {badge}
+          </span>
+        </div>
+        <p className="m-0 text-[14px] leading-5 text-[#6A7282]">{description}</p>
+      </div>
+
+      <ChevronRight
+        size={16}
+        className={`shrink-0 text-[#C7CDD4] transition-colors duration-200 ${styles.arrow}`}
+      />
+    </a>
+  )
+}
 
 export default function ParaOndeIrSection() {
   return (
     <section>
-      <h2 className="text-[11px] font-bold text-[#9CA3AF] uppercase tracking-widest mb-4">
-        Para Onde Ir
+      <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#99A1AF]">
+        Para onde ir
       </h2>
-      <div className="space-y-3">
-        {/* Buscar Projetos */}
-        <a href="#buscar-projetos" className="group block bg-white p-5 rounded-2xl border border-gray-100 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-all duration-200 no-underline">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-[12px] bg-blue-50 text-[#0D63C1] flex items-center justify-center shrink-0">
-                <Search size={22} strokeWidth={2.5} />
-              </div>
-              <div>
-                <div className="flex items-center gap-3 mb-1">
-                  <span className="font-bold text-[#111827] text-lg">Buscar Projetos</span>
-                  <span className="bg-blue-50 text-[#0D63C1] font-semibold px-2.5 py-0.5 rounded-full text-[11px]">12 novos hoje</span>
-                </div>
-                <p className="text-[#6B7280] text-[13px] m-0">Explore oportunidades que combinam com suas habilidades e especialidades</p>
-              </div>
-            </div>
-            <ChevronRight size={20} className="text-gray-300 group-hover:text-[#0D63C1] transition-colors" />
-          </div>
-        </a>
 
-        {/* Minhas Candidaturas */}
-        <a href="#minhas-candidaturas" className="group block bg-white p-5 rounded-2xl border border-gray-100 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-all duration-200 no-underline">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-[12px] bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <FileText size={22} strokeWidth={2.5} />
-              </div>
-              <div>
-                <div className="flex items-center gap-3 mb-1">
-                  <span className="font-bold text-[#111827] text-lg">Minhas Candidaturas</span>
-                  <span className="bg-emerald-50 text-emerald-600 font-semibold px-2.5 py-0.5 rounded-full text-[11px]">5 ativas</span>
-                </div>
-                <p className="text-[#6B7280] text-[13px] m-0">Acompanhe o andamento de cada candidatura enviada</p>
-              </div>
-            </div>
-            <ChevronRight size={20} className="text-gray-300 group-hover:text-emerald-500 transition-colors" />
-          </div>
-        </a>
-
-        {/* Meus Projetos */}
-        <a href="#meus-projetos" className="group block bg-white p-5 rounded-2xl border border-gray-100 shadow-[0_2px_8px_-4px_rgba(0,0,0,0.05)] hover:shadow-md transition-all duration-200 no-underline">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-[12px] bg-blue-50 text-[#0D63C1] flex items-center justify-center shrink-0">
-                <Briefcase size={22} strokeWidth={2.5} />
-              </div>
-              <div>
-                <div className="flex items-center gap-3 mb-1">
-                  <span className="font-bold text-[#111827] text-lg">Meus Projetos</span>
-                  <span className="bg-blue-50 text-[#0D63C1] font-semibold px-2.5 py-0.5 rounded-full text-[11px]">3 em andamento</span>
-                </div>
-                <p className="text-[#6B7280] text-[13px] m-0">Veja projetos em andamento e contratos em aberto</p>
-              </div>
-            </div>
-            <ChevronRight size={20} className="text-gray-300 group-hover:text-[#0D63C1] transition-colors" />
-          </div>
-        </a>
+      <div className="space-y-3.5">
+        {items.map((item) => (
+          <MainActionCard key={item.title} {...item} />
+        ))}
       </div>
     </section>
   )

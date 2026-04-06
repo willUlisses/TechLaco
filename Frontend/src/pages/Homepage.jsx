@@ -9,24 +9,28 @@ export default function Homepage() {
   const user = { nome: 'Ana Silva' }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-12">
+    <div className="min-h-screen bg-[#F8F9FB] pb-12">
       <Navbar user={user} />
-      
-      <main className="max-w-[1100px] mx-auto px-6 pt-10">
-        <WelcomeSection user={user} />
 
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
-          {/* Lado Esquerdo (Mais largo) */}
-          <div className="flex-1 space-y-10">
+      <main>
+        <section className="border-b border-[#E5E7EB] bg-white">
+          <div className="mx-auto max-w-[1100px] px-6 py-10">
+            <WelcomeSection user={user} />
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-[1100px] px-6 pt-8 md:pt-10">
+          <div className="flex flex-col gap-8 lg:flex-row lg:gap-8">
+            <div className="flex-1 space-y-8">
             <ParaOndeIrSection />
             <AcessoRapidoSection />
           </div>
 
-          {/* Lado Direito (Widgets) */}
-          <aside className="w-full lg:w-[320px] shrink-0 pt-0">
-            <PerfilCompletoSection />
-          </aside>
-        </div>
+            <aside className="w-full shrink-0 lg:w-[320px]">
+              <PerfilCompletoSection />
+            </aside>
+          </div>
+        </section>
       </main>
     </div>
   )
