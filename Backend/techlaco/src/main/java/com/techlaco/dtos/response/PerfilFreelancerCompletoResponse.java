@@ -2,7 +2,7 @@ package com.techlaco.dtos.response;
 
 import com.techlaco.entities.PerfilFreelancer;
 
-public record PageablePerfilFreelancerResponse(
+public record PerfilFreelancerCompletoResponse(
         Long id,
         String nome,
         String sobrenome,
@@ -11,8 +11,8 @@ public record PageablePerfilFreelancerResponse(
         String bio,
         String githubUrl
 ) {
-    public static PageablePerfilFreelancerResponse from(PerfilFreelancer perfil) {
-        return new PageablePerfilFreelancerResponse(
+    public static PerfilFreelancerCompletoResponse from(PerfilFreelancer perfil) {
+        return new PerfilFreelancerCompletoResponse(
                 perfil.getId(),
                 perfil.getUsuario().getNome(),
                 perfil.getUsuario().getSobrenome(),
