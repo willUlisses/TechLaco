@@ -37,8 +37,10 @@ public class PerfilFreelancer {
     @JoinColumn(name = "usuario_id",  nullable = false, unique = true)
     private Usuario usuario;
 
+    @Column(length = 100)
     private String especialidade;
 
+    @Column(length = 100)
     private String faculdade;
 
     private String bio;

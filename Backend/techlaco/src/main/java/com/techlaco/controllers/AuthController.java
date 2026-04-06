@@ -1,7 +1,7 @@
 package com.techlaco.controllers;
 
-import com.techlaco.dtos.request.CadastroRequest;
-import com.techlaco.dtos.request.LoginRequest;
+import com.techlaco.dtos.body.CadastroRequest;
+import com.techlaco.dtos.body.LoginRequest;
 import com.techlaco.dtos.response.AuthResponse;
 import com.techlaco.dtos.response.UsuarioLogadoResponse;
 import com.techlaco.entities.Usuario;

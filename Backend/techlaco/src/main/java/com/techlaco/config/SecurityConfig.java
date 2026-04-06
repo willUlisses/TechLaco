@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/perfis/freelancer").hasAnyRole("CLIENTE", "FREELANCER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/perfis/freelancer/{id}").hasAnyRole("CLIENTE", "FREELANCER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/perfis/freelancer/me").hasRole("FREELANCER")
+                        .requestMatchers(HttpMethod.PATCH, "/perfis/freelancer/me").hasRole("FREELANCER")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class)

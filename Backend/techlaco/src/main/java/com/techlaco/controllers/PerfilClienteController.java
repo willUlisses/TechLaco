@@ -1,6 +1,6 @@
 package com.techlaco.controllers;
 
-import com.techlaco.dtos.request.PatchPerfilClienteRequest;
+import com.techlaco.dtos.body.PatchPerfilClienteRequest;
 import com.techlaco.dtos.response.PerfilClienteCompletoResponse;
 import com.techlaco.dtos.response.PerfilClienteResponse;
 import com.techlaco.entities.Usuario;
