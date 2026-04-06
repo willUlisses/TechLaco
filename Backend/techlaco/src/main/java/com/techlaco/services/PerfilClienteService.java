@@ -19,13 +19,13 @@ public class PerfilClienteService {
     private final ProjetosRepository projetosRepository;
 
     public PerfilClienteCompletoResponse buscarPerfilPorIdUsuario(Usuario usuario) {
-        PerfilCliente perfil = perfilClienteRepository.findByUsuario(usuario).orElseThrow(() -> new NotFoundException("Perfil no encontrado"));
+        PerfilCliente perfil = perfilClienteRepository.findByUsuario(usuario).orElseThrow(() -> new NotFoundException("Perfil nao encontrado"));
 
         return PerfilClienteCompletoResponse.from(perfil, projetosRepository.countByPerfilClienteId(perfil.getId()));
     }
 
     public PerfilClienteResponse atualizarBio(Usuario usuario, PatchPerfilClienteRequest body) {
-        PerfilCliente perfil = perfilClienteRepository.findByUsuario(usuario).orElseThrow(() -> new NotFoundException("Perfil no encontrado"));
+        PerfilCliente perfil = perfilClienteRepository.findByUsuario(usuario).orElseThrow(() -> new NotFoundException("Perfil nao encontrado"));
 
         body.getBio().ifPresent(perfil::setBio);
 
