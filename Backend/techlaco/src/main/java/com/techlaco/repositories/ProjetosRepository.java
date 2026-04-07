@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ProjetosRepository extends JpaRepository<Projeto, Long> {
 
     Long countByPerfilClienteId(Long clienteId);
@@ -18,16 +20,14 @@ public interface ProjetosRepository extends JpaRepository<Projeto, Long> {
     JOIN FETCH p.perfilCliente pc
     JOIN FETCH pc.usuario u
     WHERE p.status = :status
-    AND (:busca IS NULL
-        OR LOWER(p.titulo) LIKE LOWER(CONCAT('%', :busca, '%'))
-        OR LOWER(p.descricao) LIKE LOWER(CONCAT('%', :busca, '%')))
+    AND (LOWER(p.titulo) LIKE LOWER(:busca)
+        OR LOWER(p.descricao) LIKE LOWER(:busca))
     """,
-            countQuery = """
-        SELECT COUNT(p) FROM Projeto p
-        WHERE p.status = :status
-        AND (:busca IS NULL
-            OR LOWER(p.titulo) LIKE LOWER(CONCAT('%', :busca, '%'))
-            OR LOWER(p.descricao) LIKE LOWER(CONCAT('%', :busca, '%')))
+    countQuery = """
+    SELECT COUNT(p) FROM Projeto p
+    WHERE p.status = :status
+    AND (LOWER(p.titulo) LIKE LOWER(:busca)
+        OR LOWER(p.descricao) LIKE LOWER(:busca))
     """
     )
     Page<Projeto> buscarProjetosDisponiveis(
@@ -35,5 +35,10 @@ public interface ProjetosRepository extends JpaRepository<Projeto, Long> {
             @Param("busca") String busca,
             Pageable pageable
     );
+
+    @Query("SELECT p FROM Projeto p JOIN FETCH p.perfilCliente pc WHERE pc.id = :id")
+    List<Projeto> findByPerfilClienteId(@Param("id") Long perfilClienteId);
+
+
 
 }
