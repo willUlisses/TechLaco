@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 public enum StatusCandidatura {
 
-    PENDENTE("pendente"),
-    ACEITA("aceita"),
-    RECUSADA("recusada");
+    PENDENTE("PENDENTE"),
+    ACEITA("ACEITA"),
+    RECUSADA("RECUSADA");
 
     private final String value;
 

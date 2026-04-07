@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public enum StatusProjeto {
 
-    EM_ANALISE("em_analise"),
-    ATIVO("ativo"),
-    CONCLUIDO("concluido"),
-    CANCELADO("cancelado");
+    EM_ANALISE("EM_ANALISE"),
+    ATIVO("ATIVO"),
+    CONCLUIDO("CONCLUIDO"),
+    CANCELADO("CANCELADO");
 
     private String value;
 }
