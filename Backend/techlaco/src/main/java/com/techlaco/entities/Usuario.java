@@ -95,4 +95,8 @@ public class Usuario implements UserDetails {
     public String getUsername() {
         return email;
     }
+
+    public String getNomeCompleto() {
+        return this.getNome() + " " + this.getSobrenome();
+    }
 }

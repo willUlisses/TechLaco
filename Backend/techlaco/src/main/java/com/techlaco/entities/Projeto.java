@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -64,6 +65,9 @@ public class Projeto {
 
     @OneToMany(mappedBy = "projeto", fetch = FetchType.LAZY)
     private List<Candidatura> candidaturas = new ArrayList<>();
+
+    @Formula("(SELECT COUNT(*) FROM tb_candidaturas c WHERE c.projeto_id = id)")
+    private Long totalCandidaturas;
 
 
 }

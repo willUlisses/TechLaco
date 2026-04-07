@@ -8,9 +8,9 @@ import lombok.Getter;
 @Getter
 public enum NivelProjeto {
 
-    INICIANTE("iniciante"),
-    INTERMEDIARIO("intermediario"),
-    AVANCADO("avancado");
+    INICIANTE("INICIANTE"),
+    INTERMEDIARIO("INTERMEDIARIO"),
+    AVANCADO("AVANCADO");
 
     private final String value;
 
