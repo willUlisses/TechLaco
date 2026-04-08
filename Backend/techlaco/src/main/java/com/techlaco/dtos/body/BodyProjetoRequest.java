@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
-public record BodyCriarProjetoRequest(
+public record BodyProjetoRequest(
         @NotBlank(message = "O titulo é obrigatório")
         String titulo,
 

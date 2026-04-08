@@ -5,7 +5,7 @@ import com.techlaco.entities.Projeto;
 
 import java.math.BigDecimal;
 
-public record ProjetoClienteLogadoResponse(
+public record ProjetoSemClienteResponse(
         Long id,
         String titulo,
         String descricao,
@@ -15,8 +15,8 @@ public record ProjetoClienteLogadoResponse(
         Integer totalCandidaturas,
         String nivel
 ) {
-    public static ProjetoClienteLogadoResponse from(Projeto projeto) {
-        return new ProjetoClienteLogadoResponse(
+    public static ProjetoSemClienteResponse from(Projeto projeto) {
+        return new ProjetoSemClienteResponse(
                 projeto.getId(),
                 projeto.getTitulo(),
                 projeto.getDescricao(),
