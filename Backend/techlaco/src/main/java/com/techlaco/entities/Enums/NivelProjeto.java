@@ -14,5 +14,4 @@ public enum NivelProjeto {
 
     private final String value;
 
-
 }

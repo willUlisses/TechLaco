@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/projetos/{id}").hasAnyRole("CLIENTE", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/projetos/meus").hasRole("CLIENTE")
                         .requestMatchers(HttpMethod.POST, "/projetos").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.PATCH, "/projetos/{id}").hasAnyRole("CLIENTE", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class)

@@ -1,9 +1,10 @@
 package com.techlaco.services;
 
-import com.techlaco.dtos.body.BodyCriarProjetoRequest;
+import com.techlaco.dtos.body.BodyProjetoRequest;
 import com.techlaco.dtos.body.FiltroBuscarProjeto;
+import com.techlaco.dtos.body.PatchProjetoRequest;
 import com.techlaco.dtos.response.PageResponse;
-import com.techlaco.dtos.response.ProjetoClienteLogadoResponse;
+import com.techlaco.dtos.response.ProjetoSemClienteResponse;
 import com.techlaco.dtos.response.ProjetoResponse;
 import com.techlaco.entities.Enums.StatusProjeto;
 import com.techlaco.entities.PerfilCliente;
@@ -20,7 +21,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +53,7 @@ public class ProjetoService {
     }
 
     @Transactional
-    public List<ProjetoClienteLogadoResponse> buscarProjetosClienteLogado(Usuario usuario) {
+    public List<ProjetoSemClienteResponse> buscarProjetosClienteLogado(Usuario usuario) {
         if (usuario.getPerfilCliente() == null) throw new ForbiddenException("O usuario não possui um perfil de cliente.");
 
         Long perfilClienteId = usuario.getPerfilCliente().getId();
@@ -58,12 +61,12 @@ public class ProjetoService {
         List<Projeto> projetosCliente = projetosRepository.findByPerfilClienteId(perfilClienteId);
 
         return projetosCliente.stream()
-                .map(ProjetoClienteLogadoResponse::from)
+                .map(ProjetoSemClienteResponse::from)
                 .toList();
     }
 
     @Transactional
-    public ProjetoResponse postarNovoProjeto(PerfilCliente perfil, BodyCriarProjetoRequest body) {
+    public ProjetoResponse postarNovoProjeto(PerfilCliente perfil, BodyProjetoRequest body) {
         if (body.valorMax().compareTo(body.valorMin()) < 1) {
             throw new BadRequestException("O valor máximo não pode ser menor que o valor mínimo");
         }
@@ -80,5 +83,28 @@ public class ProjetoService {
 
         return ProjetoResponse.from(projetosRepository.save(projeto));
     }
+
+    @Transactional
+    public ProjetoSemClienteResponse editarProjeto(Long projetoId, PerfilCliente perfil, PatchProjetoRequest body) {
+        Projeto projeto = projetosRepository.findById(projetoId).orElseThrow(() -> new NotFoundException("Projeto não encontrado"));
+
+        if (!projeto.getPerfilCliente().getId().equals(perfil.getId())) { throw new ForbiddenException("Projeto não pertence ao cliente logado"); }
+
+        BigDecimal minParaValidacao = body.valorMin() != null ? body.valorMin() : projeto.getValorMin();
+        BigDecimal maxParaValidacao = body.valorMax() != null ? body.valorMax() : projeto.getValorMax();
+
+        if (maxParaValidacao.compareTo(minParaValidacao) < 0) {
+            throw new BadRequestException("O valor máximo não pode ser menor que o valor mínimo");
+        }
+
+        Optional.ofNullable(body.titulo()).ifPresent(projeto::setTitulo);
+        Optional.ofNullable(body.descricao()).ifPresent(projeto::setDescricao);
+        Optional.ofNullable(body.nivel()).ifPresent(projeto::setNivel);
+        Optional.ofNullable(body.valorMin()).ifPresent(projeto::setValorMin);
+        Optional.ofNullable(body.valorMax()).ifPresent(projeto::setValorMax);
+
+        return ProjetoSemClienteResponse.from(projetosRepository.save(projeto));
+    }
+
 
 }
