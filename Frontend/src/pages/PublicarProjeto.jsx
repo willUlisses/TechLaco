@@ -1,8 +1,13 @@
+import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import SeusProjetosSection from '../components/sections/SeusProjetosSection'
 import DicasCard from '../components/sections/DicasCard'
+import NovoProjetoCard from '../components/sections/NovoProjetoCard'
+import PublicarProjetoModal from '../components/ui/PublicarProjetoModal'
 
 export default function PublicarProjeto() {
+  const [modalAberto, setModalAberto] = useState(false)
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
@@ -25,6 +30,13 @@ export default function PublicarProjeto() {
         <SeusProjetosSection />
         <DicasCard />
       </div>
+      <div className="max-w-[1100px] mx-auto px-6 py-8">
+        <NovoProjetoCard onPublicar={() => setModalAberto(true)} />
+      </div>
+
+      {modalAberto && (
+        <PublicarProjetoModal onClose={() => setModalAberto(false)} />
+      )}
     </div>
   )
 }
