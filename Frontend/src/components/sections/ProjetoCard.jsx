@@ -8,7 +8,7 @@ const statusConfig = {
 
 export default function ProjetoCard({ titulo, status, orcamentoMin, orcamentoMax, propostas }) {
   return (
-    <div className="flex flex-col gap-3 py-5 px-1">
+    <div className="flex flex-col gap-3 py-5 px-6 border border-[#E2E8F0] rounded-2xl">
       <div className="flex items-center gap-3 flex-wrap">
         <span className="font-bold text-[#111827] text-base">{titulo}</span>
         <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${statusConfig[status] ?? statusConfig['Concluído']}`}>
