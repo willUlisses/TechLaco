@@ -1,4 +1,6 @@
 package com.techlaco.dtos.body;
 
-public record CriarCandidaturaRequest() {
+public record CriarCandidaturaRequest(
+        String mensagem
+) {
 }

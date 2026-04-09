@@ -1,4 +1,9 @@
 package com.techlaco.dtos.response;
 
-public record VoidMessageResponse() {
+import lombok.Builder;
+
+@Builder
+public record VoidMessageResponse(
+        String message
+) {
 }

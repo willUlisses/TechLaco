@@ -1,4 +1,10 @@
 package com.techlaco.dtos.body;
 
-public record FiltroCandidaturasRequest() {
+import com.techlaco.entities.Enums.StatusCandidatura;
+import lombok.Builder;
+
+@Builder
+public record FiltroCandidaturasRequest(
+        StatusCandidatura statusCandidatura
+) {
 }
