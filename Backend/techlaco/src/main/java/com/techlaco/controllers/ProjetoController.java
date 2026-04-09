@@ -6,6 +6,7 @@ import com.techlaco.dtos.body.PatchProjetoRequest;
 import com.techlaco.dtos.response.PageResponse;
 import com.techlaco.dtos.response.ProjetoSemClienteResponse;
 import com.techlaco.dtos.response.ProjetoResponse;
+import com.techlaco.dtos.response.VoidMessageResponse;
 import com.techlaco.entities.PerfilCliente;
 import com.techlaco.entities.Usuario;
 import com.techlaco.exceptions.ForbiddenException;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,6 +87,15 @@ public class ProjetoController {
         PerfilCliente perfilUsuarioLogado = usuario.getPerfilCliente();
 
         return new ResponseEntity<>(projetoService.editarProjeto(id, perfilUsuarioLogado, body), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<VoidMessageResponse> deletarProjeto(
+            @PathVariable("id") Long id,
+            @AuthenticationPrincipal Usuario usuario) {
+
+        PerfilCliente perfilUsuarioLogado = usuario.getPerfilCliente();
+        return new ResponseEntity<>(projetoService.deletarProjeto(id, perfilUsuarioLogado), HttpStatus.OK);
     }
 
 }

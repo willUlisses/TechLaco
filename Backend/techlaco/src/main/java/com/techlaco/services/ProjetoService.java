@@ -6,6 +6,7 @@ import com.techlaco.dtos.body.PatchProjetoRequest;
 import com.techlaco.dtos.response.PageResponse;
 import com.techlaco.dtos.response.ProjetoSemClienteResponse;
 import com.techlaco.dtos.response.ProjetoResponse;
+import com.techlaco.dtos.response.VoidMessageResponse;
 import com.techlaco.entities.Enums.StatusProjeto;
 import com.techlaco.entities.PerfilCliente;
 import com.techlaco.entities.Projeto;
@@ -106,5 +107,16 @@ public class ProjetoService {
         return ProjetoSemClienteResponse.from(projetosRepository.save(projeto));
     }
 
+    public VoidMessageResponse deletarProjeto(Long projetoId, PerfilCliente perfil) {
+        Projeto projeto = projetosRepository.findById(projetoId).orElseThrow(() -> new NotFoundException("Projeto não encontrado"));
+
+        if (!projeto.getPerfilCliente().getId().equals(perfil.getId())) { throw new ForbiddenException("O projeto não pertence ao cliente logado"); }
+
+        projeto.setStatus(StatusProjeto.CANCELADO);
+        projetosRepository.save(projeto);
+        return VoidMessageResponse.builder()
+                .message("Projeto deletado com sucesso!")
+                .build();
+    }
 
 }
