@@ -21,7 +21,8 @@ public interface CandidaturasRepository extends JpaRepository<Candidatura, Long>
     JOIN FETCH c.projeto p
     WHERE c.perfilFreelancer.id = :perfilFreelancerId
     """)
-    List<Candidatura> findByPerfilFreelancerId(@Param("perfilFreelancerId") Long perfilFreelancerId);
+    List<Candidatura> findByPerfilFreelancerId(
+            @Param("perfilFreelancerId") Long perfilFreelancerId);
 
 
     @Query("""
@@ -30,5 +31,10 @@ public interface CandidaturasRepository extends JpaRepository<Candidatura, Long>
     WHERE c.perfilFreelancer.id = :perfilFreelancerId
     AND c.status = :status
     """)
-    List<Candidatura> findByPerfilFreelancerIdAndStatus(@Param("perfilFreelancerId") Long perfilFreelancerId, @Param("status") StatusCandidatura status);
+    List<Candidatura> findByPerfilFreelancerIdAndStatus(
+            @Param("perfilFreelancerId") Long perfilFreelancerId,
+            @Param("status") StatusCandidatura status);
+
+
+    List<Candidatura> findByProjetoId(Long projetoId);
 }

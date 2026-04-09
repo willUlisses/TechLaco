@@ -2,8 +2,10 @@ package com.techlaco.controllers;
 
 import com.techlaco.dtos.body.CriarCandidaturaRequest;
 import com.techlaco.dtos.body.FiltroCandidaturasRequest;
+import com.techlaco.dtos.response.CandidaturasProjetoResponse;
 import com.techlaco.dtos.response.DadosCandidaturaResponse;
 import com.techlaco.entities.Enums.StatusCandidatura;
+import com.techlaco.entities.PerfilCliente;
 import com.techlaco.entities.PerfilFreelancer;
 import com.techlaco.entities.Usuario;
 import com.techlaco.exceptions.ForbiddenException;
@@ -56,4 +58,18 @@ public class CandidaturaController {
 
         return new ResponseEntity<>(candidaturaService.listarCandidaturasDoFreelancerLogado(perfilUsuarioLogado, filtro), HttpStatus.OK);
     }
+
+    @GetMapping("/projeto/{projetoId}")
+    public ResponseEntity<List<CandidaturasProjetoResponse>> listarCandidaturasDoProjeto(
+            @PathVariable("projetoId") Long projetoId,
+            @AuthenticationPrincipal Usuario usuario) {
+
+        if (usuario.getPerfilCliente() == null) { throw new ForbiddenException("O usuário não possui um perfil de cliente"); }
+
+        PerfilCliente perfilUsuarioLogado = usuario.getPerfilCliente();
+
+        return new ResponseEntity<>(candidaturaService.listarCandidaturasDosProjetosDoClienteLogado(projetoId, perfilUsuarioLogado), HttpStatus.OK);
+    }
+
+
 }

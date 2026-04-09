@@ -2,10 +2,12 @@ package com.techlaco.services;
 
 import com.techlaco.dtos.body.CriarCandidaturaRequest;
 import com.techlaco.dtos.body.FiltroCandidaturasRequest;
+import com.techlaco.dtos.response.CandidaturasProjetoResponse;
 import com.techlaco.dtos.response.DadosCandidaturaResponse;
 import com.techlaco.entities.Candidatura;
 import com.techlaco.entities.Enums.StatusCandidatura;
 import com.techlaco.entities.Enums.StatusProjeto;
+import com.techlaco.entities.PerfilCliente;
 import com.techlaco.entities.PerfilFreelancer;
 import com.techlaco.entities.Projeto;
 import com.techlaco.entities.Usuario;
@@ -69,6 +71,18 @@ public class CandidaturaService {
         }
 
         return candidaturas.stream().map(DadosCandidaturaResponse::from).toList();
+    }
+
+    public List<CandidaturasProjetoResponse> listarCandidaturasDosProjetosDoClienteLogado(Long projetoId, PerfilCliente perfilCliente) {
+        Projeto projeto = projetoRepository.findById(projetoId).orElseThrow(() -> new NotFoundException("Projeto não encontrado"));
+
+        if (!projeto.getPerfilCliente().getId().equals(perfilCliente.getId())) {
+            throw new ForbiddenException("O projeto não pertence ao cliente logado.");
+        }
+
+        List<Candidatura> candidaturasDoProjeto = candidaturasRepository.findByProjetoId(projetoId);
+
+        return candidaturasDoProjeto.stream().map(CandidaturasProjetoResponse::from).toList();
     }
 
 
