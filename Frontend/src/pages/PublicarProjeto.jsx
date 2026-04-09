@@ -26,17 +26,21 @@ export default function PublicarProjeto() {
 
       <hr className="border-[#E2E8F0]" />
 
-      <div className="max-w-[1100px] mx-auto px-6 py-8 flex flex-col gap-6">
-        <SeusProjetosSection />
+      <div className='flex gap-12 justify-center items-start py-8'>
+        <div className='flex flex-col'>
+          <div className="px-6">
+            <NovoProjetoCard onPublicar={() => setModalAberto(true)} />
+          </div>
+          {modalAberto && (
+            <PublicarProjetoModal onClose={() => setModalAberto(false)} />
+          )}
+          <div className="px-6 ">
+            <SeusProjetosSection />
+          </div>
+        </div>
         <DicasCard />
-      </div>
-      <div className="max-w-[1100px] mx-auto px-6 py-8">
-        <NovoProjetoCard onPublicar={() => setModalAberto(true)} />
-      </div>
 
-      {modalAberto && (
-        <PublicarProjetoModal onClose={() => setModalAberto(false)} />
-      )}
+      </div>
     </div>
   )
 }
