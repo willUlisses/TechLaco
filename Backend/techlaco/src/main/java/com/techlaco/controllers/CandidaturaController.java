@@ -2,6 +2,8 @@ package com.techlaco.controllers;
 
 import com.techlaco.dtos.body.CriarCandidaturaRequest;
 import com.techlaco.dtos.body.FiltroCandidaturasRequest;
+import com.techlaco.dtos.body.PatchStatusCandidatura;
+import com.techlaco.dtos.response.CandidaturaAtualizadaResponse;
 import com.techlaco.dtos.response.CandidaturasProjetoResponse;
 import com.techlaco.dtos.response.DadosCandidaturaResponse;
 import com.techlaco.entities.Enums.StatusCandidatura;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,6 +72,21 @@ public class CandidaturaController {
         PerfilCliente perfilUsuarioLogado = usuario.getPerfilCliente();
 
         return new ResponseEntity<>(candidaturaService.listarCandidaturasDosProjetosDoClienteLogado(projetoId, perfilUsuarioLogado), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<CandidaturaAtualizadaResponse> atualizarStatus(
+            @PathVariable("id") Long id,
+            @AuthenticationPrincipal Usuario usuario,
+            @RequestBody PatchStatusCandidatura body) {
+
+        if (usuario.getPerfilCliente() == null) {
+            throw new ForbiddenException("O usuario não possui um perfil de cliente");
+        }
+
+        PerfilCliente perfilUsuarioLogado = usuario.getPerfilCliente();
+
+        return new ResponseEntity<>(candidaturaService.atualizarStatus(id, perfilUsuarioLogado, body), HttpStatus.OK);
     }
 
 

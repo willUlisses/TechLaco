@@ -2,6 +2,8 @@ package com.techlaco.services;
 
 import com.techlaco.dtos.body.CriarCandidaturaRequest;
 import com.techlaco.dtos.body.FiltroCandidaturasRequest;
+import com.techlaco.dtos.body.PatchStatusCandidatura;
+import com.techlaco.dtos.response.CandidaturaAtualizadaResponse;
 import com.techlaco.dtos.response.CandidaturasProjetoResponse;
 import com.techlaco.dtos.response.DadosCandidaturaResponse;
 import com.techlaco.entities.Candidatura;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -85,5 +88,19 @@ public class CandidaturaService {
         return candidaturasDoProjeto.stream().map(CandidaturasProjetoResponse::from).toList();
     }
 
+    public CandidaturaAtualizadaResponse atualizarStatus(Long candidaturaId, PerfilCliente perfilCliente, PatchStatusCandidatura body) {
+        Candidatura candidatura = candidaturasRepository.findById(candidaturaId).orElseThrow(() -> new NotFoundException("Candidatura não encontrada"));
+
+        if (!candidatura.getProjeto().getPerfilCliente().getId().equals(perfilCliente.getId())) {
+            throw new ForbiddenException("A candidatura não pertence a nenhum projeto do cliente logado.");
+        }
+
+        if (body.status() == null || body.status() == StatusCandidatura.PENDENTE) {
+            throw new BadRequestException("Defina um novo status válido.");
+        }
+
+        candidatura.setStatus(body.status());
+        return CandidaturaAtualizadaResponse.from(candidaturasRepository.save(candidatura));
+    }
 
 }
