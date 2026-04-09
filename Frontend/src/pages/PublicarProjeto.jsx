@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar'
 import SeusProjetosSection from '../components/sections/SeusProjetosSection'
+import DicasCard from '../components/sections/DicasCard'
 
 export default function PublicarProjeto() {
   return (
@@ -20,8 +21,9 @@ export default function PublicarProjeto() {
 
       <hr className="border-[#E2E8F0]" />
 
-      <div className="max-w-[1100px] mx-auto px-6 py-8">
+      <div className="max-w-[1100px] mx-auto px-6 py-8 flex flex-col gap-6">
         <SeusProjetosSection />
+        <DicasCard />
       </div>
     </div>
   )
