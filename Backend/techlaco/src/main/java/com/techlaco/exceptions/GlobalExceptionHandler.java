@@ -70,4 +70,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
+    @ExceptionHandler(ApplyAlreadyExists.class)
+    public ResponseEntity<ErrorResponse> handleConflictException(ApplyAlreadyExists e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .message(e.getMessage())
+                .status(HttpStatus.CONFLICT.value())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
 }

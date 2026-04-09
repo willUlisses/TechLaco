@@ -1,7 +1,7 @@
 package com.techlaco.exceptions;
 
-public class ConflictException extends RuntimeException {
-    public ConflictException(String message) {
+public class ApplyAlreadyExists extends RuntimeException {
+    public ApplyAlreadyExists(String message) {
         super(message);
     }
 }
