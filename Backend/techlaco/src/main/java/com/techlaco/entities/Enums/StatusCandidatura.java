@@ -6,8 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum StatusCandidatura {
-
     PENDENTE("PENDENTE"),
+
     ACEITA("ACEITA"),
     RECUSADA("RECUSADA");
 

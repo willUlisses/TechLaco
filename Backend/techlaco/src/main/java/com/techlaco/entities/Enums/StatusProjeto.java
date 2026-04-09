@@ -12,5 +12,5 @@ public enum StatusProjeto {
     CONCLUIDO("CONCLUIDO"),
     CANCELADO("CANCELADO");
 
-    private String value;
+    private final String value;
 }
