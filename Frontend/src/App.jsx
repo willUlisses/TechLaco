@@ -4,6 +4,7 @@ import Cadastro from './pages/Cadastro'
 import Login from './pages/Login'
 import Homepage from './pages/Homepage'
 import PublicarProjeto from './pages/PublicarProjeto'
+import BuscarProjetos from './pages/BuscarProjetos'
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Homepage />} />
         <Route path="/clientes/publicar" element={<PublicarProjeto />} />
+        <Route path="/freelancers/BuscarProjeto" element={<BuscarProjetos />} />
       </Routes>
     </BrowserRouter>
   )
