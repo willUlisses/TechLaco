@@ -8,7 +8,7 @@ const items = [
     badge: '12 novos hoje',
     icon: Search,
     tone: 'blue',
-    href: '#buscar-projetos',
+    href: '/freelancers/BuscarProjeto',
   },
   {
     title: 'Minhas Candidaturas',
@@ -16,7 +16,7 @@ const items = [
     badge: '5 ativas',
     icon: FileText,
     tone: 'green',
-    href: '#minhas-candidaturas',
+    href: '#',
   },
   {
     title: 'Meus Projetos',
@@ -24,7 +24,7 @@ const items = [
     badge: '3 em andamento',
     icon: BriefcaseBusiness,
     tone: 'blue',
-    href: '#meus-projetos',
+    href: '/clientes/publicar',
   },
 ]
 

@@ -5,12 +5,12 @@ import Logo from './ui/Logo'
 
 const paraClientesLinks = [
   { label: 'Publicar Projeto', to: '/clientes/publicar' },
-  { label: 'Meus Projetos', to: '/clientes/projetos' },
+  { label: 'Meus Projetos', to: '/clientes/publicar' },
 ]
 
 const paraFreelancersLinks = [
-  { label: 'Encontrar Projetos', to: '/freelancers/projetos' },
-  { label: 'Meu Portfólio', to: '/freelancers/portfolio' },
+  { label: 'Encontrar Projetos', to: '/freelancers/BuscarProjeto' },
+  { label: 'Meu Portfólio', to: '/freelancers/BuscarProjeto' },
 ]
 
 function DropdownMenu({ label, icon: Icon, links, activeColor }) {
@@ -97,7 +97,7 @@ export default function Navbar({ user = { nome: 'Ana Silva' } }) {
         {/* Nav central */}
         <nav className="flex items-center gap-3 max-md:hidden">
           <NavLink
-            to="/"
+            to="/home"
             end
             className={({ isActive }) =>
               `flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium no-underline transition-colors
