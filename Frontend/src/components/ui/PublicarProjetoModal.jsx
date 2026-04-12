@@ -1,34 +1,26 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { X } from 'lucide-react'
 import InputField from './InputField'
+import { criarProjetoSchema } from '../../schemas/projetoSchemas'
+import { projetoService } from '../../services/projetoService'
 
-const schema = z.object({
-  titulo: z.string().min(3, 'Título deve ter no mínimo 3 caracteres'),
-  categoria: z.string().min(1, 'Selecione uma categoria'),
-  descricao: z.string().min(20, 'Descreva o projeto com pelo menos 20 caracteres'),
-  orcamento: z.string().min(1, 'Informe um orçamento estimado'),
-  prazo: z.string().min(1, 'Informe um prazo'),
-})
-
-const categorias = [
-  'Desenvolvimento Web',
-  'Desenvolvimento Mobile',
-  'Design UI/UX',
-  'Banco de Dados',
-  'DevOps / Infraestrutura',
-  'Automação / Scripts',
-  'Outro',
+const niveisOpcoes = [
+  { value: 'INICIANTE', label: 'Iniciante' },
+  { value: 'INTERMEDIARIO', label: 'Intermediário' },
+  { value: 'AVANCADO', label: 'Avançado' },
 ]
 
-export default function PublicarProjetoModal({ onClose }) {
+export default function PublicarProjetoModal({ onClose, onSucesso }) {
+  const [erro, setErro] = useState(null)
+  const [carregando, setCarregando] = useState(false)
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(schema) })
+  } = useForm({ resolver: zodResolver(criarProjetoSchema) })
 
   // Fecha com Esc
   useEffect(() => {
@@ -39,9 +31,18 @@ export default function PublicarProjetoModal({ onClose }) {
     return () => document.removeEventListener('keydown', handleKey)
   }, [onClose])
 
-  function onSubmit(data) {
-    console.log('Projeto publicado:', data)
-    onClose()
+  async function onSubmit(data) {
+    setErro(null)
+    setCarregando(true)
+    try {
+      await projetoService.publicar(data)
+      if (onSucesso) onSucesso()
+      else onClose()
+    } catch (err) {
+      setErro(err?.mensagem ?? 'Erro ao publicar projeto.')
+    } finally {
+      setCarregando(false)
+    }
   }
 
   return (
@@ -67,6 +68,10 @@ export default function PublicarProjetoModal({ onClose }) {
 
         {/* Formulário */}
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 px-7 py-6">
+          {erro && (
+            <p className="text-[#EF4444] text-sm text-center bg-[#FEF2F2] rounded-lg py-2 px-3">{erro}</p>
+          )}
+
           <InputField
             id="titulo"
             label="Título do projeto"
@@ -77,23 +82,23 @@ export default function PublicarProjetoModal({ onClose }) {
           />
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="categoria" className="font-bold text-[0.9rem] text-[#101828]">
-              Categoria
+            <label htmlFor="nivel" className="font-bold text-[0.9rem] text-[#101828]">
+              Nível de complexidade
             </label>
             <select
-              id="categoria"
-              {...register('categoria')}
+              id="nivel"
+              {...register('nivel')}
               defaultValue=""
               className={`w-full px-3 py-3 border rounded-[10px] outline-none transition-colors bg-white focus:border-[#0066CC]
-                ${errors.categoria ? 'border-[#EF4444] bg-[#FEF2F2]' : 'border-[#D1D5DC]'}`}
+                ${errors.nivel ? 'border-[#EF4444] bg-[#FEF2F2]' : 'border-[#D1D5DC]'}`}
             >
-              <option value="" disabled>Selecione uma categoria</option>
-              {categorias.map(c => (
-                <option key={c} value={c}>{c}</option>
+              <option value="" disabled>Selecione o nível</option>
+              {niveisOpcoes.map(n => (
+                <option key={n.value} value={n.value}>{n.label}</option>
               ))}
             </select>
-            {errors.categoria && (
-              <span className="text-[#EF4444] text-[0.75rem] mt-[2px]">{errors.categoria.message}</span>
+            {errors.nivel && (
+              <span className="text-[#EF4444] text-[0.75rem] mt-[2px]">{errors.nivel.message}</span>
             )}
           </div>
 
@@ -116,20 +121,22 @@ export default function PublicarProjetoModal({ onClose }) {
 
           <div className="grid grid-cols-2 gap-4">
             <InputField
-              id="orcamento"
-              label="Orçamento estimado"
-              placeholder="Ex: R$ 500"
-              hasError={!!errors.orcamento}
-              errorMessage={errors.orcamento?.message}
-              {...register('orcamento')}
+              id="valorMin"
+              label="Valor mínimo (R$)"
+              type="number"
+              placeholder="Ex: 2500"
+              hasError={!!errors.valorMin}
+              errorMessage={errors.valorMin?.message}
+              {...register('valorMin')}
             />
             <InputField
-              id="prazo"
-              label="Prazo"
-              placeholder="Ex: 2 semanas"
-              hasError={!!errors.prazo}
-              errorMessage={errors.prazo?.message}
-              {...register('prazo')}
+              id="valorMax"
+              label="Valor máximo (R$)"
+              type="number"
+              placeholder="Ex: 3500"
+              hasError={!!errors.valorMax}
+              errorMessage={errors.valorMax?.message}
+              {...register('valorMax')}
             />
           </div>
 
@@ -143,9 +150,10 @@ export default function PublicarProjetoModal({ onClose }) {
             </button>
             <button
               type="submit"
-              className="flex-1 py-3 rounded-xl bg-[#f97316] hover:bg-[#ea6c0a] text-white font-semibold text-sm transition-colors cursor-pointer border-none"
+              disabled={carregando}
+              className="flex-1 py-3 rounded-xl bg-[#f97316] hover:bg-[#ea6c0a] text-white font-semibold text-sm transition-colors cursor-pointer border-none disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Publicar projeto
+              {carregando ? 'Publicando...' : 'Publicar projeto'}
             </button>
           </div>
         </form>

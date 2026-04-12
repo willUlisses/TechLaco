@@ -1,131 +1,50 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Search, SlidersHorizontal } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Search } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import BuscarProjetoCard from '../components/sections/BuscarProjetoCard'
+import ModalDetalhesProjeto from '../components/ui/ModalDetalhesProjeto'
+import ModalCandidatura from '../components/ui/ModalCandidatura'
+import { projetoService } from '../services/projetoService'
 
 const niveis = ['Todos', 'Iniciante', 'Intermediário', 'Avançado']
-
-const projetos = [
-  {
-    id: 1,
-    titulo: 'Desenvolvimento de Site Institucional',
-    nivel: 'Iniciante',
-    empresa: 'Boutique Maria Clara',
-    empresaVerificada: true,
-    rating: 4.8,
-    descricao:
-      'Site moderno e responsivo com catálogo de produtos, integração com Instagram e formulário de contato.',
-    tags: ['HTML/CSS', 'JavaScript', 'Responsivo'],
-    valorMin: 2500,
-    valorMax: 3500,
-    prazo: 30,
-    local: 'Remoto',
-    propostas: 8,
-    tempo: 'Há 2 dias',
-  },
-  {
-    id: 2,
-    titulo: 'App Mobile para Delivery de Marmitas',
-    nivel: 'Avançado',
-    empresa: 'Sabor Caseiro Delivery',
-    empresaVerificada: true,
-    rating: 4.9,
-    descricao:
-      'App iOS e Android com pedidos, pagamento integrado (PIX e cartão) e rastreamento de entrega.',
-    tags: ['React Native', 'Flutter', 'Node.js'],
-    valorMin: 8000,
-    valorMax: 12000,
-    prazo: 60,
-    local: 'Remoto',
-    propostas: 15,
-    tempo: 'Há 1 dia',
-  },
-  {
-    id: 3,
-    titulo: 'Sistema de Gestão para Salão de Beleza',
-    nivel: 'Intermediário',
-    empresa: 'Espaço Elegance',
-    empresaVerificada: true,
-    rating: 5,
-    descricao:
-      'Agendamento online, controle de clientes, gestão financeira e relatórios para salão.',
-    tags: ['React', 'Node.js', 'PostgreSQL'],
-    valorMin: 5000,
-    valorMax: 7000,
-    prazo: 45,
-    local: 'Híbrido · São Paulo',
-    propostas: 12,
-    tempo: 'Há 3 dias',
-  },
-  {
-    id: 4,
-    titulo: 'Automação de WhatsApp para Atendimento',
-    nivel: 'Intermediário',
-    empresa: 'AutoPeças Figueiredo',
-    empresaVerificada: false,
-    rating: 4.5,
-    descricao:
-      'Chatbot para responder dúvidas, enviar catálogos e integrar com planilha de estoque.',
-    tags: ['Python', 'APIs WhatsApp', 'Chatbot'],
-    valorMin: 1500,
-    valorMax: 2500,
-    prazo: 20,
-    local: 'Remoto',
-    propostas: 6,
-    tempo: 'Há 5 dias',
-  },
-  {
-    id: 5,
-    titulo: 'Redesign de Identidade Visual e Landing Page',
-    nivel: 'Intermediário',
-    empresa: 'FitCoach Online',
-    empresaVerificada: true,
-    rating: 4.7,
-    descricao:
-      'Nova identidade visual e landing page otimizada para conversão de leads.',
-    tags: ['UI/UX Design', 'Figma', 'Landing Page'],
-    valorMin: 3000,
-    valorMax: 4500,
-    prazo: 35,
-    local: 'Remoto',
-    propostas: 20,
-    tempo: 'Há 4 dias',
-  },
-  {
-    id: 6,
-    titulo: 'Sistema de Controle de Estoque e Vendas',
-    nivel: 'Iniciante',
-    empresa: 'Papelaria Estudo Fácil',
-    empresaVerificada: true,
-    rating: 4.6,
-    descricao:
-      'Controle simples de estoque, registro de vendas e relatórios básicos para papelaria.',
-    tags: ['Desenvolvimento Web', 'PHP', 'MySQL'],
-    valorMin: 3500,
-    valorMax: 5000,
-    prazo: 40,
-    local: 'Híbrido · Campinas',
-    propostas: 10,
-    tempo: 'Há 1 semana',
-  },
-]
-
-const estatisticas = { total: 6, hoje: 3, mediaProposta: 11 }
 
 export default function BuscarProjetos() {
   const [busca, setBusca] = useState('')
   const [nivelAtivo, setNivelAtivo] = useState('Todos')
+  const [projetos, setProjetos] = useState([])
+  const [carregando, setCarregando] = useState(true)
+  const [erro, setErro] = useState(null)
 
-  const projetosFiltrados = projetos.filter(p => {
-    const matchNivel = nivelAtivo === 'Todos' || p.nivel === nivelAtivo
-    const termo = busca.toLowerCase()
-    const matchBusca =
-      p.titulo.toLowerCase().includes(termo) ||
-      p.empresa.toLowerCase().includes(termo) ||
-      p.tags.some(t => t.toLowerCase().includes(termo))
-    return matchNivel && matchBusca
-  })
+  const [modalDetalhesAberto, setModalDetalhesAberto] = useState(false)
+  const [modalCandidaturaAberto, setModalCandidaturaAberto] = useState(false)
+  const [projetoSelecionado, setProjetoSelecionado] = useState(null)
+
+  function abrirDetalhes(projeto) {
+    setProjetoSelecionado(projeto)
+    setModalDetalhesAberto(true)
+  }
+
+  function abrirCandidatura(projeto) {
+    setProjetoSelecionado(projeto)
+    setModalCandidaturaAberto(true)
+  }
+
+  function handleSucessoCandidatura() {
+    // Opção de atualizar interface ou counter se necessário
+  }
+
+  useEffect(() => {
+    setCarregando(true)
+    setErro(null)
+    projetoService.buscarAtivos({ busca })
+      .then(data => setProjetos(data.dados))
+      .catch(err => setErro(err?.mensagem ?? 'Erro ao carregar projetos'))
+      .finally(() => setCarregando(false))
+  }, [busca])
+
+  const projetosFiltrados = nivelAtivo === 'Todos'
+    ? projetos
+    : projetos.filter(p => p.nivel === nivelAtivo)
 
   return (
     <div className="min-h-screen bg-[#F8F9FB]">
@@ -147,7 +66,7 @@ export default function BuscarProjetos() {
           </div>
 
           <div className="pt-4 pb-4 flex flex-col gap-4">
-            {/* Busca + Filtros */}
+            {/* Busca */}
             <div className="flex gap-2">
               <div className="relative flex-1">
                 <Search
@@ -190,9 +109,8 @@ export default function BuscarProjetos() {
       {/* ── Conteúdo principal ── */}
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          {/* Coluna esquerda — lista de projetos */}
           <div className="flex-1 lg:w-full min-w-0">
-            {/* Contador + ordenação */}
+            {/* Contador */}
             <div className="flex items-center justify-between mb-4">
               <p className="text-[#6a7282] text-md">
                 <span className="text-[#101828] font-semibold">{projetosFiltrados.length}</span>{' '}
@@ -202,9 +120,22 @@ export default function BuscarProjetos() {
 
             {/* Cards */}
             <div className="flex flex-col gap-3">
-              {projetosFiltrados.length > 0 ? (
+              {carregando ? (
+                <div className="flex items-center justify-center py-12">
+                  <span className="text-sm text-[#99a1af]">Carregando projetos...</span>
+                </div>
+              ) : erro ? (
+                <div className="flex items-center justify-center py-12">
+                  <span className="text-sm text-[#EF4444]">{erro}</span>
+                </div>
+              ) : projetosFiltrados.length > 0 ? (
                 projetosFiltrados.map(projeto => (
-                  <BuscarProjetoCard key={projeto.id} projeto={projeto} />
+                  <BuscarProjetoCard 
+                    key={projeto.id} 
+                    projeto={projeto} 
+                    onVerMais={abrirDetalhes}
+                    onCandidatar={abrirCandidatura}
+                  />
                 ))
               ) : (
                 <div className="text-center py-16 text-[#99a1af]">
@@ -217,6 +148,21 @@ export default function BuscarProjetos() {
           </div>
         </div>
       </div>
+
+      <ModalDetalhesProjeto
+        projetoId={projetoSelecionado?.id}
+        aberto={modalDetalhesAberto}
+        onFechar={() => setModalDetalhesAberto(false)}
+        onCandidatar={abrirCandidatura}
+      />
+
+      <ModalCandidatura
+        projeto={projetoSelecionado}
+        aberto={modalCandidaturaAberto}
+        onFechar={() => setModalCandidaturaAberto(false)}
+        onSucesso={handleSucessoCandidatura}
+      />
+
     </div>
   )
 }

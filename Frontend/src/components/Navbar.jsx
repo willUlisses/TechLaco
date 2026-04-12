@@ -1,16 +1,17 @@
 import { useState, useRef, useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { ChevronDown, Home, Users, Search, LayoutDashboard } from 'lucide-react'
 import Logo from './ui/Logo'
+import { useAuth } from '../contexts/AuthContext'
 
 const paraClientesLinks = [
   { label: 'Publicar Projeto', to: '/clientes/publicar' },
-  { label: 'Meus Projetos', to: '/clientes/publicar' },
+  { label: 'Encontrar Devs', to: '/clientes/buscarFreelancers' },
 ]
 
 const paraFreelancersLinks = [
-  { label: 'Encontrar Projetos', to: '/freelancers/BuscarProjeto' },
-  { label: 'Meu Portfólio', to: '/freelancers/BuscarProjeto' },
+  { label: 'Encontrar Projetos', to: '/freelancers/buscarProjeto' },
+  { label: 'Meu Portfólio', to: '/freelancers/buscarProjeto' },
 ]
 
 function DropdownMenu({ label, icon: Icon, links, activeColor }) {
@@ -69,7 +70,9 @@ function DropdownMenu({ label, icon: Icon, links, activeColor }) {
   )
 }
 
-export default function Navbar({ user = { nome: 'Ana Silva' } }) {
+export default function Navbar() {
+  const { usuario, encerrarSessao } = useAuth()
+  const navigate = useNavigate()
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const userMenuRef = useRef(null)
 
@@ -83,7 +86,8 @@ export default function Navbar({ user = { nome: 'Ana Silva' } }) {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const inicial = user.nome.charAt(0).toUpperCase()
+  const nomeExibicao = usuario ? `${usuario.nome} ${usuario.sobrenome}` : ''
+  const inicial = usuario?.nome?.charAt(0).toUpperCase() ?? '?'
 
   return (
     <header className="bg-white border-b border-[#E2E8F0] sticky top-0 z-40">
@@ -141,7 +145,7 @@ export default function Navbar({ user = { nome: 'Ana Silva' } }) {
             <div className="w-8 h-8 rounded-full bg-[#0D63C1] text-white text-sm font-bold flex items-center justify-center shrink-0">
               {inicial}
             </div>
-            <span className="text-sm font-medium text-[#111827] max-sm:hidden">{user.nome}</span>
+            <span className="text-sm font-medium text-[#111827] max-sm:hidden">{nomeExibicao}</span>
             <ChevronDown
               size={14}
               className={`text-[#6B7280] transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''}`}
@@ -166,7 +170,7 @@ export default function Navbar({ user = { nome: 'Ana Silva' } }) {
               </NavLink>
               <hr className="my-1 border-[#E2E8F0] mx-3" />
               <button
-                onClick={() => setUserMenuOpen(false)}
+                onClick={() => { setUserMenuOpen(false); encerrarSessao(); navigate('/login') }}
                 className="w-full text-left px-4 py-2.5 text-sm text-[#EF4444] hover:bg-[#FEF2F2] rounded-[8px] mx-1 cursor-pointer border-none bg-transparent font-medium block"
                 style={{ width: 'calc(100% - 8px)' }}
               >

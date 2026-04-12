@@ -4,18 +4,19 @@ import WelcomeSection from '../components/sections/WelcomeSection'
 import ParaOndeIrSection from '../components/sections/ParaOndeIrSection'
 import AcessoRapidoSection from '../components/sections/AcessoRapidoSection'
 import PerfilCompletoSection from '../components/sections/PerfilCompletoSection'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Homepage() {
-  const user = { nome: 'Ana Silva' }
+  const { usuario } = useAuth()
 
   return (
     <div className="min-h-screen bg-[#F8F9FB] pb-12">
-      <Navbar user={user} />
+      <Navbar />
 
       <main>
         <section className="border-b border-[#E5E7EB] bg-white">
           <div className="mx-auto max-w-[1100px] px-6 py-10">
-            <WelcomeSection user={user} />
+            <WelcomeSection user={usuario} />
           </div>
         </section>
 
