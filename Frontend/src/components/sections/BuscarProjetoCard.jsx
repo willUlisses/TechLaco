@@ -1,4 +1,4 @@
-import { Briefcase, BadgeCheck, Star, Clock, MapPin, ChevronRight, DollarSign } from 'lucide-react'
+import { Briefcase, ChevronRight, DollarSign, Users } from 'lucide-react'
 
 const nivelConfig = {
   Iniciante: { bg: 'bg-[rgba(0,168,107,0.08)]', text: 'text-[#00a86b]' },
@@ -6,8 +6,8 @@ const nivelConfig = {
   Avançado: { bg: 'bg-[rgba(220,38,38,0.08)]', text: 'text-[#dc2626]' },
 }
 
-export default function BuscarProjetoCard({ projeto }) {
-  const nivel = nivelConfig[projeto.nivel]
+export default function BuscarProjetoCard({ projeto, onVerMais, onCandidatar }) {
+  const nivel = nivelConfig[projeto.nivel] ?? nivelConfig['Iniciante']
 
   return (
     <article
@@ -16,7 +16,7 @@ export default function BuscarProjetoCard({ projeto }) {
         transition-all duration-300 cursor-pointer"
     >
       <div className="flex gap-3 sm:gap-4">
-        {/* Ícone — oculto no mobile pra economizar espaço */}
+        {/* Ícone */}
         <div
           className="hidden sm:flex w-9 h-9 rounded-[10px] bg-[rgba(0,102,204,0.08)]
             items-center justify-center shrink-0 mt-0.5
@@ -45,15 +45,11 @@ export default function BuscarProjetoCard({ projeto }) {
             </div>
           </div>
 
-          {/* Empresa + verificado + rating */}
+          {/* Cliente */}
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="text-[#6a7282] text-xs font-medium">{projeto.empresa}</span>
-            {projeto.empresaVerificada && <BadgeCheck size={11} className="text-[#0066cc]" />}
+            <span className="text-[#6a7282] text-xs font-medium">{projeto.cliente?.nome ?? 'Cliente'}</span>
             <span className="text-[#99a1af] text-xs">·</span>
-            <div className="flex items-center gap-0.5">
-              <Star size={10} className="text-[#f59e0b] fill-[#f59e0b]" />
-              <span className="text-[#f59e0b] text-xs font-medium">{projeto.rating}</span>
-            </div>
+            <span className="text-[#6a7282] text-xs">{projeto.status}</span>
           </div>
 
           {/* Descrição */}
@@ -61,40 +57,57 @@ export default function BuscarProjetoCard({ projeto }) {
             {projeto.descricao}
           </p>
 
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {projeto.tags.map(tag => (
-              <span
-                key={tag}
-                className="bg-[#f3f4f6] text-[#4a5565] text-xs font-medium px-2 py-0.5 rounded-lg"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          {/* Metadados — empilhados no mobile, inline no desktop */}
+          {/* Metadados */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-medium text-[#99a1af]">
             <div className="flex items-center gap-1 text-[#364153]">
               <DollarSign size={11} />
               <span>
-                R$ {projeto.valorMin.toLocaleString('pt-BR')} – R${' '}
-                {projeto.valorMax.toLocaleString('pt-BR')}
+                R$ {projeto.valorMin?.toLocaleString('pt-BR')} – R${' '}
+                {projeto.valorMax?.toLocaleString('pt-BR')}
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <Clock size={11} />
-              <span>{projeto.prazo} dias</span>
+              <Users size={11} />
+              <span>{projeto.totalCandidaturas} candidaturas</span>
             </div>
-            <div className="flex items-center gap-1">
-              <MapPin size={11} />
-              <span>{projeto.local}</span>
-            </div>
-            <span>
-              {projeto.propostas} propostas · {projeto.tempo}
-            </span>
           </div>
+
+          <div className="flex gap-2 mt-3 block sm:hidden">
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onVerMais?.(projeto); }}
+              className="flex-1 border border-[#e5e7eb] text-[#4a5565] text-[12px] font-medium py-[8px] rounded-[10px] hover:bg-[#f3f4f6] transition-colors"
+            >
+              Ver mais
+            </button>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onCandidatar?.(projeto); }}
+              className="flex-1 bg-[#0066cc] text-white text-[12px] font-medium py-[8px] rounded-[10px] hover:bg-[#005ab4] transition-colors"
+            >
+              Enviar Proposta
+            </button>
+          </div>
+          
         </div>
+      </div>
+      
+      {/* Botões para Desktop caso se preferir separá-los (no guide era dentro do card), vou deixá-los visíveis em mobile e desktop no container */}
+      <div className="hidden sm:flex gap-2 mt-3">
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); onVerMais?.(projeto); }}
+          className="flex-1 border border-[#e5e7eb] text-[#4a5565] text-[12px] font-medium py-[8px] rounded-[10px] hover:bg-[#f3f4f6] transition-colors"
+        >
+          Ver mais
+        </button>
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); onCandidatar?.(projeto); }}
+          className="flex-1 bg-[#0066cc] text-white text-[12px] font-medium py-[8px] rounded-[10px] hover:bg-[#005ab4] transition-colors"
+        >
+          Enviar Proposta
+        </button>
       </div>
     </article>
   )

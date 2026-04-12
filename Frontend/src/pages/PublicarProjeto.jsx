@@ -1,12 +1,61 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import SeusProjetosSection from '../components/sections/SeusProjetosSection'
 import DicasCard from '../components/sections/DicasCard'
 import NovoProjetoCard from '../components/sections/NovoProjetoCard'
 import PublicarProjetoModal from '../components/ui/PublicarProjetoModal'
+import ModalEditarProjeto from '../components/ui/ModalEditarProjeto'
+import ModalCandidaturasRecebidas from '../components/ui/ModalCandidaturasRecebidas'
+import { projetoService } from '../services/projetoService'
 
 export default function PublicarProjeto() {
   const [modalAberto, setModalAberto] = useState(false)
+  const [modalEditarAberto, setModalEditarAberto] = useState(false)
+  const [modalCandidaturasAberto, setModalCandidaturasAberto] = useState(false)
+  const [projetoSelecionado, setProjetoSelecionado] = useState(null)
+  const [projetos, setProjetos] = useState([])
+  const [carregando, setCarregando] = useState(true)
+  const [erro, setErro] = useState(null)
+
+  function abrirEdicao(projeto) {
+    setProjetoSelecionado(projeto)
+    setModalEditarAberto(true)
+  }
+
+  function handleSucessoEdicao(projetoAtualizado) {
+    setProjetos(prev =>
+      prev.map(p => p.id === projetoAtualizado.id ? projetoAtualizado : p)
+    )
+  }
+
+  function abrirCandidaturas(projeto) {
+    setProjetoSelecionado(projeto)
+    setModalCandidaturasAberto(true)
+  }
+
+  function carregarProjetos() {
+    setCarregando(true)
+    setErro(null)
+    projetoService.meus()
+      .then(data => setProjetos(data))
+      .catch(err => setErro(err?.mensagem ?? 'Erro ao carregar projetos'))
+      .finally(() => setCarregando(false))
+  }
+
+  useEffect(() => {
+    carregarProjetos()
+  }, [])
+
+  function handleProjetoPublicado() {
+    setModalAberto(false)
+    carregarProjetos()
+  }
+
+  function handleCancelarProjeto(id) {
+    projetoService.cancelar(id)
+      .then(() => setProjetos(prev => prev.filter(p => p.id !== id)))
+      .catch(err => setErro(err?.mensagem ?? 'Erro ao cancelar projeto'))
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -32,15 +81,37 @@ export default function PublicarProjeto() {
             <NovoProjetoCard onPublicar={() => setModalAberto(true)} />
           </div>
           {modalAberto && (
-            <PublicarProjetoModal onClose={() => setModalAberto(false)} />
+            <PublicarProjetoModal
+              onClose={() => setModalAberto(false)}
+              onSucesso={handleProjetoPublicado}
+            />
           )}
           <div className="px-6 ">
-            <SeusProjetosSection />
+            <SeusProjetosSection
+              projetos={projetos}
+              carregando={carregando}
+              erro={erro}
+              onCancelar={handleCancelarProjeto}
+              onEditar={abrirEdicao}
+              onVerCandidaturas={abrirCandidaturas}
+            />
           </div>
         </div>
         <DicasCard />
 
       </div>
+      <ModalEditarProjeto
+        projeto={projetoSelecionado}
+        aberto={modalEditarAberto}
+        onFechar={() => setModalEditarAberto(false)}
+        onSucesso={handleSucessoEdicao}
+      />
+
+      <ModalCandidaturasRecebidas
+        projeto={projetoSelecionado}
+        aberto={modalCandidaturasAberto}
+        onFechar={() => setModalCandidaturasAberto(false)}
+      />
     </div>
   )
 }

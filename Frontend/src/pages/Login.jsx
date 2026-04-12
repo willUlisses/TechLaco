@@ -1,31 +1,38 @@
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { loginSchema } from '../schemas/authSchemas'
+import { authService } from '../services/authService'
+import { useAuth } from '../contexts/AuthContext'
 import Logo from '../components/ui/Logo'
 import InputField from '../components/ui/InputField'
 import BackLink from '../components/ui/BackLink'
 
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Email é obrigatório')
-    .email('Digite um email válido'),
-  senha: z
-    .string()
-    .min(8, 'A senha deve ter no mínimo 8 caracteres'),
-})
-
 export default function Login() {
+  const navigate = useNavigate()
+  const { salvarSessao } = useAuth()
+  const [erro, setErro] = useState(null)
+  const [carregando, setCarregando] = useState(false)
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(loginSchema) })
 
-  function onSubmit(data) {
-    // data já chegou validado pelo Zod
-    console.log('Login:', data)
+  async function onSubmit(data) {
+    setErro(null)
+    setCarregando(true)
+    try {
+      const resposta = await authService.login(data)
+      salvarSessao(resposta)
+      navigate('/home')
+    } catch (err) {
+      setErro(err?.mensagem ?? 'Erro ao fazer login. Tente novamente.')
+    } finally {
+      setCarregando(false)
+    }
   }
 
   return (
@@ -41,6 +48,10 @@ export default function Login() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+          {erro && (
+            <p className="text-[#EF4444] text-sm text-center bg-[#FEF2F2] rounded-lg py-2 px-3">{erro}</p>
+          )}
+
           <InputField
             id="email"
             label="E-mail profissional"
@@ -64,9 +75,10 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full bg-[#0066CC] text-white font-bold text-[1.1rem] py-[14px] rounded-[10px] hover:bg-[#0055ff] hover:shadow-[0_8px_20px_rgba(0,102,204,0.3)] hover:-translate-y-0.5 cursor-pointer transition-all border-none mt-2"
+            disabled={carregando}
+            className="w-full bg-[#0066CC] text-white font-bold text-[1.1rem] py-[14px] rounded-[10px] hover:bg-[#0055ff] hover:shadow-[0_8px_20px_rgba(0,102,204,0.3)] hover:-translate-y-0.5 cursor-pointer transition-all border-none mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Entrar no Portal
+            {carregando ? 'Entrando...' : 'Entrar no Portal'}
           </button>
 
           <span className="self-center text-[#64748B] text-[0.95rem] mt-2">

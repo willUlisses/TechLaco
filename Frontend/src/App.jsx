@@ -5,17 +5,23 @@ import Login from './pages/Login'
 import Homepage from './pages/Homepage'
 import PublicarProjeto from './pages/PublicarProjeto'
 import BuscarProjetos from './pages/BuscarProjetos'
+import BuscarFreelancers from './pages/BuscarFreelancers'
+import RotaPrivada from './components/RotaPrivada'
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Rotas públicas */}
         <Route path="/" element={<Apresentacao />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Homepage />} />
-        <Route path="/clientes/publicar" element={<PublicarProjeto />} />
-        <Route path="/freelancers/BuscarProjeto" element={<BuscarProjetos />} />
+
+        {/* Rotas protegidas */}
+        <Route path="/home" element={<RotaPrivada><Homepage /></RotaPrivada>} />
+        <Route path="/clientes/publicar" element={<RotaPrivada><PublicarProjeto /></RotaPrivada>} />
+        <Route path="/clientes/buscarFreelancers" element={<RotaPrivada><BuscarFreelancers /></RotaPrivada>} />
+        <Route path="/freelancers/buscarProjeto" element={<RotaPrivada><BuscarProjetos /></RotaPrivada>} />
       </Routes>
     </BrowserRouter>
   )
