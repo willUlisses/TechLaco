@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { X } from 'lucide-react'
 
-export default function Modal({ aberto, onFechar, titulo, children }) {
+export default function Modal({ aberto, onFechar, titulo, children, maxWidth = 'max-w-[520px]' }) {
   // Fechar com Escape
   useEffect(() => {
     function handleKeyDown(e) {
@@ -28,7 +28,7 @@ export default function Modal({ aberto, onFechar, titulo, children }) {
     >
       {/* Container do modal — stopPropagation evita fechar ao clicar dentro */}
       <div
-        className="bg-white rounded-[14px] w-full max-w-[520px] shadow-[0_24px_48px_rgba(0,0,0,0.18)] flex flex-col max-h-[90vh]"
+        className={`bg-white rounded-[14px] w-full ${maxWidth} shadow-[0_24px_48px_rgba(0,0,0,0.18)] flex flex-col max-h-[90vh]`}
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}

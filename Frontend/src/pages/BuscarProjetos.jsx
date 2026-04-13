@@ -6,11 +6,8 @@ import ModalDetalhesProjeto from '../components/ui/ModalDetalhesProjeto'
 import ModalCandidatura from '../components/ui/ModalCandidatura'
 import { projetoService } from '../services/projetoService'
 
-const niveis = ['Todos', 'Iniciante', 'Intermediário', 'Avançado']
-
 export default function BuscarProjetos() {
   const [busca, setBusca] = useState('')
-  const [nivelAtivo, setNivelAtivo] = useState('Todos')
   const [projetos, setProjetos] = useState([])
   const [carregando, setCarregando] = useState(true)
   const [erro, setErro] = useState(null)
@@ -34,17 +31,27 @@ export default function BuscarProjetos() {
   }
 
   useEffect(() => {
-    setCarregando(true)
-    setErro(null)
-    projetoService.buscarAtivos({ busca })
-      .then(data => setProjetos(data.dados))
-      .catch(err => setErro(err?.mensagem ?? 'Erro ao carregar projetos'))
-      .finally(() => setCarregando(false))
+    const carregarProjetos = async () => {
+      setCarregando(true)
+      setErro(null)
+      try {
+        const data = await projetoService.buscarAtivos({ busca })
+        setProjetos(data.dados)
+      } catch (err) {
+        setErro(err?.mensagem ?? 'Erro ao carregar projetos')
+      } finally {
+        setCarregando(false)
+      }
+    }
+
+    const timeoutId = setTimeout(() => { // debouncezinho pra não torar a api de requisição.
+      carregarProjetos();
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
   }, [busca])
 
-  const projetosFiltrados = nivelAtivo === 'Todos'
-    ? projetos
-    : projetos.filter(p => p.nivel === nivelAtivo)
+  const projetosFiltrados = projetos;
 
   return (
     <div className="min-h-screen bg-[#F8F9FB]">
@@ -53,7 +60,7 @@ export default function BuscarProjetos() {
       {/* ── Subheader ── */}
       <div className="bg-white border-b border-[#e5e7eb]">
         <div className="max-w-[1100px] mx-auto px-4 sm:px-6">
-          <div className="pt-6 sm:pt-8 pb-0">
+          <div className="pt-6 sm:pt-8 pb-6 sm:pb-8">
             <p className="text-[#99a1af] text-xs font-semibold uppercase tracking-[1.2px]">
               Oportunidades
             </p>
@@ -65,7 +72,7 @@ export default function BuscarProjetos() {
             </p>
           </div>
 
-          <div className="pt-4 pb-4 flex flex-col gap-4">
+          <div className="pt-4 pb-4 gap-4">
             {/* Busca */}
             <div className="flex gap-2">
               <div className="relative flex-1">
@@ -83,24 +90,6 @@ export default function BuscarProjetos() {
                     placeholder:text-[#99a1af]"
                 />
               </div>
-            </div>
-
-            {/* Chips de nível */}
-            <div className="flex gap-2 overflow-x-auto pb-1 -mb-1 scrollbar-none">
-              {niveis.map(nivel => (
-                <button
-                  key={nivel}
-                  onClick={() => setNivelAtivo(nivel)}
-                  className={`px-3 py-1.5 rounded-[10px] text-xs font-medium whitespace-nowrap
-                    transition-colors duration-150 cursor-pointer border-none shrink-0
-                    ${nivel === nivelAtivo
-                      ? 'bg-[#0066cc] text-white shadow-[0_2px_8px_rgba(0,102,204,0.25)]'
-                      : 'bg-[#f3f4f6] text-[#4a5565] hover:bg-[#e5e7eb]'
-                    }`}
-                >
-                  {nivel}
-                </button>
-              ))}
             </div>
           </div>
         </div>
@@ -130,9 +119,9 @@ export default function BuscarProjetos() {
                 </div>
               ) : projetosFiltrados.length > 0 ? (
                 projetosFiltrados.map(projeto => (
-                  <BuscarProjetoCard 
-                    key={projeto.id} 
-                    projeto={projeto} 
+                  <BuscarProjetoCard
+                    key={projeto.id}
+                    projeto={projeto}
                     onVerMais={abrirDetalhes}
                     onCandidatar={abrirCandidatura}
                   />
