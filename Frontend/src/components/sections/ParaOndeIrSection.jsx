@@ -5,7 +5,6 @@ const items = [
   {
     title: 'Buscar Projetos',
     description: 'Explore oportunidades que combinam com suas habilidades e especialidades',
-    badge: '12 novos hoje',
     icon: Search,
     tone: 'blue',
     href: '/freelancers/BuscarProjeto',
@@ -13,15 +12,13 @@ const items = [
   {
     title: 'Minhas Candidaturas',
     description: 'Acompanhe o andamento de cada candidatura enviada',
-    badge: '5 ativas',
     icon: FileText,
     tone: 'green',
-    href: '#',
+    href: '/freelancers/candidaturas',
   },
   {
     title: 'Meus Projetos',
     description: 'Veja projetos em andamento e contratos em aberto',
-    badge: '3 em andamento',
     icon: BriefcaseBusiness,
     tone: 'blue',
     href: '/clientes/publicar',
@@ -31,17 +28,15 @@ const items = [
 const toneClasses = {
   blue: {
     box: 'bg-[#EDF4FF] text-[#0066CC]',
-    badge: 'bg-[#EDF4FF] text-[#0066CC]',
     arrow: 'group-hover:text-[#0066CC]',
   },
   green: {
     box: 'bg-[#ECFBF3] text-[#00A86B]',
-    badge: 'bg-[#ECFBF3] text-[#00A86B]',
     arrow: 'group-hover:text-[#00A86B]',
   },
 }
 
-function MainActionCard({ title, description, badge, icon: Icon, tone, href }) {
+function MainActionCard({ title, description, icon: Icon, tone, href }) {
   const styles = toneClasses[tone]
 
   return (
@@ -56,9 +51,6 @@ function MainActionCard({ title, description, badge, icon: Icon, tone, href }) {
       <div className="min-w-0 flex-1">
         <div className="mb-1 flex flex-wrap items-center gap-2">
           <span className="text-[16px] font-medium text-[#101828]">{title}</span>
-          <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${styles.badge}`}>
-            {badge}
-          </span>
         </div>
         <p className="m-0 text-[14px] leading-5 text-[#6A7282]">{description}</p>
       </div>

@@ -25,9 +25,7 @@ export default function BuscarProjetoCard({ projeto, onVerMais, onCandidatar }) 
           <Briefcase size={16} className="text-[#0066cc]" />
         </div>
 
-        {/* Conteúdo */}
         <div className="flex-1 min-w-0">
-          {/* Título + badge nível + chevron */}
           <div className="flex items-start justify-between gap-2 mb-1.5">
             <span className="text-[#101828] text-sm font-medium leading-snug line-clamp-2 sm:line-clamp-1">
               {projeto.titulo}
@@ -45,19 +43,16 @@ export default function BuscarProjetoCard({ projeto, onVerMais, onCandidatar }) 
             </div>
           </div>
 
-          {/* Cliente */}
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             <span className="text-[#6a7282] text-xs font-medium">{projeto.cliente?.nome ?? 'Cliente'}</span>
             <span className="text-[#99a1af] text-xs">·</span>
             <span className="text-[#6a7282] text-xs">{projeto.status}</span>
           </div>
 
-          {/* Descrição */}
           <p className="text-[#6a7282] text-xs font-medium mb-3 line-clamp-2">
             {projeto.descricao}
           </p>
 
-          {/* Metadados */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-medium text-[#99a1af]">
             <div className="flex items-center gap-1 text-[#364153]">
               <DollarSign size={11} />
@@ -88,11 +83,10 @@ export default function BuscarProjetoCard({ projeto, onVerMais, onCandidatar }) 
               Enviar Proposta
             </button>
           </div>
-          
+
         </div>
       </div>
-      
-      {/* Botões para Desktop caso se preferir separá-los (no guide era dentro do card), vou deixá-los visíveis em mobile e desktop no container */}
+
       <div className="hidden sm:flex gap-2 mt-3">
         <button
           type="button"

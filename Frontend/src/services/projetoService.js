@@ -1,8 +1,10 @@
 import { api } from './api'
 
 export const projetoService = {
-  buscarAtivos: ({ busca = '', pagina = 0, tamanho = 10 } = {}) =>
-    api.get(`/projetos?busca=${encodeURIComponent(busca)}&pagina=${pagina}&tamanho=${tamanho}`),
+  buscarAtivos: ({ busca = '', pagina = 0, tamanho = 10 } = {}) => {
+    const url = `/projetos?busca=${encodeURIComponent(busca)}&pagina=${pagina}&tamanho=${tamanho}`;
+    return api.get(url);
+  },
 
   buscarPorId: (id) => api.get(`/projetos/${id}`),
 
