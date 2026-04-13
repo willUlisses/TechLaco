@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 export default function CTASection() {
   return (
-    <div className="bg-gradient-to-b from-[#0066CC] to-[#004C99] flex justify-center items-center py-[70px] px-6">
+    <div className="bg-linear-to-b from-[#0066CC] to-[#004C99] flex justify-center items-center py-[70px] px-6">
       <div className="text-white flex flex-col items-center text-center gap-[15px] max-w-[600px]">
         <h2 className="text-[2.5rem] font-bold tracking-tight max-sm:text-[2rem] leading-tight">Vamos construir algo incrível juntos?</h2>
         <p className="text-[#d5e9ff] text-[1.1rem] mb-4">
