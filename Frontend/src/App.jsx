@@ -6,6 +6,7 @@ import Homepage from './pages/Homepage'
 import PublicarProjeto from './pages/PublicarProjeto'
 import BuscarProjetos from './pages/BuscarProjetos'
 import BuscarFreelancers from './pages/BuscarFreelancers'
+import MinhasCandidaturas from './pages/MinhasCandidaturas'
 import RotaPrivada from './components/RotaPrivada'
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/clientes/publicar" element={<RotaPrivada><PublicarProjeto /></RotaPrivada>} />
         <Route path="/clientes/buscarFreelancers" element={<RotaPrivada><BuscarFreelancers /></RotaPrivada>} />
         <Route path="/freelancers/buscarProjeto" element={<RotaPrivada><BuscarProjetos /></RotaPrivada>} />
+        <Route path="/freelancers/candidaturas" element={<RotaPrivada><MinhasCandidaturas /></RotaPrivada>} />
       </Routes>
     </BrowserRouter>
   )
