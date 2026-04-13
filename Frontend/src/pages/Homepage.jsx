@@ -23,13 +23,9 @@ export default function Homepage() {
         <section className="mx-auto max-w-[1100px] px-6 pt-8 md:pt-10">
           <div className="flex flex-col gap-8 lg:flex-row lg:gap-8">
             <div className="flex-1 space-y-8">
-            <ParaOndeIrSection />
-            <AcessoRapidoSection />
-          </div>
-
-            <aside className="w-full shrink-0 lg:w-[320px]">
-              <PerfilCompletoSection />
-            </aside>
+              <ParaOndeIrSection />
+              <AcessoRapidoSection />
+            </div>
           </div>
         </section>
       </main>

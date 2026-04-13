@@ -61,44 +61,44 @@ export default function PublicarProjeto() {
     <div className="min-h-screen bg-white">
       <Navbar />
 
-      <div className="max-w-[1100px] mx-auto px-6 pt-10 pb-6">
+      <div className="max-w-[1100px] mx-auto px-4 sm:px-6 pt-6 sm:pt-10 pb-4 sm:pb-6">
         <p className="text-xs font-semibold text-[#64748B] uppercase tracking-widest mb-2">
           Clientes
         </p>
-        <h1 className="text-[2rem] font-extrabold text-[#111827] leading-tight mb-2">
+        <h1 className="text-2xl sm:text-[2rem] font-extrabold text-[#111827] leading-tight mb-2">
           Publicar Projeto
         </h1>
-        <p className="text-[#64748B] text-base">
+        <p className="text-[#64748B] text-sm sm:text-base">
           Descreva o que precisa e receba propostas de freelancers qualificados.
         </p>
       </div>
 
       <hr className="border-[#E2E8F0]" />
 
-      <div className='flex gap-12 justify-center items-start py-8'>
-        <div className='flex flex-col'>
-          <div className="px-6">
-            <NovoProjetoCard onPublicar={() => setModalAberto(true)} />
-          </div>
+      <div className="max-w-[1100px] mx-auto px-4 sm:px-6 py-6 sm:py-8 flex flex-col lg:flex-row gap-6 lg:gap-10 items-start">
+        {/* Coluna principal */}
+        <div className="flex flex-col gap-4 w-full lg:flex-1 min-w-0">
+          <NovoProjetoCard onPublicar={() => setModalAberto(true)} />
           {modalAberto && (
             <PublicarProjetoModal
               onClose={() => setModalAberto(false)}
               onSucesso={handleProjetoPublicado}
             />
           )}
-          <div className="px-6 ">
-            <SeusProjetosSection
-              projetos={projetos}
-              carregando={carregando}
-              erro={erro}
-              onCancelar={handleCancelarProjeto}
-              onEditar={abrirEdicao}
-              onVerCandidaturas={abrirCandidaturas}
-            />
-          </div>
+          <SeusProjetosSection
+            projetos={projetos}
+            carregando={carregando}
+            erro={erro}
+            onCancelar={handleCancelarProjeto}
+            onEditar={abrirEdicao}
+            onVerCandidaturas={abrirCandidaturas}
+          />
         </div>
-        <DicasCard />
 
+        {/* Coluna lateral — vai para baixo em mobile */}
+        <div className="w-full lg:w-[300px] shrink-0">
+          <DicasCard />
+        </div>
       </div>
       <ModalEditarProjeto
         projeto={projetoSelecionado}
