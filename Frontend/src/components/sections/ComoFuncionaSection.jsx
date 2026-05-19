@@ -1,4 +1,5 @@
 import { Search, Users, FileText } from 'lucide-react'
+import { createElement } from 'react'
 
 const cards = [
   {
@@ -44,7 +45,7 @@ export default function ComoFuncionaSection() {
               className={`bg-white border-2 ${borderColor} rounded-[16px] p-8 flex flex-col gap-[10px] transition-all hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.15)]`}
             >
               <div className={`w-[50px] h-[50px] rounded-[16px] flex items-center justify-center ${iconBg}`}>
-                <Icon size={25} color="white" strokeWidth={2.5} />
+                {createElement(Icon, { size: 25, color: 'white', strokeWidth: 2.5 })}
               </div>
               <h3 className="font-bold text-[1.2rem] text-[#0F172A] mt-2">{title}</h3>
               <p className="text-[0.9rem] text-[#64748B] leading-relaxed">{description}</p>

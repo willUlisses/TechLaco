@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { createElement, useState, useRef, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ChevronDown, Home, Users, Search, LayoutDashboard } from 'lucide-react'
 import Logo from './ui/Logo'
@@ -13,7 +13,7 @@ const paraFreelancersLinks = [
   { label: 'Meu Portfólio', to: '/freelancers/portfolio' },
 ]
 
-function DropdownMenu({ label, icon: Icon, links, activeColor }) {
+function DropdownMenu({ label, icon, links }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
@@ -37,7 +37,7 @@ function DropdownMenu({ label, icon: Icon, links, activeColor }) {
             : 'text-[#374151] hover:bg-[#F1F5F9]'
           }`}
       >
-        <Icon size={15} />
+        {createElement(icon, { size: 15 })}
         {label}
         <ChevronDown
           size={14}
@@ -151,7 +151,7 @@ export default function Navbar({ user = { nome: 'Ana Silva' } }) {
           {userMenuOpen && (
             <div className="absolute top-full right-0 mt-2 w-44 bg-white rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#E2E8F0] py-1.5 z-50">
               <NavLink
-                to="/perfil"
+                to="/clientes/perfil"
                 onClick={() => setUserMenuOpen(false)}
                 className="block px-4 py-2.5 text-sm text-[#374151] no-underline hover:bg-[#F8FAFC] rounded-[8px] mx-1"
               >
