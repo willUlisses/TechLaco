@@ -1,7 +1,4 @@
 import { createElement, useState, useRef, useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
-import { ChevronDown, Home, Users, Search, LayoutDashboard } from 'lucide-react'
-import { useState, useRef, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { ChevronDown, Home, Users, Search, LayoutDashboard, Menu, X } from 'lucide-react'
 import Logo from './ui/Logo'
@@ -111,14 +108,14 @@ export default function Navbar() {
           {/* Mobile Hamburger Menu & Logo */}
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             {/* Hamburger Button (visible on md and below) */}
-            <button 
+            <button
               className="md:hidden p-1.5 -ml-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded-lg transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Menu Principal"
             >
               <Menu size={26} strokeWidth={2.5} />
             </button>
-            
+
             {/* Desktop Logo (always visible, but sits next to hamburger on mobile) */}
             <NavLink to="/home" className="no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-blue-600 outline-none rounded-md">
               {/* If we strictly want the Logo to BECOME the hamburger, we hide logo on sm. But for good UX, we just hide Logo on very small devices or leave it. Leaving it is best. */}
@@ -147,29 +144,51 @@ export default function Navbar() {
               icon={Users}
               links={paraClientesLinks}
             />
-          </button>
+          </nav>
 
-          {userMenuOpen && (
-            <div className="absolute top-full right-0 mt-2 w-44 bg-white rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#E2E8F0] py-1.5 z-50">
-              <NavLink
-                to="/clientes/perfil"
-                onClick={() => setUserMenuOpen(false)}
-                className="block px-4 py-2.5 text-sm text-[#374151] no-underline hover:bg-[#F8FAFC] rounded-[8px] mx-1"
-              >
-                Meu Perfil
-              </NavLink>
-              <NavLink
-                to="/configuracoes"
-                onClick={() => setUserMenuOpen(false)}
-                className="block px-4 py-2.5 text-sm text-[#374151] no-underline hover:bg-[#F8FAFC] rounded-[8px] mx-1"
-              >
-                Configurações
-              </NavLink>
-              <hr className="my-1 border-[#E2E8F0] mx-3" />
-              <button
-                onClick={() => setUserMenuOpen(false)}
-                className="w-full text-left px-4 py-2.5 text-sm text-[#EF4444] hover:bg-[#FEF2F2] rounded-[8px] mx-1 cursor-pointer border-none bg-transparent font-medium block"
-                style={{ width: 'calc(100% - 8px)' }}
+          {/* User Avatar & Dropdown */}
+          <div ref={userMenuRef} className="relative shrink-0">
+            <button
+              onClick={() => setUserMenuOpen(prev => !prev)}
+              className="flex items-center gap-2.5 bg-white rounded-full p-0.5 cursor-pointer border-none outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0D63C1] transition-shadow hover:shadow-md group"
+              aria-label="Menu do Usuário"
+            >
+              <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[#0D63C1] to-[#0A58CA] text-white font-semibold text-sm ring-2 ring-white">
+                {inicial}
+              </div>
+              <span className="text-[#374151] text-sm font-medium mr-1 group-hover:text-[#0D63C1] transition-colors hidden sm:inline">
+                {nomeExibicao}
+              </span>
+              <ChevronDown
+                size={14}
+                className={`text-[#6B7280] mr-1 transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''} group-hover:text-[#0D63C1]`}
+              />
+            </button>
+
+            {userMenuOpen && (
+              <div className="absolute top-full right-0 mt-2 w-44 bg-white rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#E2E8F0] py-1.5 z-50">
+                <NavLink
+                  to="/clientes/perfil"
+                  onClick={() => setUserMenuOpen(false)}
+                  className="block px-4 py-2.5 text-sm text-[#374151] no-underline hover:bg-[#F8FAFC] rounded-[8px] mx-1"
+                >
+                  Meu Perfil
+                </NavLink>
+                <NavLink
+                  to="/configuracoes"
+                  onClick={() => setUserMenuOpen(false)}
+                  className="block px-4 py-2.5 text-sm text-[#374151] no-underline hover:bg-[#F8FAFC] rounded-[8px] mx-1"
+                >
+                  Configurações
+                </NavLink>
+                <hr className="my-1 border-[#E2E8F0] mx-3" />
+                <button
+                  onClick={() => setUserMenuOpen(false)}
+                  className="w-full text-left px-4 py-2.5 text-sm text-[#EF4444] hover:bg-[#FEF2F2] rounded-[8px] mx-1 cursor-pointer border-none bg-transparent font-medium block"
+                  style={{ width: 'calc(100% - 8px)' }}
+                />
+              </div>
+            )}
 
             <DropdownMenu
               label="Para Freelancers"
@@ -187,9 +206,8 @@ export default function Navbar() {
               <LayoutDashboard size={15} />
               Dashboard
             </NavLink>
-          </nav>
+          </div>
 
-          {/* User Avatar & Dropdown */}
           <div ref={userMenuRef} className="relative shrink-0">
             <button
               onClick={() => setUserMenuOpen(prev => !prev)}
@@ -245,20 +263,20 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden">
           {/* Backdrop */}
-          <div 
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200" 
+          <div
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
           />
-          
+
           {/* Slide-in Drawer */}
           <div className="relative w-[85%] max-w-[320px] bg-white h-full shadow-2xl flex flex-col pt-6 pb-8 px-5 overflow-y-auto z-50 animate-in slide-in-from-left duration-300 ease-out">
-            
+
             {/* Header */}
             <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100">
               <Logo variant="header" />
-              <button 
-                onClick={() => setMobileMenuOpen(false)} 
+              <button
+                onClick={() => setMobileMenuOpen(false)}
                 className="p-2 -mr-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer"
                 aria-label="Fechar Menu"
               >
@@ -268,65 +286,65 @@ export default function Navbar() {
 
             {/* Nav Links */}
             <nav className="flex flex-col gap-6">
-              
-              <NavLink 
-                to="/home" 
-                onClick={() => setMobileMenuOpen(false)} 
-                className={({ isActive }) => 
+
+              <NavLink
+                to="/home"
+                onClick={() => setMobileMenuOpen(false)}
+                className={({ isActive }) =>
                   `flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-600
                   ${isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-50 hover:text-blue-600'}`
                 }
               >
-                <Home size={20} className="shrink-0" /> 
+                <Home size={20} className="shrink-0" />
                 <span className="text-[1.05rem]">Início</span>
               </NavLink>
 
               <div className="flex flex-col gap-1.5">
                 <span className="text-[0.75rem] font-bold text-slate-400 uppercase tracking-widest px-4 mb-1">Para Clientes</span>
                 {paraClientesLinks.map(l => (
-                   <NavLink 
-                     key={l.to} 
-                     to={l.to} 
-                     onClick={() => setMobileMenuOpen(false)} 
-                     className={({ isActive }) => 
-                       `flex items-center gap-3 px-4 py-2.5 rounded-xl transition-colors font-medium outline-none focus-visible:ring-2 focus-visible:ring-blue-600
+                  <NavLink
+                    key={l.to}
+                    to={l.to}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-2.5 rounded-xl transition-colors font-medium outline-none focus-visible:ring-2 focus-visible:ring-blue-600
                        ${isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-blue-600'}`
-                     }
-                   >
-                     <Users size={18} className="shrink-0 text-slate-400" /> 
-                     <span>{l.label}</span>
-                   </NavLink>
+                    }
+                  >
+                    <Users size={18} className="shrink-0 text-slate-400" />
+                    <span>{l.label}</span>
+                  </NavLink>
                 ))}
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <span className="text-[0.75rem] font-bold text-slate-400 uppercase tracking-widest px-4 mb-1">Para Freelancers</span>
                 {paraFreelancersLinks.map(l => (
-                   <NavLink 
-                     key={l.to} 
-                     to={l.to} 
-                     onClick={() => setMobileMenuOpen(false)} 
-                     className={({ isActive }) => 
-                       `flex items-center gap-3 px-4 py-2.5 rounded-xl transition-colors font-medium outline-none focus-visible:ring-2 focus-visible:ring-blue-600
+                  <NavLink
+                    key={l.to}
+                    to={l.to}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-2.5 rounded-xl transition-colors font-medium outline-none focus-visible:ring-2 focus-visible:ring-blue-600
                        ${isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-blue-600'}`
-                     }
-                   >
-                     <Search size={18} className="shrink-0 text-slate-400" /> 
-                     <span>{l.label}</span>
-                   </NavLink>
+                    }
+                  >
+                    <Search size={18} className="shrink-0 text-slate-400" />
+                    <span>{l.label}</span>
+                  </NavLink>
                 ))}
               </div>
 
               <div className="mt-auto pt-6 border-t border-slate-100">
-                <NavLink 
-                  to="/dashboard" 
-                  onClick={() => setMobileMenuOpen(false)} 
-                  className={({ isActive }) => 
+                <NavLink
+                  to="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={({ isActive }) =>
                     `flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-600
                     ${isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-50 hover:text-blue-600'}`
                   }
                 >
-                  <LayoutDashboard size={20} className="shrink-0" /> 
+                  <LayoutDashboard size={20} className="shrink-0" />
                   <span className="text-[1.05rem]">Dashboard</span>
                 </NavLink>
               </div>
