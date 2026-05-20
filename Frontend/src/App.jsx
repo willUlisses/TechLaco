@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Apresentacao from './pages/Apresentacao'
 import Cadastro from './pages/Cadastro'
 import Login from './pages/Login'
+import PerfilCliente from './pages/PerfilCliente'
 import Homepage from './pages/Homepage'
 import PublicarProjeto from './pages/PublicarProjeto'
 import BuscarProjetos from './pages/BuscarProjetos'
@@ -17,6 +18,8 @@ export default function App() {
         <Route path="/" element={<Apresentacao />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/perfil" element={<PerfilCliente />} />
+        <Route path="/clientes/perfil" element={<PerfilCliente />} />
 
         {/* Rotas protegidas */}
         <Route path="/home" element={<RotaPrivada><Homepage /></RotaPrivada>} />

@@ -1,3 +1,6 @@
+import { createElement, useState, useRef, useEffect } from 'react'
+import { NavLink } from 'react-router-dom'
+import { ChevronDown, Home, Users, Search, LayoutDashboard } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { ChevronDown, Home, Users, Search, LayoutDashboard, Menu, X } from 'lucide-react'
@@ -14,7 +17,7 @@ const paraFreelancersLinks = [
   { label: 'Minhas Candidaturas', to: '/freelancers/candidaturas' },
 ]
 
-function DropdownMenu({ label, icon: Icon, links, activeColor }) {
+function DropdownMenu({ label, icon, links }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
@@ -38,7 +41,7 @@ function DropdownMenu({ label, icon: Icon, links, activeColor }) {
             : 'text-[#374151] hover:bg-[#EFF6FF] hover:text-[#0D63C1]'
           }`}
       >
-        <Icon size={15} />
+        {createElement(icon, { size: 15 })}
         {label}
         <ChevronDown
           size={14}
@@ -144,6 +147,29 @@ export default function Navbar() {
               icon={Users}
               links={paraClientesLinks}
             />
+          </button>
+
+          {userMenuOpen && (
+            <div className="absolute top-full right-0 mt-2 w-44 bg-white rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#E2E8F0] py-1.5 z-50">
+              <NavLink
+                to="/clientes/perfil"
+                onClick={() => setUserMenuOpen(false)}
+                className="block px-4 py-2.5 text-sm text-[#374151] no-underline hover:bg-[#F8FAFC] rounded-[8px] mx-1"
+              >
+                Meu Perfil
+              </NavLink>
+              <NavLink
+                to="/configuracoes"
+                onClick={() => setUserMenuOpen(false)}
+                className="block px-4 py-2.5 text-sm text-[#374151] no-underline hover:bg-[#F8FAFC] rounded-[8px] mx-1"
+              >
+                Configurações
+              </NavLink>
+              <hr className="my-1 border-[#E2E8F0] mx-3" />
+              <button
+                onClick={() => setUserMenuOpen(false)}
+                className="w-full text-left px-4 py-2.5 text-sm text-[#EF4444] hover:bg-[#FEF2F2] rounded-[8px] mx-1 cursor-pointer border-none bg-transparent font-medium block"
+                style={{ width: 'calc(100% - 8px)' }}
 
             <DropdownMenu
               label="Para Freelancers"
