@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 export default function HeroSection() {
   return (
-    <div className="bg-gradient-to-b from-[#0066CC] to-[#004C99] py-[42px] px-0">
+    <div className="bg-linear-to-b from-[#0066CC] to-[#004C99] py-[42px] px-0">
       <div className="max-w-[1060px] mx-auto px-[18px] flex items-center justify-between gap-[34px] max-md:flex-col max-md:text-center mt-6">
 
         <div className="flex flex-col max-md:items-center">
