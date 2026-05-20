@@ -19,7 +19,7 @@ export default function App() {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/login" element={<Login />} />
         <Route path="/perfil" element={<PerfilCliente />} />
-        <Route path="/clientes/perfil" element={<PerfilCliente />} />
+        <Route path="/perfil/cliente" element={<PerfilCliente />} />
 
         {/* Rotas protegidas */}
         <Route path="/home" element={<RotaPrivada><Homepage /></RotaPrivada>} />

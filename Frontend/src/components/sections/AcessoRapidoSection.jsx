@@ -12,7 +12,7 @@ const links = [
     title: 'Meu Perfil',
     description: 'Portfólio e habilidades',
     icon: UserRound,
-    href: '#perfil',
+    href: '/perfil/cliente',
   },
 ]
 

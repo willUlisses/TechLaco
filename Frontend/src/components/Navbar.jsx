@@ -1,4 +1,4 @@
-import { createElement, useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { ChevronDown, Home, Users, Search, LayoutDashboard, Menu, X } from 'lucide-react'
 import Logo from './ui/Logo'
@@ -14,7 +14,7 @@ const paraFreelancersLinks = [
   { label: 'Minhas Candidaturas', to: '/freelancers/candidaturas' },
 ]
 
-function DropdownMenu({ label, icon, links }) {
+function DropdownMenu({ label, icon: Icon, links, activeColor }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
@@ -38,7 +38,7 @@ function DropdownMenu({ label, icon, links }) {
             : 'text-[#374151] hover:bg-[#EFF6FF] hover:text-[#0D63C1]'
           }`}
       >
-        {createElement(icon, { size: 15 })}
+        <Icon size={15} />
         {label}
         <ChevronDown
           size={14}
@@ -144,51 +144,6 @@ export default function Navbar() {
               icon={Users}
               links={paraClientesLinks}
             />
-          </nav>
-
-          {/* User Avatar & Dropdown */}
-          <div ref={userMenuRef} className="relative shrink-0">
-            <button
-              onClick={() => setUserMenuOpen(prev => !prev)}
-              className="flex items-center gap-2.5 bg-white rounded-full p-0.5 cursor-pointer border-none outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0D63C1] transition-shadow hover:shadow-md group"
-              aria-label="Menu do Usuário"
-            >
-              <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[#0D63C1] to-[#0A58CA] text-white font-semibold text-sm ring-2 ring-white">
-                {inicial}
-              </div>
-              <span className="text-[#374151] text-sm font-medium mr-1 group-hover:text-[#0D63C1] transition-colors hidden sm:inline">
-                {nomeExibicao}
-              </span>
-              <ChevronDown
-                size={14}
-                className={`text-[#6B7280] mr-1 transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''} group-hover:text-[#0D63C1]`}
-              />
-            </button>
-
-            {userMenuOpen && (
-              <div className="absolute top-full right-0 mt-2 w-44 bg-white rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#E2E8F0] py-1.5 z-50">
-                <NavLink
-                  to="/clientes/perfil"
-                  onClick={() => setUserMenuOpen(false)}
-                  className="block px-4 py-2.5 text-sm text-[#374151] no-underline hover:bg-[#F8FAFC] rounded-[8px] mx-1"
-                >
-                  Meu Perfil
-                </NavLink>
-                <NavLink
-                  to="/configuracoes"
-                  onClick={() => setUserMenuOpen(false)}
-                  className="block px-4 py-2.5 text-sm text-[#374151] no-underline hover:bg-[#F8FAFC] rounded-[8px] mx-1"
-                >
-                  Configurações
-                </NavLink>
-                <hr className="my-1 border-[#E2E8F0] mx-3" />
-                <button
-                  onClick={() => setUserMenuOpen(false)}
-                  className="w-full text-left px-4 py-2.5 text-sm text-[#EF4444] hover:bg-[#FEF2F2] rounded-[8px] mx-1 cursor-pointer border-none bg-transparent font-medium block"
-                  style={{ width: 'calc(100% - 8px)' }}
-                />
-              </div>
-            )}
 
             <DropdownMenu
               label="Para Freelancers"
@@ -206,8 +161,9 @@ export default function Navbar() {
               <LayoutDashboard size={15} />
               Dashboard
             </NavLink>
-          </div>
+          </nav>
 
+          {/* User Avatar & Dropdown */}
           <div ref={userMenuRef} className="relative shrink-0">
             <button
               onClick={() => setUserMenuOpen(prev => !prev)}
@@ -231,7 +187,7 @@ export default function Navbar() {
                   <p className="text-sm text-slate-900 font-semibold truncate">{nomeExibicao}</p>
                 </div>
                 <NavLink
-                  to="/perfil"
+                  to="/perfil/cliente"
                   onClick={() => setUserMenuOpen(false)}
                   className="block px-4 py-2.5 text-sm font-medium text-slate-700 no-underline hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg mx-1 mt-1 outline-none focus-visible:bg-slate-50 focus-visible:text-blue-600"
                 >
