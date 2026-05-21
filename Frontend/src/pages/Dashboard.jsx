@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import Navbar from "../components/Navbar";
 
 export default function Dashboard() {
   const [menuClienteAberto, setMenuClienteAberto] = useState(false);
@@ -66,6 +67,12 @@ export default function Dashboard() {
       status: "Iniciando",
       cor: "bg-green-50 text-green-600",
     },
+    {
+      nome: "Automação de WhatsApp",
+      info: "Ana Paula · R$ 600 · até 20 abr",
+      status: "Iniciando",
+      cor: "bg-green-50 text-green-600",
+    },
   ];
 
   const acoesRapidas = [
@@ -99,110 +106,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-[#f8f9fb] font-sans text-[#101828]">
       <header className="sticky top-0 z-50 h-[57px] border-b border-[#e5e7eb] bg-white">
-        <nav className="mx-auto flex h-full max-w-[1088px] items-center gap-8 px-4">
-          <div className="flex cursor-pointer items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-[10px] bg-[#0066cc] text-sm font-bold text-white">
-              T
-            </div>
-
-            <span className="text-base font-bold text-[#101828]">
-              TechLaço
-            </span>
-          </div>
-
-          <div className="hidden flex-1 items-center gap-1 md:flex">
-            <NavLink
-              to="/home"
-              className="flex h-9 items-center rounded-[10px] px-3 text-sm text-[#4a5565] transition hover:bg-gray-50"
-            >
-              Início
-            </NavLink>
-
-            <div className="relative">
-              <button
-                onClick={() => setMenuClienteAberto(!menuClienteAberto)}
-                className="flex h-9 items-center gap-2 rounded-[10px] px-3 text-sm font-medium text-[#4a5565] transition hover:bg-gray-50"
-              >
-                Para Clientes
-                <span className="text-xs">⌄</span>
-              </button>
-
-              {menuClienteAberto && (
-                <div className="absolute left-0 top-11 w-44 rounded-xl border border-gray-200 bg-white p-2 shadow-lg">
-                  {clienteLinks.map((link) => (
-                    <NavLink
-                      key={link.to}
-                      to={link.to}
-                      onClick={() => setMenuClienteAberto(false)}
-                      className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-50"
-                    >
-                      {link.label}
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="relative">
-              <button
-                onClick={() => setMenuFreelaAberto(!menuFreelaAberto)}
-                className="flex h-9 items-center gap-2 rounded-[10px] px-3 text-sm font-medium text-[#4a5565] transition hover:bg-gray-50"
-              >
-                Para Freelancers
-                <span className="text-xs">⌄</span>
-              </button>
-
-              {menuFreelaAberto && (
-                <div className="absolute left-0 top-11 w-48 rounded-xl border border-gray-200 bg-white p-2 shadow-lg">
-                  {freelaLinks.map((link) => (
-                    <NavLink
-                      key={link.to}
-                      to={link.to}
-                      onClick={() => setMenuFreelaAberto(false)}
-                      className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-50"
-                    >
-                      {link.label}
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <NavLink
-              to="/dashboard"
-              className="flex h-9 items-center rounded-[10px] bg-blue-50 px-3 text-sm font-medium text-[#0066cc]"
-            >
-              Dashboard
-            </NavLink>
-          </div>
-
-          <div className="relative ml-auto">
-            <button
-              onClick={() => setMenuUsuarioAberto(!menuUsuarioAberto)}
-              className="flex h-[38px] items-center gap-2 rounded-[10px] border border-[#e5e7eb] bg-white px-2 text-sm font-medium text-[#4a5565] transition hover:bg-gray-50"
-            >
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#0066cc] text-xs font-semibold text-white">
-                A
-              </span>
-              Ana Silva
-              <span className="text-xs">⌄</span>
-            </button>
-
-            {menuUsuarioAberto && (
-              <div className="absolute right-0 top-11 w-40 rounded-xl border border-gray-200 bg-white p-2 shadow-lg">
-                <button className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-50">
-                  Perfil
-                </button>
-                <button className="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-50">
-                  Configurações
-                </button>
-                <button className="block w-full rounded-lg px-3 py-2 text-left text-sm text-red-500 hover:bg-red-50">
-                  Sair
-                </button>
-              </div>
-            )}
-          </div>
-        </nav>
+        <Navbar />
       </header>
 
       <section className="border-b border-[#e5e7eb] bg-white">
