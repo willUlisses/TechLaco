@@ -1,18 +1,14 @@
 import {
-  BriefcaseBusiness,
   CalendarDays,
   CheckCircle2,
-  ChevronRight,
   CircleDollarSign,
   Clock3,
   Folder,
   GraduationCap,
   MapPin,
-  Plus,
-  Search,
   Pencil,
 } from 'lucide-react'
-import { createElement, useState } from 'react'
+import { createElement } from 'react'
 import Navbar from '../components/Navbar'
 import ProfileNav from '../components/ui/ProfileNav'
 
@@ -20,7 +16,8 @@ const cliente = {
   nome: 'Ana Silva',
   cidade: 'Sao Paulo, SP',
   universidade: 'Universidade de Sao Paulo (USP)',
-  membroDesde: 'Janeiro 2025',
+  sobre:
+    'Sou proprietaria de um pequeno restaurante em Sao Paulo e uso a TechLaco para encontrar profissionais que ajudem meu negocio a crescer no digital. Busco solucoes simples, acessiveis e bem feitas para melhorar o atendimento, organizar reservas e vender mais pela internet.',
 }
 
 const resumoProjetos = [
@@ -93,18 +90,6 @@ const projetosConcluidos = [
   },
 ]
 
-const distribuicao = [
-  { label: 'Concluidos', atual: 2, total: 5, color: 'bg-[#10B981]' },
-  { label: 'Em andamento', atual: 2, total: 5, color: 'bg-[#0D63C1]' },
-  { label: 'Aguardando', atual: 1, total: 5, color: 'bg-[#F97316]' },
-]
-
-const atalhos = [
-  { label: 'Publicar novo projeto', icon: Plus, color: 'text-[#F97316]', bg: 'bg-[#FFF7ED]' },
-  { label: 'Buscar freelancers', icon: Search, color: 'text-[#0D63C1]', bg: 'bg-[#EFF6FF]' },
-  { label: 'Meus projetos', icon: BriefcaseBusiness, color: 'text-[#10B981]', bg: 'bg-[#ECFDF5]' },
-]
-
 function SectionTitle({ children, action }) {
   return (
     <div className="mb-4 flex items-center justify-between gap-4">
@@ -113,15 +98,6 @@ function SectionTitle({ children, action }) {
       </h2>
       {action}
     </div>
-  )
-}
-
-function InfoChip({ icon: Icon, children }) {
-  return (
-    <span className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
-      {createElement(Icon, { size: 13 })}
-      {children}
-    </span>
   )
 }
 
@@ -223,7 +199,6 @@ function FinishedProject({ projeto }) {
 }
 
 export default function PerfilCliente() {
-
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A]">
       <Navbar user={{ nome: cliente.nome }} />
@@ -287,6 +262,21 @@ export default function PerfilCliente() {
             {resumoProjetos.map((item) => (
               <SummaryCard key={item.label} {...item} />
             ))}
+          </div>
+
+          <div className="mt-8">
+            <SectionTitle
+              action={
+                <button className="border-none bg-transparent text-sm font-medium text-blue-600 hover:underline">
+                  Editar
+                </button>
+              }
+            >
+              Sobre mim
+            </SectionTitle>
+            <div className="rounded-xl border border-slate-200 bg-white p-6 text-sm leading-relaxed text-slate-800">
+              {cliente.sobre}
+            </div>
           </div>
 
           <div className="mt-8">
