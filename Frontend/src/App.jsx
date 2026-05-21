@@ -10,7 +10,7 @@ import BuscarFreelancers from './pages/BuscarFreelancers'
 import MinhasCandidaturas from './pages/MinhasCandidaturas'
 import RotaPrivada from './components/RotaPrivada'
 import PerfilFreelancer from './pages/PerfilFreelancer'
-
+import Dashboard from './pages/Dashboard'
 export default function App() {
   return (
     <BrowserRouter>
@@ -19,7 +19,6 @@ export default function App() {
         <Route path="/" element={<Apresentacao />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/login" element={<Login />} />
-
 
         {/* Rotas protegidas */}
         <Route path="/home" element={<RotaPrivada><Homepage /></RotaPrivada>} />
@@ -30,6 +29,7 @@ export default function App() {
         <Route path="/perfil/freelancer" element={<RotaPrivada><PerfilFreelancer /> </RotaPrivada>} />
         <Route path="/freelancers/buscarProjeto" element={<RotaPrivada><BuscarProjetos /></RotaPrivada>} />
         <Route path="/freelancers/candidaturas" element={<RotaPrivada><MinhasCandidaturas /></RotaPrivada>} />
+        <Route path="/dashboard" element={<RotaPrivada><Dashboard /></RotaPrivada>} />
       </Routes>
     </BrowserRouter>
   )
