@@ -1,31 +1,26 @@
 import {
   BriefcaseBusiness,
-  Building2,
   CalendarDays,
   CheckCircle2,
   ChevronRight,
   CircleDollarSign,
   Clock3,
-  Code2,
-  Edit3,
   Folder,
   GraduationCap,
   MapPin,
   Plus,
   Search,
-  ShieldCheck,
-  UserRound,
+  Pencil,
 } from 'lucide-react'
-import { createElement } from 'react'
+import { createElement, useState } from 'react'
 import Navbar from '../components/Navbar'
+import ProfileNav from '../components/ui/ProfileNav'
 
 const cliente = {
   nome: 'Ana Silva',
   cidade: 'Sao Paulo, SP',
   universidade: 'Universidade de Sao Paulo (USP)',
   membroDesde: 'Janeiro 2025',
-  avatar:
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80',
 }
 
 const resumoProjetos = [
@@ -227,123 +222,65 @@ function FinishedProject({ projeto }) {
   )
 }
 
-function CompanyInfo() {
-  const linhas = [
-    ['Empresa', 'Restaurante Sabor & Cia'],
-    ['Segmento', 'Alimentacao - MEI'],
-    ['Localizacao', 'Sao Paulo, SP'],
-    ['Membro desde', 'Janeiro 2025'],
-  ]
-
-  return (
-    <aside className="rounded-xl border border-[#E2E8F0] bg-white shadow-[0_1px_2px_rgba(15,23,42,0.03)]">
-      {linhas.map(([label, value], index) => (
-        <div
-          key={label}
-          className={`px-5 py-4 ${index > 0 ? 'border-t border-[#EEF2F7]' : ''}`}
-        >
-          <p className="text-[0.72rem] font-medium text-[#94A3B8]">{label}</p>
-          <p className="mt-1 text-sm font-semibold text-[#334155]">{value}</p>
-        </div>
-      ))}
-    </aside>
-  )
-}
-
-function DistributionCard() {
-  return (
-    <article className="rounded-xl border border-[#E2E8F0] bg-white px-5 py-4 shadow-[0_1px_2px_rgba(15,23,42,0.03)]">
-      <div className="flex flex-col gap-3">
-        {distribuicao.map((item) => (
-          <div key={item.label}>
-            <div className="mb-1.5 flex items-center justify-between text-xs text-[#475569]">
-              <span>{item.label}</span>
-              <span>{item.atual}/{item.total}</span>
-            </div>
-            <div className="h-1.5 overflow-hidden rounded-full bg-[#E2E8F0]">
-              <div
-                className={`h-full rounded-full ${item.color}`}
-                style={{ width: `${(item.atual / item.total) * 100}%` }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-    </article>
-  )
-}
-
-function ShortcutsCard() {
-  return (
-    <div className="flex flex-col gap-3">
-      {atalhos.map(({ label, icon: Icon, color, bg }) => (
-        <button
-          key={label}
-          className="flex w-full items-center justify-between rounded-xl border border-[#E2E8F0] bg-white px-4 py-3.5 text-left text-sm font-medium text-[#334155] shadow-[0_1px_2px_rgba(15,23,42,0.03)] transition-colors hover:border-[#CBD5E1] hover:bg-[#F8FAFC]"
-        >
-          <span className="flex items-center gap-3">
-            <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${bg}`}>
-              {createElement(Icon, { size: 15, className: color })}
-            </span>
-            {label}
-          </span>
-          <ChevronRight size={15} className="text-[#CBD5E1]" />
-        </button>
-      ))}
-    </div>
-  )
-}
-
 export default function PerfilCliente() {
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A]">
       <Navbar user={{ nome: cliente.nome }} />
 
-      <section className="border-b border-[#E2E8F0] bg-white">
-        <div className="mx-auto max-w-[1100px] px-6 py-8">
-          <div className="flex flex-wrap items-start justify-between gap-6">
+      <header className="w-full bg-white border-b border-slate-200 pt-8 pb-0">
+        <div className="max-w-6xl mx-auto px-4">
+
+          {/* Identidade + botão de edição */}
+          <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 pb-6">
             <div className="flex items-center gap-5">
               <div className="relative">
-                <img
-                  src={cliente.avatar}
-                  alt={cliente.nome}
-                  className="h-[76px] w-[76px] rounded-xl object-cover"
-                />
-                <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-[#10B981] text-white">
-                  <ShieldCheck size={14} />
-                </span>
+                {/* Avatar — idealmente um <img> com alt descritivo */}
+                <div
+                  className="w-20 h-20 bg-slate-200 rounded-2xl flex items-center justify-center text-slate-400 text-2xl overflow-hidden border border-slate-100"
+                  role="img"
+                  aria-label="Foto de perfil de Ana Silva"
+                >
+                  👩‍💻
+                </div>
+                <div
+                  className="absolute bottom-0 right-0 bg-emerald-500 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold"
+                  aria-label="Perfil verificado"
+                >
+                  ✓
+                </div>
               </div>
 
               <div>
-                <h1 className="text-[1.75rem] font-extrabold leading-tight text-[#111827]">{cliente.nome}</h1>
-                <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
-                  <InfoChip icon={MapPin}>{cliente.cidade}</InfoChip>
-                  <InfoChip icon={GraduationCap}>{cliente.universidade}</InfoChip>
-                  <InfoChip icon={CalendarDays}>Membro desde {cliente.membroDesde}</InfoChip>
-                </div>
+                <h1 className="text-2xl font-bold text-slate-900">Ana Silva</h1>
+                <p className="text-slate-500 text-sm mt-1 flex items-center gap-4">
+                  <span className="flex items-center gap-1.5">
+                    <MapPin size={14} aria-hidden="true" />
+                    São Paulo, SP
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <GraduationCap size={14} aria-hidden="true" />
+                    Universidade de São Paulo (USP)
+                  </span>
+                </p>
               </div>
             </div>
 
-            <button className="mt-2 flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-semibold text-[#475569] transition-colors hover:bg-[#F8FAFC]">
-              <Edit3 size={15} />
+            <button
+              type="button"
+              className="flex items-center gap-2 border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition"
+            >
+              <Pencil size={14} aria-hidden="true" />
               Editar perfil
             </button>
           </div>
 
-          <div className="mt-8 flex items-center gap-8 border-b border-[#E2E8F0]">
-            <button className="flex items-center gap-2 border-0 border-b-2 border-transparent bg-transparent px-0 pb-3 text-sm font-semibold text-[#64748B]">
-              <Code2 size={15} />
-              Perfil Freelancer
-            </button>
-            <button className="flex items-center gap-2 border-0 border-b-2 border-[#0D63C1] bg-transparent px-0 pb-3 text-sm font-bold text-[#0D63C1]">
-              <BriefcaseBusiness size={15} />
-              Perfil Cliente
-            </button>
-          </div>
-        </div>
-      </section>
+          <ProfileNav />
 
-      <main className="mx-auto grid max-w-[1100px] grid-cols-[minmax(0,1fr)_330px] gap-8 px-6 py-9 max-lg:grid-cols-1">
+        </div>
+      </header>
+
+      <main className="flex flex-col mx-auto max-w-6xl gap-8 px-6 py-9">
         <section>
           <SectionTitle>Visao geral dos projetos</SectionTitle>
           <div className="grid grid-cols-4 gap-4 max-md:grid-cols-2 max-sm:grid-cols-1">
@@ -385,31 +322,6 @@ export default function PerfilCliente() {
                 <FinishedProject key={projeto.titulo} projeto={projeto} />
               ))}
             </div>
-          </div>
-        </section>
-
-        <section className="flex flex-col gap-8">
-          <div>
-            <SectionTitle
-              action={
-                <button className="border-none bg-transparent text-xs font-bold text-[#0D63C1] hover:text-[#004C99]">
-                  Editar
-                </button>
-              }
-            >
-              Dados da empresa
-            </SectionTitle>
-            <CompanyInfo />
-          </div>
-
-          <div>
-            <SectionTitle>Distribuicao</SectionTitle>
-            <DistributionCard />
-          </div>
-
-          <div>
-            <SectionTitle>Atalhos</SectionTitle>
-            <ShortcutsCard />
           </div>
         </section>
       </main>
