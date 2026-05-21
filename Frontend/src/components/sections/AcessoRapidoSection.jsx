@@ -1,4 +1,3 @@
-import React from 'react'
 import { LayoutDashboard, UserRound } from 'lucide-react'
 
 const links = [
@@ -6,7 +5,7 @@ const links = [
     title: 'Dashboard',
     description: 'Métricas e desempenho',
     icon: LayoutDashboard,
-    href: '#dashboard',
+    href: '/dashboard',
   },
   {
     title: 'Meu Perfil',
