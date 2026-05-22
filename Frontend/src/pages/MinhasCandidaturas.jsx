@@ -122,7 +122,7 @@ export default function MinhasCandidaturas() {
           <CardResumoCandidaturas contagem={contagem} />
 
           {/* CTA buscar projetos */}
-          <div className="bg-white border border-dashed border-[#e5e7eb] rounded-[14px] px-[21px] pt-[21px] pb-[1px] flex flex-col gap-3">
+          <div className="bg-white border border-dashed border-[#e5e7eb] rounded-[14px] px-[21px] pt-[21px] pb-px flex flex-col gap-3">
             <p className="text-[#99a1af] text-[12px]">
               Procurando mais oportunidades?
             </p>
