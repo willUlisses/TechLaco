@@ -4,6 +4,7 @@ import com.techlaco.dtos.body.CriarCandidaturaRequest;
 import com.techlaco.dtos.body.FiltroCandidaturasRequest;
 import com.techlaco.dtos.body.PatchStatusCandidatura;
 import com.techlaco.dtos.response.CandidaturaAtualizadaResponse;
+import com.techlaco.dtos.response.CandidaturasFreelancerResponse;
 import com.techlaco.dtos.response.CandidaturasProjetoResponse;
 import com.techlaco.dtos.response.DadosCandidaturaResponse;
 import com.techlaco.entities.Candidatura;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,7 +65,7 @@ public class CandidaturaService {
         return DadosCandidaturaResponse.from(candidaturasRepository.save(candidatura));
     }
 
-    public List<DadosCandidaturaResponse> listarCandidaturasDoFreelancerLogado(PerfilFreelancer perfilFreelancer, FiltroCandidaturasRequest filtro) {
+    public CandidaturasFreelancerResponse listarCandidaturasDoFreelancerLogado(PerfilFreelancer perfilFreelancer, FiltroCandidaturasRequest filtro) {
 
         List<Candidatura> candidaturas;
 
@@ -73,7 +75,13 @@ public class CandidaturaService {
             candidaturas = candidaturasRepository.findByPerfilFreelancerIdAndStatus(perfilFreelancer.getId(), filtro.statusCandidatura());
         }
 
-        return candidaturas.stream().map(DadosCandidaturaResponse::from).toList();
+        List<DadosCandidaturaResponse> listaCandidaturas = candidaturas.stream()
+                .map(DadosCandidaturaResponse::from)
+                .toList();
+
+        BigDecimal receitaTotal = candidaturasRepository.calcularReceitaTotalPorFreelancerId(perfilFreelancer.getId());
+
+        return new CandidaturasFreelancerResponse(listaCandidaturas, receitaTotal);
     }
 
     public List<CandidaturasProjetoResponse> listarCandidaturasDosProjetosDoClienteLogado(Long projetoId, PerfilCliente perfilCliente) {

@@ -1,5 +1,6 @@
 package com.techlaco.controllers;
 
+import com.techlaco.dtos.body.AdicionarHabilidadeRequest;
 import com.techlaco.dtos.body.AtualizarPerfilFreelancerRequest;
 import com.techlaco.dtos.body.FiltroBuscarFreelancer;
 import com.techlaco.dtos.response.PageResponse;
@@ -56,6 +57,17 @@ public class PerfilFreelancerController {
             @RequestBody AtualizarPerfilFreelancerRequest request
     ) {
         return new ResponseEntity<>(perfilFreelancerService.atualizarPerfilFreelancerLogado(usuario, request), HttpStatus.OK);
+    }
+
+    @PatchMapping("/me/habilidades")
+    public ResponseEntity<PerfilFreelancerCompletoResponse> atualizarHabilidades(
+            @AuthenticationPrincipal Usuario usuario,
+            @RequestBody AdicionarHabilidadeRequest request
+    ) {
+        return new ResponseEntity<>(
+                perfilFreelancerService.adicionarHabilidade(usuario, request),
+                HttpStatus.OK
+        );
     }
 
 }

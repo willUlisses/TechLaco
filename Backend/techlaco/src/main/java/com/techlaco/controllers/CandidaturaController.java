@@ -4,6 +4,7 @@ import com.techlaco.dtos.body.CriarCandidaturaRequest;
 import com.techlaco.dtos.body.FiltroCandidaturasRequest;
 import com.techlaco.dtos.body.PatchStatusCandidatura;
 import com.techlaco.dtos.response.CandidaturaAtualizadaResponse;
+import com.techlaco.dtos.response.CandidaturasFreelancerResponse;
 import com.techlaco.dtos.response.CandidaturasProjetoResponse;
 import com.techlaco.dtos.response.DadosCandidaturaResponse;
 import com.techlaco.entities.Enums.StatusCandidatura;
@@ -45,7 +46,7 @@ public class CandidaturaController {
 
 
     @GetMapping("/minhas")
-    public ResponseEntity<List<DadosCandidaturaResponse>> minhasCandidaturas(
+    public ResponseEntity<CandidaturasFreelancerResponse> minhasCandidaturas(
             @AuthenticationPrincipal Usuario usuario,
             @RequestParam(required = false) StatusCandidatura status) {
 

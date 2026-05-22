@@ -2,6 +2,9 @@ package com.techlaco.dtos.response;
 
 import com.techlaco.entities.PerfilFreelancer;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 public record PerfilFreelancerCompletoResponse(
         Long id,
         String nome,
@@ -9,9 +12,11 @@ public record PerfilFreelancerCompletoResponse(
         String especialidade,
         String faculdade,
         String bio,
-        String githubUrl
+        String githubUrl,
+        List<String> habilidades,
+        BigDecimal receitaTotal
 ) {
-    public static PerfilFreelancerCompletoResponse from(PerfilFreelancer perfil) {
+    public static PerfilFreelancerCompletoResponse from(PerfilFreelancer perfil, BigDecimal receitaTotal) {
         return new PerfilFreelancerCompletoResponse(
                 perfil.getId(),
                 perfil.getUsuario().getNome(),
@@ -19,7 +24,15 @@ public record PerfilFreelancerCompletoResponse(
                 perfil.getEspecialidade(),
                 perfil.getFaculdade(),
                 perfil.getBio(),
-                perfil.getGithubUrl()
+                perfil.getGithubUrl(),
+                perfil.getHabilidades().stream()
+                        .sorted()
+                        .toList(),
+                receitaTotal
         );
+    }
+
+    public static PerfilFreelancerCompletoResponse from(PerfilFreelancer perfil) {
+        return from(perfil, null);
     }
 }

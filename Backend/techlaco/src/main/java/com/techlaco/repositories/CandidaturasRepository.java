@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface CandidaturasRepository extends JpaRepository<Candidatura, Long> {
@@ -37,4 +38,12 @@ public interface CandidaturasRepository extends JpaRepository<Candidatura, Long>
 
 
     List<Candidatura> findByProjetoId(Long projetoId);
+
+    @Query("""
+    SELECT COALESCE(SUM(c.projeto.valorMax), 0)
+    FROM Candidatura c
+    WHERE c.perfilFreelancer.id = :freelancerId
+      AND c.status = com.techlaco.entities.Enums.StatusCandidatura.ACEITA
+    """)
+    BigDecimal calcularReceitaTotalPorFreelancerId(@Param("freelancerId") Long freelancerId);
 }

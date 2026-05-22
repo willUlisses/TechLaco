@@ -1,4 +1,10 @@
 package com.techlaco.dtos.response;
 
-public record CandidaturasFreelancerResponse() {
+import java.math.BigDecimal;
+import java.util.List;
+
+public record CandidaturasFreelancerResponse(
+        List<DadosCandidaturaResponse> candidaturas,
+        BigDecimal receitaTotal
+) {
 }

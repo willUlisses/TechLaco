@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/perfis/freelancer/{id}").hasAnyRole("CLIENTE", "FREELANCER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/perfis/freelancer/me").hasRole("FREELANCER")
                         .requestMatchers(HttpMethod.PATCH, "/perfis/freelancer/me").hasRole("FREELANCER")
+                        .requestMatchers(HttpMethod.PATCH, "/perfis/freelancer/me/habilidades").hasRole("FREELANCER")
                         .requestMatchers(HttpMethod.GET, "/projetos").hasAnyRole("CLIENTE", "FREELANCER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/projetos/{id}").hasAnyRole("CLIENTE", "FREELANCER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/projetos/meus").hasRole("CLIENTE")
