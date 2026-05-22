@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { api } from '../services/api';
 
 export function usePerfilCliente() {
-  const [perfil, setPerfil]   = useState(null);
+  const [perfil, setPerfil] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
+  const [error, setError] = useState(null);
 
   const fetchPerfil = useCallback(() => {
     setLoading(true);

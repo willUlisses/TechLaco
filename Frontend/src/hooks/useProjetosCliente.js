@@ -3,8 +3,8 @@ import { api } from '../services/api';
 
 export function useProjetosCliente() {
   const [projetos, setProjetos] = useState([]);
-  const [loading, setLoading]   = useState(true);
-  const [error, setError]       = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchProjetos = useCallback(() => {
     setLoading(true);

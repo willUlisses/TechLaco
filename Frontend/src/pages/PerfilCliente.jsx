@@ -1,20 +1,18 @@
 import {
   CalendarDays,
   CheckCircle2,
-  CircleDollarSign,
   Clock3,
   Folder,
-  GraduationCap,
-  MapPin,
   Pencil,
 } from 'lucide-react'
-import { createElement } from 'react'
+import { createElement, useState } from 'react'
 import Navbar from '../components/Navbar'
 import ProfileNav from '../components/ui/ProfileNav'
 import { useAuth } from '../contexts/AuthContext'
 import { usePerfilCliente } from '../hooks/usePerfilCliente'
 import { useProjetosCliente } from '../hooks/useProjetosCliente'
 import SemAcesso from '../components/ui/SemAcesso'
+import EditarPerfilClienteModal from '../components/ui/EditarPerfilClienteModal'
 
 function SectionTitle({ children, action }) {
   return (
@@ -64,9 +62,9 @@ function ProgressProject({ projeto }) {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h3 className="text-sm font-bold text-[#0F172A]">{projeto.titulo}</h3>
-          <ProjectMeta 
-            name={projeto.nivel || 'Nível não definido'} 
-            budget={projeto.orcamentoFormatado} 
+          <ProjectMeta
+            name={projeto.nivel || 'Nível não definido'}
+            budget={projeto.orcamentoFormatado}
           />
         </div>
         <span className="rounded-full bg-[#EAF4FF] px-3 py-1 text-xs font-semibold text-[#0D63C1]">
@@ -118,10 +116,11 @@ function FinishedProject({ projeto }) {
 
 export default function PerfilCliente() {
   const { usuario } = useAuth()
-  const { perfil, loading: loadingPerfil, error: errorPerfil } = usePerfilCliente()
+  const [modalAberto, setModalAberto] = useState(false)
+  const { perfil, loading: loadingPerfil, error: errorPerfil, refetch } = usePerfilCliente()
   const { projetos, loading: loadingProjetos, error: errorProjetos } = useProjetosCliente()
 
-  if (usuario?.isFreelancer) {
+  if (!usuario?.isCliente) {
     return (
       <div className="min-h-screen bg-[#F8FAFC]">
         <Navbar />
@@ -147,7 +146,7 @@ export default function PerfilCliente() {
   }
 
   const normalizeStatus = s => String(s || '').toUpperCase().replace(' ', '_');
-  
+
   const projetosFormatados = (projetos || []).map(p => {
     let orcamentoFormatado = 'Orçamento não definido';
     if (p.valorMin != null && p.valorMax != null) {
@@ -167,9 +166,9 @@ export default function PerfilCliente() {
   const totalProjetos = perfil?.totalProjetos ?? projetosFormatados.length;
 
   const resumoProjetos = [
-    { label: 'Publicados',   valor: totalProjetos,      icon: Folder,           iconColor: 'text-[#0D63C1]', iconBg: 'bg-[#EFF6FF]' },
-    { label: 'Em andamento', valor: emAndamento.length, icon: Clock3,           iconColor: 'text-[#F97316]', iconBg: 'bg-[#FFF7ED]' },
-    { label: 'Concluídos',   valor: concluidos.length,  icon: CheckCircle2,     iconColor: 'text-[#10B981]', iconBg: 'bg-[#ECFDF5]' },
+    { label: 'Publicados', valor: totalProjetos, icon: Folder, iconColor: 'text-[#0D63C1]', iconBg: 'bg-[#EFF6FF]' },
+    { label: 'Em andamento', valor: emAndamento.length, icon: Clock3, iconColor: 'text-[#F97316]', iconBg: 'bg-[#FFF7ED]' },
+    { label: 'Concluídos', valor: concluidos.length, icon: CheckCircle2, iconColor: 'text-[#10B981]', iconBg: 'bg-[#ECFDF5]' },
   ];
 
   return (
@@ -204,6 +203,7 @@ export default function PerfilCliente() {
 
             <button
               type="button"
+              onClick={() => setModalAberto(true)}
               className="flex items-center gap-2 border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition"
             >
               <Pencil size={14} aria-hidden="true" />
@@ -225,22 +225,30 @@ export default function PerfilCliente() {
             ))}
           </div>
 
-          {perfil?.bio && (
-            <div className="mt-8">
-              <SectionTitle
-                action={
-                  <button className="border-none bg-transparent text-sm font-medium text-blue-600 hover:underline">
-                    Editar
-                  </button>
-                }
-              >
-                Sobre mim
-              </SectionTitle>
-              <div className="rounded-xl border border-slate-200 bg-white p-6 text-sm leading-relaxed text-slate-800">
-                {perfil.bio}
-              </div>
+          <div className="mt-8">
+            <SectionTitle
+              action={
+                <button
+                  type="button"
+                  onClick={() => setModalAberto(true)}
+                  className="border-none bg-transparent text-sm font-medium text-blue-600 hover:underline"
+                >
+                  Editar
+                </button>
+              }
+            >
+              Sobre mim
+            </SectionTitle>
+            <div className="rounded-xl border border-slate-200 bg-white p-6 text-sm leading-relaxed text-slate-800">
+              {perfil?.bio ? (
+                <p>{perfil.bio}</p>
+              ) : (
+                <p className="text-slate-400 italic">
+                  Adicione uma apresentação ao seu perfil.
+                </p>
+              )}
             </div>
-          )}
+          </div>
 
           <div className="mt-8">
             <SectionTitle>
@@ -284,6 +292,14 @@ export default function PerfilCliente() {
           </div>
         </section>
       </main>
+
+      {modalAberto && (
+        <EditarPerfilClienteModal
+          perfil={perfil}
+          onClose={() => setModalAberto(false)}
+          onSaved={refetch}
+        />
+      )}
     </div>
   )
 }

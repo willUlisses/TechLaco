@@ -4,8 +4,8 @@ import { candidaturaService } from '../services/candidaturaService';
 export function useCandidaturas(status) {
   const [candidaturas, setCandidaturas] = useState([]);
   const [receitaTotal, setReceitaTotal] = useState(0);
-  const [loading, setLoading]           = useState(true);
-  const [error, setError]               = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchCandidaturas = useCallback(() => {
     setLoading(true);
