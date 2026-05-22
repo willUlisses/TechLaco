@@ -151,16 +151,18 @@ export default function Navbar() {
               links={paraFreelancersLinks}
             />
 
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                `flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium no-underline transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0D63C1] outline-none
-                ${isActive ? 'bg-[#0D63C1] text-white' : 'text-[#374151] hover:bg-[#EFF6FF] hover:text-[#0D63C1]'}`
-              }
-            >
-              <LayoutDashboard size={15} />
-              Dashboard
-            </NavLink>
+            {usuario?.isFreelancer && (
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium no-underline transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0D63C1] outline-none
+                  ${isActive ? 'bg-[#0D63C1] text-white' : 'text-[#374151] hover:bg-[#EFF6FF] hover:text-[#0D63C1]'}`
+                }
+              >
+                <LayoutDashboard size={15} />
+                Dashboard
+              </NavLink>
+            )}
           </nav>
 
           {/* User Avatar & Dropdown */}
@@ -187,7 +189,7 @@ export default function Navbar() {
                   <p className="text-sm text-slate-900 font-semibold truncate">{nomeExibicao}</p>
                 </div>
                 <NavLink
-                  to="/perfil/cliente"
+                  to={usuario?.isFreelancer ? "/perfil/freelancer" : "/perfil/cliente"}
                   onClick={() => setUserMenuOpen(false)}
                   className="block px-4 py-2.5 text-sm font-medium text-slate-700 no-underline hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg mx-1 mt-1 outline-none focus-visible:bg-slate-50 focus-visible:text-blue-600"
                 >
@@ -292,17 +294,19 @@ export default function Navbar() {
               </div>
 
               <div className="mt-auto pt-6 border-t border-slate-100">
-                <NavLink
-                  to="/dashboard"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-600
-                    ${isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-50 hover:text-blue-600'}`
-                  }
-                >
-                  <LayoutDashboard size={20} className="shrink-0" />
-                  <span className="text-[1.05rem]">Dashboard</span>
-                </NavLink>
+                {usuario?.isFreelancer && (
+                  <NavLink
+                    to="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-600
+                      ${isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-50 hover:text-blue-600'}`
+                    }
+                  >
+                    <LayoutDashboard size={20} className="shrink-0" />
+                    <span className="text-[1.05rem]">Dashboard</span>
+                  </NavLink>
+                )}
               </div>
 
             </nav>

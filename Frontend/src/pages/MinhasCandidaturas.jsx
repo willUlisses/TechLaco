@@ -17,7 +17,7 @@ export default function MinhasCandidaturas() {
 
   useEffect(() => {
     candidaturaService.minhas()
-      .then(data => setCandidaturas(data))
+      .then(data => setCandidaturas(data.candidaturas || []))
       .catch(err => setErro(err?.mensagem ?? 'Erro ao carregar suas candidaturas'))
       .finally(() => setCarregando(false))
   }, [])
@@ -27,7 +27,7 @@ export default function MinhasCandidaturas() {
     function handleVisibilityChange() {
       if (document.visibilityState === 'visible') {
         candidaturaService.minhas()
-          .then(data => setCandidaturas(data))
+          .then(data => setCandidaturas(data.candidaturas || []))
           .catch(() => { })  // silencioso
       }
     }
