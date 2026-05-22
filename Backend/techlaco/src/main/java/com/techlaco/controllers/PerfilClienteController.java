@@ -28,7 +28,9 @@ public class PerfilClienteController {
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<PerfilClienteResponse> atualizarBioPerfil(@AuthenticationPrincipal Usuario usuario, @RequestBody PatchPerfilClienteRequest body) {
-        return new ResponseEntity<>(perfilClienteService.atualizarBio(usuario, body), HttpStatus.OK);
+    public ResponseEntity<PerfilClienteCompletoResponse> atualizarPerfil(
+            @AuthenticationPrincipal Usuario usuario,
+            @RequestBody PatchPerfilClienteRequest body) {
+        return new ResponseEntity<>(perfilClienteService.atualizarPerfil(usuario, body), HttpStatus.OK);
     }
 }

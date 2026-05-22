@@ -1,16 +1,10 @@
 package com.techlaco.dtos.body;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import java.util.Optional;
 
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class PatchPerfilClienteRequest {
-    private Optional<String> bio = Optional.empty();
-}
+public record PatchPerfilClienteRequest(
+        @Size(max = 500, message = "A bio deve ter no máximo 500 caracteres")
+        String bio) {  }
