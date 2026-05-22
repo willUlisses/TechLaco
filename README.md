@@ -21,3 +21,23 @@ Com foco em **simplicidade radical**, a plataforma atua como uma tradutora: o em
 * **Matchmaking Inteligente:** Conexão direta entre o escopo do projeto e as habilidades cadastradas pelos freelancers.
 * **Ambiente Seguro:** Intermediação clara para garantir que o cliente receba o que foi combinado e o estudante seja pago de forma justa.
 * **Foco no Brasil:** Totalmente em português, desenhado para a realidade tributária e cultural do MEI (que hoje soma mais de 15 milhões no país).
+
+IMPLEMENTAÇÕES DE CADA INTEGRANTE:
+
+- Primeiras Telas:
+LandingPage: Daniel Vasconcellos, João Portela, Marcos Tenório
+Login e Cadastro: William Ulisses
+
+- Telas da Segunda Etapa:
+Homepage: Marcos Tenório
+PostarProjetos: João Portela
+BuscarFreelancers: Daniel Vasconcellos
+MinhasCandidaturas e Backend: William Ulisses
+
+- Telas Finais:
+Dashboard: Marcos Tenório
+PerfilCliente: João Portela
+PerfilFreelancer:  Daniel Vasconcellos
+Backend e Integração: William Ulisses
+
+
