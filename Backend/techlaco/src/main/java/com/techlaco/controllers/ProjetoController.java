@@ -3,6 +3,7 @@ package com.techlaco.controllers;
 import com.techlaco.dtos.body.BodyProjetoRequest;
 import com.techlaco.dtos.body.FiltroBuscarProjeto;
 import com.techlaco.dtos.body.PatchProjetoRequest;
+import com.techlaco.dtos.body.PatchStatusProjeto;
 import com.techlaco.dtos.response.PageResponse;
 import com.techlaco.dtos.response.ProjetoSemClienteResponse;
 import com.techlaco.dtos.response.ProjetoResponse;
@@ -87,6 +88,17 @@ public class ProjetoController {
         PerfilCliente perfilUsuarioLogado = usuario.getPerfilCliente();
 
         return new ResponseEntity<>(projetoService.editarProjeto(id, perfilUsuarioLogado, body), HttpStatus.OK);
+    }
+
+    @PatchMapping("{id}/status")
+    public ResponseEntity<ProjetoSemClienteResponse> atualizarStatusProjetoPorId(
+            @PathVariable Long projetoId,
+            @AuthenticationPrincipal Usuario usuario,
+            @RequestBody PatchStatusProjeto body
+            ) {
+        PerfilCliente perfilClienteLogado = usuario.getPerfilCliente();
+
+        return new ResponseEntity<>(projetoService.atualizarStatusProjetoPorId(projetoId, perfilClienteLogado, body), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

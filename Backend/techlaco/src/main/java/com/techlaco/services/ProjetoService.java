@@ -3,6 +3,7 @@ package com.techlaco.services;
 import com.techlaco.dtos.body.BodyProjetoRequest;
 import com.techlaco.dtos.body.FiltroBuscarProjeto;
 import com.techlaco.dtos.body.PatchProjetoRequest;
+import com.techlaco.dtos.body.PatchStatusProjeto;
 import com.techlaco.dtos.response.PageResponse;
 import com.techlaco.dtos.response.ProjetoSemClienteResponse;
 import com.techlaco.dtos.response.ProjetoResponse;
@@ -107,6 +108,7 @@ public class ProjetoService {
         return ProjetoSemClienteResponse.from(projetosRepository.save(projeto));
     }
 
+    @Transactional
     public VoidMessageResponse deletarProjeto(Long projetoId, PerfilCliente perfil) {
         Projeto projeto = projetosRepository.findById(projetoId).orElseThrow(() -> new NotFoundException("Projeto não encontrado"));
 
@@ -117,6 +119,19 @@ public class ProjetoService {
         return VoidMessageResponse.builder()
                 .message("Projeto deletado com sucesso!")
                 .build();
+    }
+
+    public ProjetoSemClienteResponse atualizarStatusProjetoPorId(Long projetoId, PerfilCliente perfilCliente, PatchStatusProjeto body) {
+        Projeto projeto = projetosRepository.findById(projetoId)
+                .orElseThrow(() -> new NotFoundException("Projeto não encontrado"));
+
+        if (!projeto.getPerfilCliente().getId().equals(perfilCliente.getId())) { throw new ForbiddenException("O projeto não pertence ao cliente logado."); }
+
+        if (body.status() == null || projeto.getStatus().equals(body.status())) { throw new BadRequestException("Você deve informar um status novo e válido."); }
+
+        projeto.setStatus(body.status());
+
+        return ProjetoSemClienteResponse.from(projetosRepository.save(projeto));
     }
 
 }
