@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,13 @@ public class ProjetoService {
                 : "%" + filtro.busca() + "%";
 
         Page<ProjetoResponse> paginasProjetos = projetosRepository
-                .buscarProjetosDisponiveis(StatusProjeto.ATIVO, termoBusca, pageable)
+                .buscarProjetosFiltrados(
+                        StatusProjeto.ATIVO,
+                        termoBusca,
+                        filtro.nivel(),
+                        filtro.valorMin(),
+                        filtro.valorMax(),
+                        pageable)
                 .map(ProjetoResponse::from);
 
         return PageResponse.from(paginasProjetos);
@@ -81,6 +88,7 @@ public class ProjetoService {
                 .valorMax(body.valorMax())
                 .status(StatusProjeto.ATIVO)
                 .perfilCliente(perfil)
+                .tecnologias(body.tecnologias() != null ? body.tecnologias() : new HashSet<>())
                 .build();
 
         return ProjetoResponse.from(projetosRepository.save(projeto));
@@ -104,6 +112,10 @@ public class ProjetoService {
         Optional.ofNullable(body.nivel()).ifPresent(projeto::setNivel);
         Optional.ofNullable(body.valorMin()).ifPresent(projeto::setValorMin);
         Optional.ofNullable(body.valorMax()).ifPresent(projeto::setValorMax);
+        Optional.ofNullable(body.tecnologias()).ifPresent(novasTecnologias -> {
+            projeto.getTecnologias().clear();
+            projeto.getTecnologias().addAll(novasTecnologias);
+        });
 
         return ProjetoSemClienteResponse.from(projetosRepository.save(projeto));
     }

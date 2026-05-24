@@ -7,7 +7,8 @@ public record DadosCandidaturaResponse(
         Long projetoId,
         String tituloProjeto,
         String status,
-        String mensagem
+        String mensagem,
+        String feedbackCliente
 ) {
     public static DadosCandidaturaResponse from(Candidatura candidatura) {
         return new DadosCandidaturaResponse(
@@ -15,7 +16,8 @@ public record DadosCandidaturaResponse(
                 candidatura.getProjeto().getId(),
                 candidatura.getProjeto().getTitulo(),
                 candidatura.getStatus().getValue(),
-                candidatura.getMensagem()
+                candidatura.getMensagem(),
+                candidatura.getFeedbackCliente()
         );
     }
 }

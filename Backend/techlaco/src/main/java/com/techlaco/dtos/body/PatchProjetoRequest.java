@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 public record PatchProjetoRequest(
         @Size(max = 100)
@@ -19,6 +20,8 @@ public record PatchProjetoRequest(
         BigDecimal valorMin,
 
         @Positive(message = "O valor deve ser maior que zero")
-        BigDecimal valorMax
+        BigDecimal valorMax,
+
+        Set<String> tecnologias
 ) {
 }

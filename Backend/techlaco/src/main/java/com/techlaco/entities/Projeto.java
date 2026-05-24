@@ -2,7 +2,9 @@ package com.techlaco.entities;
 
 import com.techlaco.entities.Enums.NivelProjeto;
 import com.techlaco.entities.Enums.StatusProjeto;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,7 +26,9 @@ import org.hibernate.annotations.Formula;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_projetos")
@@ -68,6 +72,14 @@ public class Projeto {
 
     @Formula("(SELECT COUNT(*) FROM tb_candidaturas c WHERE c.projeto_id = id)")
     private Long totalCandidaturas;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "projeto_tecnologias",
+            joinColumns = @JoinColumn(name = "projeto_id")
+    )
+    @Column(name = "tecnologia")
+    private Set<String> tecnologias = new HashSet<>();
 
 
 }

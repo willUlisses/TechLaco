@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.techlaco.entities.Projeto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public record ProjetoResponse(
         Long id,
@@ -14,6 +15,7 @@ public record ProjetoResponse(
         BigDecimal valorMin,
         BigDecimal valorMax,
         Integer totalCandidaturas,
+        List<String> tecnologias,
         @JsonProperty("cliente")
         ClienteProjetoResponse clienteProjetoResponse
 ) {
@@ -27,6 +29,7 @@ public record ProjetoResponse(
                 projeto.getValorMin(),
                 projeto.getValorMax(),
                 projeto.getTotalCandidaturas() != null ? projeto.getTotalCandidaturas().intValue() : 0,
+                projeto.getTecnologias().stream().sorted().toList(),
                 ClienteProjetoResponse.from(projeto.getPerfilCliente())
         );
     }
