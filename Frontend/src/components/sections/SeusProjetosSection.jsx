@@ -1,6 +1,13 @@
 import ProjetoCard from './ProjetoCard'
 
-export default function SeusProjetosSection({ projetos = [], carregando, erro, onCancelar, onEditar, onVerCandidaturas }) {
+export default function SeusProjetosSection({
+  projetos = [],
+  carregando,
+  erro,
+  onEditar,
+  onAtualizado,   // passa para ProjetoCard acionar refetch após deletar
+  onVerCandidaturas,
+}) {
   if (carregando) {
     return (
       <div className="flex items-center justify-center py-10 px-4">
@@ -32,11 +39,11 @@ export default function SeusProjetosSection({ projetos = [], carregando, erro, o
       </p>
       <div className="flex flex-col gap-3">
         {projetos.map(projeto => (
-          <ProjetoCard 
-            key={projeto.id} 
-            projeto={projeto} 
-            onCancelar={onCancelar}
+          <ProjetoCard
+            key={projeto.id}
+            projeto={projeto}
             onEditar={onEditar}
+            onAtualizado={onAtualizado}
             onVerCandidaturas={onVerCandidaturas}
           />
         ))}

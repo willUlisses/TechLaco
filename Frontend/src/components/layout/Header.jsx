@@ -8,10 +8,10 @@ export default function Header() {
         <Logo variant="header" />
 
         <nav className="flex items-center gap-[34px] max-md:hidden">
-          <a href="#como-funciona" className="text-[#111827] font-medium text-base hover:text-[#0D63C1] no-underline">
+          <a href="#como-funciona" className="text-[#111827] text-base hover:text-[#0D63C1] no-underline">
             Encontrar Freelancers
           </a>
-          <a href="#servicos" className="text-[#111827] font-medium text-base hover:text-[#0D63C1] no-underline">
+          <a href="#servicos" className="text-[#111827] text-base hover:text-[#0D63C1] no-underline">
             Procurar Projetos
           </a>
         </nav>

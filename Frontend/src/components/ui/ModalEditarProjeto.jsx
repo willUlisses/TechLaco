@@ -1,53 +1,73 @@
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Plus, Trash2 } from 'lucide-react'
 import Modal from './Modal'
 import { editarProjetoSchema } from '../../schemas/projetoSchemas'
 import { projetoService } from '../../services/projetoService'
-
-const opcoesNivel = [
-  { value: 'INICIANTE',     label: 'Iniciante' },
-  { value: 'INTERMEDIARIO', label: 'Intermediário' },
-  { value: 'AVANCADO',      label: 'Avançado' },
-]
+import { NIVEIS_PROJETO } from '../../utils/projetoConfig'
 
 export default function ModalEditarProjeto({ projeto, aberto, onFechar, onSucesso }) {
-  const [erro, setErro]             = useState(null)
+  const [erro, setErro]           = useState(null)
   const [carregando, setCarregando] = useState(false)
+  const [tecnologias, setTecnologias] = useState([])
 
   const {
     register,
     handleSubmit,
     reset,
+    getValues,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(editarProjetoSchema),
   })
 
-  // Preencher o formulário com os dados do projeto ao abrir
+  // Preencher o formulário e o estado de tecnologias ao abrir o modal
   useEffect(() => {
     if (aberto && projeto) {
-      // Mapear o valor humanizado do enum de volta para o valor do enum
+      // Normaliza o valor do nível (pode vir como label "Iniciante" ou enum "INICIANTE")
       const mapaNivel = {
         'Iniciante':    'INICIANTE',
         'Intermediário':'INTERMEDIARIO',
         'Avançado':     'AVANCADO',
       }
       reset({
-        titulo:    projeto.titulo,
-        descricao: projeto.descricao,
-        nivel:     mapaNivel[projeto.nivel] ?? projeto.nivel,
-        valorMin:  projeto.valorMin,
-        valorMax:  projeto.valorMax,
+        titulo:           projeto.titulo    ?? '',
+        descricao:        projeto.descricao ?? '',
+        nivel:            mapaNivel[projeto.nivel] ?? projeto.nivel ?? 'INICIANTE',
+        valorMin:         projeto.valorMin  ?? 0,
+        valorMax:         projeto.valorMax  ?? 0,
+        tecnologiasInput: '',
       })
+      setTecnologias(projeto.tecnologias ?? [])
     }
   }, [aberto, projeto, reset])
+
+  function adicionarTecnologia() {
+    const valor = getValues('tecnologiasInput').trim()
+    if (!valor || tecnologias.includes(valor)) return
+    setTecnologias(prev => [...prev, valor])
+    setValue('tecnologiasInput', '')
+  }
+
+  function removerTecnologia(tech) {
+    setTecnologias(prev => prev.filter(t => t !== tech))
+  }
 
   async function onSubmit(data) {
     setErro(null)
     setCarregando(true)
     try {
-      const atualizado = await projetoService.editar(projeto.id, data)
+      const body = {
+        titulo:      data.titulo,
+        descricao:   data.descricao,
+        nivel:       data.nivel,
+        valorMin:    Number(data.valorMin),
+        valorMax:    Number(data.valorMax),
+        tecnologias, // sempre envia o array atualizado
+      }
+      const atualizado = await projetoService.editar(projeto.id, body)
       onSucesso?.(atualizado)
       onFechar()
     } catch (err) {
@@ -68,7 +88,9 @@ export default function ModalEditarProjeto({ projeto, aberto, onFechar, onSucess
 
         {/* Título */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[13px] font-semibold text-[#101828]">Título</label>
+          <label className="text-[13px] font-semibold text-[#101828]">
+            Título <span className="text-[#EF4444]">*</span>
+          </label>
           <input
             {...register('titulo')}
             type="text"
@@ -84,7 +106,7 @@ export default function ModalEditarProjeto({ projeto, aberto, onFechar, onSucess
           <label className="text-[13px] font-semibold text-[#101828]">Descrição</label>
           <textarea
             {...register('descricao')}
-            rows={4}
+            rows={3}
             className="border border-[#D1D5DC] rounded-[10px] px-3 py-3 text-[14px] text-[#101828] outline-none focus:border-[#0066cc] resize-none transition-colors"
           />
           {errors.descricao && (
@@ -94,13 +116,14 @@ export default function ModalEditarProjeto({ projeto, aberto, onFechar, onSucess
 
         {/* Nível */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[13px] font-semibold text-[#101828]">Nível</label>
+          <label className="text-[13px] font-semibold text-[#101828]">
+            Nível <span className="text-[#EF4444]">*</span>
+          </label>
           <select
             {...register('nivel')}
             className="border border-[#D1D5DC] rounded-[10px] px-3 py-3 text-[14px] text-[#101828] outline-none focus:border-[#0066cc] bg-white transition-colors"
           >
-            <option value="">Selecione um nível</option>
-            {opcoesNivel.map(op => (
+            {NIVEIS_PROJETO.map(op => (
               <option key={op.value} value={op.value}>{op.label}</option>
             ))}
           </select>
@@ -112,10 +135,13 @@ export default function ModalEditarProjeto({ projeto, aberto, onFechar, onSucess
         {/* Valores lado a lado */}
         <div className="flex gap-3">
           <div className="flex flex-col gap-1.5 flex-1">
-            <label className="text-[13px] font-semibold text-[#101828]">Valor mínimo (R$)</label>
+            <label className="text-[13px] font-semibold text-[#101828]">
+              Valor mínimo (R$) <span className="text-[#EF4444]">*</span>
+            </label>
             <input
               {...register('valorMin')}
               type="number"
+              min="0"
               step="0.01"
               className="border border-[#D1D5DC] rounded-[10px] px-3 py-3 text-[14px] text-[#101828] outline-none focus:border-[#0066cc] transition-colors"
             />
@@ -124,16 +150,66 @@ export default function ModalEditarProjeto({ projeto, aberto, onFechar, onSucess
             )}
           </div>
           <div className="flex flex-col gap-1.5 flex-1">
-            <label className="text-[13px] font-semibold text-[#101828]">Valor máximo (R$)</label>
+            <label className="text-[13px] font-semibold text-[#101828]">
+              Valor máximo (R$) <span className="text-[#EF4444]">*</span>
+            </label>
             <input
               {...register('valorMax')}
               type="number"
+              min="0"
               step="0.01"
               className="border border-[#D1D5DC] rounded-[10px] px-3 py-3 text-[14px] text-[#101828] outline-none focus:border-[#0066cc] transition-colors"
             />
             {errors.valorMax && (
               <span className="text-[#EF4444] text-[12px]">{errors.valorMax.message}</span>
             )}
+          </div>
+        </div>
+
+        {/* Tecnologias */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[13px] font-semibold text-[#101828]">Tecnologias</label>
+
+          {/* Pills das tecnologias adicionadas */}
+          {tecnologias.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-1">
+              {tecnologias.map(tech => (
+                <span
+                  key={tech}
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[#e5e7eb] text-xs text-[#4a5565] bg-[#f3f4f6]"
+                >
+                  {tech}
+                  <button
+                    type="button"
+                    onClick={() => removerTecnologia(tech)}
+                    className="text-[#99a1af] hover:text-[#EF4444] transition-colors"
+                    aria-label={`Remover ${tech}`}
+                  >
+                    <Trash2 size={11} />
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Input + botão para adicionar */}
+          <div className="flex gap-2">
+            <input
+              {...register('tecnologiasInput')}
+              className="flex-1 border border-[#D1D5DC] rounded-[10px] px-3 py-2.5 text-[14px] text-[#101828] outline-none focus:border-[#0066cc] transition-colors"
+              placeholder="Ex: React, Node.js..."
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') { e.preventDefault(); adicionarTecnologia() }
+              }}
+            />
+            <button
+              type="button"
+              onClick={adicionarTecnologia}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-[10px] bg-[#0066cc] text-white text-sm font-medium hover:bg-[#005ab4] transition-colors shrink-0"
+            >
+              <Plus size={14} />
+              Adicionar
+            </button>
           </div>
         </div>
 

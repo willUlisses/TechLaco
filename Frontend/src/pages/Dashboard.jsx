@@ -1,8 +1,8 @@
-import { 
-  BarChart3, 
-  Wallet, 
-  Briefcase, 
-  TrendingUp, 
+import {
+  BarChart3,
+  Wallet,
+  Briefcase,
+  TrendingUp,
   ArrowRight,
   Clock,
   CheckCircle2,
@@ -57,39 +57,39 @@ export default function Dashboard() {
   const candidaturasRecentes = candidaturas.slice(0, 5);
 
   const stats = [
-    { 
-      title: 'Ganhos Totais', 
-      value: receitaFormatada, 
-      trend: '+12.5%', 
-      icon: Wallet, 
-      color: 'bg-emerald-500', 
-      bg: 'bg-emerald-50' 
+    {
+      title: 'Ganhos Totais',
+      value: receitaFormatada,
+      trend: '+12.5%',
+      icon: Wallet,
+      color: 'bg-emerald-500',
+      bg: 'bg-emerald-50'
     },
-    { 
-      title: 'Projetos Concluídos', 
-      value: concluidos.toString(), 
-      trend: '+2.4%', 
-      icon: Briefcase, 
-      color: 'bg-blue-500', 
-      bg: 'bg-blue-50' 
+    {
+      title: 'Projetos Concluídos',
+      value: concluidos.toString(),
+      trend: '+2.4%',
+      icon: Briefcase,
+      color: 'bg-blue-500',
+      bg: 'bg-blue-50'
     },
-    { 
-      title: 'Em Andamento', 
-      value: emAndamento.toString(), 
-      trend: '-1.5%', 
-      icon: Activity, 
-      color: 'bg-purple-500', 
-      bg: 'bg-purple-50' 
+    {
+      title: 'Em Andamento',
+      value: emAndamento.toString(),
+      trend: '-1.5%',
+      icon: Activity,
+      color: 'bg-purple-500',
+      bg: 'bg-purple-50'
     },
-    { 
-      title: 'Taxa de Sucesso', 
-      value: candidaturas.length > 0 
-        ? `${Math.round((concluidos / candidaturas.length) * 100)}%` 
-        : '0%', 
-      trend: '+4.1%', 
-      icon: TrendingUp, 
-      color: 'bg-orange-500', 
-      bg: 'bg-orange-50' 
+    {
+      title: 'Taxa de Sucesso',
+      value: candidaturas.length > 0
+        ? `${Math.round((concluidos / candidaturas.length) * 100)}%`
+        : '0%',
+      trend: '+4.1%',
+      icon: TrendingUp,
+      color: 'bg-orange-500',
+      bg: 'bg-orange-50'
     },
   ];
 
@@ -106,22 +106,20 @@ export default function Dashboard() {
       <Navbar />
 
       <main className="max-w-6xl mx-auto px-4 pt-8">
-        
-        {/* Cabeçalho */}
+
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
             <p className="text-slate-500 mt-1">Bem-vindo de volta, {usuario?.nome}. Aqui está o resumo do seu desempenho.</p>
           </div>
-          <Link 
-            to="/projetos/buscar"
+          <Link
+            to="/freelancers/buscarProjeto"
             className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition shadow-sm"
           >
             Buscar Projetos
           </Link>
         </div>
 
-        {/* Cards de Estatísticas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {stats.map((stat, index) => (
             <div key={index} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
@@ -129,9 +127,8 @@ export default function Dashboard() {
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${stat.bg}`}>
                   <stat.icon size={20} className={`text-${stat.color.split('-')[1]}-600`} />
                 </div>
-                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                  stat.trend.startsWith('+') ? 'text-emerald-700 bg-emerald-50' : 'text-red-700 bg-red-50'
-                }`}>
+                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${stat.trend.startsWith('+') ? 'text-emerald-700 bg-emerald-50' : 'text-red-700 bg-red-50'
+                  }`}>
                   {stat.trend}
                 </span>
               </div>
@@ -143,7 +140,7 @@ export default function Dashboard() {
 
         {/* Conteúdo Principal: Gráficos e Atividades */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
+
           {/* Gráfico de Ganhos (Placeholder estático para demonstração) */}
           <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm p-6">
             <div className="flex items-center justify-between mb-6">
@@ -153,17 +150,17 @@ export default function Dashboard() {
                 <option>Este ano</option>
               </select>
             </div>
-            
+
             <div className="h-64 flex items-end justify-between gap-2 pt-4">
               {/* Barras de mockup geradas */}
               {[40, 70, 45, 90, 65, 85].map((height, i) => (
                 <div key={i} className="w-full flex flex-col items-center gap-2 group">
                   <div className="w-full relative h-full flex items-end justify-center">
-                    <div 
+                    <div
                       className="w-full max-w-[40px] bg-blue-100 rounded-t-sm group-hover:bg-blue-200 transition-colors"
                       style={{ height: '100%' }}
                     >
-                      <div 
+                      <div
                         className="w-full bg-blue-600 rounded-t-sm transition-all duration-500 shadow-sm"
                         style={{ height: `${height}%` }}
                       />
