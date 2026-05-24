@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import FreelancerCard from '../components/ui/FreelancerCard'
 import FreelancerListHeader from '../components/ui/FreelancerListHeader'
 import PublicarProjetoCard from '../components/ui/PublicarProjetoCard'
+import FreelancerPerfilModal from '../components/ui/FreelancerPerfilModal'
 import { perfilService } from '../services/perfilService'
 
 export default function BuscarFreelancers() {
@@ -11,6 +12,7 @@ export default function BuscarFreelancers() {
   const [freelancers, setFreelancers] = useState([])
   const [carregando, setCarregando] = useState(true)
   const [erro, setErro] = useState(null)
+  const [freelancerSelecionado, setFreelancerSelecionado] = useState(null)
 
   useEffect(() => {
     setCarregando(true)
@@ -72,7 +74,11 @@ export default function BuscarFreelancers() {
               </div>
             ) : freelancers.length > 0 ? (
               freelancers.map(freelancer => (
-                <FreelancerCard key={freelancer.id} freelancer={freelancer} />
+                <FreelancerCard
+                  key={freelancer.id}
+                  freelancer={freelancer}
+                  onClick={() => setFreelancerSelecionado(freelancer)}
+                />
               ))
             ) : (
               <div className="bg-white border border-[#e5e7eb] rounded-[14px] p-8 text-center text-[#6a7282]">
@@ -90,6 +96,14 @@ export default function BuscarFreelancers() {
         </aside>
 
       </main>
+
+      {/* Modal de perfil do freelancer */}
+      {freelancerSelecionado && (
+        <FreelancerPerfilModal
+          freelancer={freelancerSelecionado}
+          onClose={() => setFreelancerSelecionado(null)}
+        />
+      )}
     </div>
   )
 }
