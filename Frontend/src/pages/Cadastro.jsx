@@ -44,7 +44,7 @@ export default function Cadastro() {
     try {
       const resposta = await authService.cadastrar(data)
       salvarSessao(resposta)
-      navigate('/home')
+      navigate('/bem-vindo', { replace: true, state: { origem: 'cadastro' } })
     } catch (err) {
       setErro(err?.mensagem ?? 'Erro ao criar conta. Tente novamente.')
     } finally {

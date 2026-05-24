@@ -40,3 +40,17 @@ html {
 .animate-shake {
     animation: shake 0.3s ease-in-out;
 }
+
+@keyframes welcome-progress {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+.animate-welcome-progress {
+    animation: welcome-progress 3.2s linear forwards;
+}

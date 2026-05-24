@@ -27,7 +27,7 @@ export default function Login() {
     try {
       const resposta = await authService.login(data)
       salvarSessao(resposta)
-      navigate('/home')
+      navigate('/bem-vindo', { replace: true, state: { origem: 'login' } })
     } catch (err) {
       setErro(err?.mensagem ?? 'Erro ao fazer login. Tente novamente.')
     } finally {

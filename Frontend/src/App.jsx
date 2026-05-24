@@ -11,6 +11,7 @@ import MinhasCandidaturas from './pages/MinhasCandidaturas'
 import RotaPrivada from './components/RotaPrivada'
 import PerfilFreelancer from './pages/PerfilFreelancer'
 import Dashboard from './pages/Dashboard'
+import BemVindo from './pages/BemVindo'
 export default function App() {
   return (
     <BrowserRouter>
@@ -22,6 +23,7 @@ export default function App() {
 
         {/* Rotas protegidas */}
         <Route path="/home" element={<RotaPrivada><Homepage /></RotaPrivada>} />
+        <Route path="/bem-vindo" element={<RotaPrivada><BemVindo /></RotaPrivada>} />
         <Route path="/clientes/publicar" element={<RotaPrivada><PublicarProjeto /></RotaPrivada>} />
         <Route path="/clientes/buscarFreelancers" element={<RotaPrivada><BuscarFreelancers /></RotaPrivada>} />
         <Route path="/perfil" element={<RotaPrivada><PerfilCliente /> </RotaPrivada>} />
