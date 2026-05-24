@@ -46,4 +46,7 @@ public class Candidatura {
     @Column(nullable = false)
     private StatusCandidatura status;
 
+    @Column(columnDefinition = "TEXT")
+    private String feedbackCliente;
+
 }

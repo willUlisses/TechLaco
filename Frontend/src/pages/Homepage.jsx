@@ -1,9 +1,7 @@
-import React from 'react'
 import Navbar from '../components/Navbar'
 import WelcomeSection from '../components/sections/WelcomeSection'
 import ParaOndeIrSection from '../components/sections/ParaOndeIrSection'
 import AcessoRapidoSection from '../components/sections/AcessoRapidoSection'
-import PerfilCompletoSection from '../components/sections/PerfilCompletoSection'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Homepage() {

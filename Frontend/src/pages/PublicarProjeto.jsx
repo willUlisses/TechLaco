@@ -9,29 +9,13 @@ import ModalCandidaturasRecebidas from '../components/ui/ModalCandidaturasRecebi
 import { projetoService } from '../services/projetoService'
 
 export default function PublicarProjeto() {
-  const [modalAberto, setModalAberto] = useState(false)
-  const [modalEditarAberto, setModalEditarAberto] = useState(false)
+  const [modalAberto, setModalAberto]               = useState(false)
+  const [modalEditarAberto, setModalEditarAberto]   = useState(false)
   const [modalCandidaturasAberto, setModalCandidaturasAberto] = useState(false)
   const [projetoSelecionado, setProjetoSelecionado] = useState(null)
-  const [projetos, setProjetos] = useState([])
-  const [carregando, setCarregando] = useState(true)
-  const [erro, setErro] = useState(null)
-
-  function abrirEdicao(projeto) {
-    setProjetoSelecionado(projeto)
-    setModalEditarAberto(true)
-  }
-
-  function handleSucessoEdicao(projetoAtualizado) {
-    setProjetos(prev =>
-      prev.map(p => p.id === projetoAtualizado.id ? projetoAtualizado : p)
-    )
-  }
-
-  function abrirCandidaturas(projeto) {
-    setProjetoSelecionado(projeto)
-    setModalCandidaturasAberto(true)
-  }
+  const [projetos, setProjetos]                     = useState([])
+  const [carregando, setCarregando]                 = useState(true)
+  const [erro, setErro]                             = useState(null)
 
   function carregarProjetos() {
     setCarregando(true)
@@ -42,19 +26,31 @@ export default function PublicarProjeto() {
       .finally(() => setCarregando(false))
   }
 
-  useEffect(() => {
-    carregarProjetos()
-  }, [])
+  useEffect(() => { carregarProjetos() }, [])
+
+  function abrirEdicao(projeto) {
+    setProjetoSelecionado(projeto)
+    setModalEditarAberto(true)
+  }
+
+  function handleSucessoEdicao(projetoAtualizado) {
+    if (projetoAtualizado) {
+      // Atualiza localmente sem refetch (resposta do PATCH)
+      setProjetos(prev => prev.map(p => p.id === projetoAtualizado.id ? projetoAtualizado : p))
+    } else {
+      // Fallback: refetch caso o endpoint não devolva o projeto atualizado
+      carregarProjetos()
+    }
+  }
+
+  function abrirCandidaturas(projeto) {
+    setProjetoSelecionado(projeto)
+    setModalCandidaturasAberto(true)
+  }
 
   function handleProjetoPublicado() {
     setModalAberto(false)
     carregarProjetos()
-  }
-
-  function handleCancelarProjeto(id) {
-    projetoService.cancelar(id)
-      .then(() => setProjetos(prev => prev.filter(p => p.id !== id)))
-      .catch(err => setErro(err?.mensagem ?? 'Erro ao cancelar projeto'))
   }
 
   return (
@@ -79,27 +75,30 @@ export default function PublicarProjeto() {
         {/* Coluna principal */}
         <div className="flex flex-col gap-4 w-full lg:flex-1 min-w-0">
           <NovoProjetoCard onPublicar={() => setModalAberto(true)} />
+
           {modalAberto && (
             <PublicarProjetoModal
               onClose={() => setModalAberto(false)}
               onSucesso={handleProjetoPublicado}
             />
           )}
+
           <SeusProjetosSection
             projetos={projetos}
             carregando={carregando}
             erro={erro}
-            onCancelar={handleCancelarProjeto}
             onEditar={abrirEdicao}
+            onAtualizado={carregarProjetos}
             onVerCandidaturas={abrirCandidaturas}
           />
         </div>
 
-        {/* Coluna lateral — vai para baixo em mobile */}
+        {/* Coluna lateral */}
         <div className="w-full lg:w-[300px] shrink-0">
           <DicasCard />
         </div>
       </div>
+
       <ModalEditarProjeto
         projeto={projetoSelecionado}
         aberto={modalEditarAberto}

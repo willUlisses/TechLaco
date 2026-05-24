@@ -97,7 +97,8 @@ public class CandidaturaService {
     }
 
     public CandidaturaAtualizadaResponse atualizarStatus(Long candidaturaId, PerfilCliente perfilCliente, PatchStatusCandidatura body) {
-        Candidatura candidatura = candidaturasRepository.findById(candidaturaId).orElseThrow(() -> new NotFoundException("Candidatura não encontrada"));
+        Candidatura candidatura = candidaturasRepository.findById(candidaturaId)
+                .orElseThrow(() -> new NotFoundException("Candidatura não encontrada"));
 
         if (!candidatura.getProjeto().getPerfilCliente().getId().equals(perfilCliente.getId())) {
             throw new ForbiddenException("A candidatura não pertence a nenhum projeto do cliente logado.");
@@ -108,6 +109,11 @@ public class CandidaturaService {
         }
 
         candidatura.setStatus(body.status());
+
+        if (body.feedbackCliente() != null && !body.feedbackCliente().isBlank()) {
+            candidatura.setFeedbackCliente(body.feedbackCliente());
+        }
+
         return CandidaturaAtualizadaResponse.from(candidaturasRepository.save(candidatura));
     }
 

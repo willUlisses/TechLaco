@@ -3,10 +3,12 @@ package com.techlaco.controllers;
 import com.techlaco.dtos.body.BodyProjetoRequest;
 import com.techlaco.dtos.body.FiltroBuscarProjeto;
 import com.techlaco.dtos.body.PatchProjetoRequest;
+import com.techlaco.dtos.body.PatchStatusProjeto;
 import com.techlaco.dtos.response.PageResponse;
 import com.techlaco.dtos.response.ProjetoSemClienteResponse;
 import com.techlaco.dtos.response.ProjetoResponse;
 import com.techlaco.dtos.response.VoidMessageResponse;
+import com.techlaco.entities.Enums.NivelProjeto;
 import com.techlaco.entities.PerfilCliente;
 import com.techlaco.entities.Usuario;
 import com.techlaco.exceptions.ForbiddenException;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -38,6 +41,9 @@ public class ProjetoController {
     @GetMapping
     public ResponseEntity<PageResponse<ProjetoResponse>> buscarProjetosAtivos(
             @RequestParam(defaultValue = "") String busca,
+            @RequestParam(required = false) NivelProjeto nivel,
+            @RequestParam(required = false) BigDecimal valorMin,
+            @RequestParam(required = false) BigDecimal valorMax,
             @RequestParam(defaultValue = "0") Integer pagina,
             @RequestParam(defaultValue = "10") Integer tamanho
     ){
@@ -45,6 +51,9 @@ public class ProjetoController {
 
         FiltroBuscarProjeto filtro = FiltroBuscarProjeto.builder()
                 .busca(busca)
+                .nivel(nivel)
+                .valorMin(valorMin)
+                .valorMax(valorMax)
                 .build();
 
         return new ResponseEntity<>(
@@ -87,6 +96,17 @@ public class ProjetoController {
         PerfilCliente perfilUsuarioLogado = usuario.getPerfilCliente();
 
         return new ResponseEntity<>(projetoService.editarProjeto(id, perfilUsuarioLogado, body), HttpStatus.OK);
+    }
+
+    @PatchMapping("{id}/status")
+    public ResponseEntity<ProjetoSemClienteResponse> atualizarStatusProjetoPorId(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Usuario usuario,
+            @RequestBody PatchStatusProjeto body
+            ) {
+        PerfilCliente perfilClienteLogado = usuario.getPerfilCliente();
+
+        return new ResponseEntity<>(projetoService.atualizarStatusProjetoPorId(id, perfilClienteLogado, body), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

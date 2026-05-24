@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { ChevronDown, Home, Users, Search, LayoutDashboard, Menu, X } from 'lucide-react'
 import Logo from './ui/Logo'
 import { useAuth } from '../contexts/AuthContext'
@@ -17,6 +17,7 @@ const paraFreelancersLinks = [
 function DropdownMenu({ label, icon: Icon, links, activeColor }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
+  const location = useLocation()
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -26,7 +27,7 @@ function DropdownMenu({ label, icon: Icon, links, activeColor }) {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const isActive = links.some(l => window.location.pathname === l.to)
+  const isActive = links.some(l => location.pathname === l.to)
 
   return (
     <div ref={ref} className="relative">
@@ -47,7 +48,7 @@ function DropdownMenu({ label, icon: Icon, links, activeColor }) {
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#E2E8F0] py-1.5 z-50">
+        <div className="absolute top-full left-0 mt-2 min-w-[180px] max-w-[min(192px,90vw)] bg-white rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#E2E8F0] py-1.5 z-50">
           {links.map(link => (
             <NavLink
               key={link.to}
@@ -103,13 +104,11 @@ export default function Navbar() {
   return (
     <>
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-        <div className="max-w-[1100px] mx-auto px-4 sm:px-6 h-[66px] flex items-center justify-between gap-4 sm:gap-6">
+        <div className="max-w-[1100px] mx-auto px-4 sm:px-6 min-h-[66px] py-2 flex items-center justify-between gap-3 flex-wrap">
 
-          {/* Mobile Hamburger Menu & Logo */}
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-            {/* Hamburger Button (visible on md and below) */}
             <button
-              className="md:hidden p-1.5 -ml-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded-lg transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+              className="lg:hidden p-1.5 -ml-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded-lg transition-colors cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Menu Principal"
             >
@@ -125,8 +124,7 @@ export default function Navbar() {
             </NavLink>
           </div>
 
-          {/* Central Nav (Desktop Only) */}
-          <nav className="flex items-center gap-3 max-md:hidden">
+          <nav className="flex items-center gap-3 max-lg:hidden">
             <NavLink
               to="/home"
               end
@@ -165,7 +163,6 @@ export default function Navbar() {
             )}
           </nav>
 
-          {/* User Avatar & Dropdown */}
           <div ref={userMenuRef} className="relative shrink-0">
             <button
               onClick={() => setUserMenuOpen(prev => !prev)}
@@ -174,17 +171,16 @@ export default function Navbar() {
               <div className="w-8 h-8 rounded-full bg-[#0D63C1] text-white text-sm font-bold flex items-center justify-center shrink-0 shadow-inner">
                 {inicial}
               </div>
-              <span className="text-sm font-medium text-slate-800 max-sm:hidden">{nomeExibicao}</span>
+              <span className="text-sm font-medium text-slate-800 max-lg:hidden">{nomeExibicao}</span>
               <ChevronDown
                 size={14}
                 className={`text-slate-500 transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''}`}
               />
             </button>
 
-            {/* Desktop User Menu */}
             {userMenuOpen && (
-              <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-slate-200 py-1.5 z-50 origin-top-right animate-in fade-in zoom-in-95 duration-150">
-                <div className="px-4 py-2 border-b border-slate-100 sm:hidden">
+              <div className="absolute top-full right-0 mt-2 min-w-[176px] max-w-[min(192px,90vw)] bg-white rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-slate-200 py-1.5 z-50 origin-top-right animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-4 py-2 border-b border-slate-100 lg:hidden">
                   <p className="text-xs text-slate-500 font-medium">Logado como</p>
                   <p className="text-sm text-slate-900 font-semibold truncate">{nomeExibicao}</p>
                 </div>
@@ -217,20 +213,16 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 flex md:hidden">
-          {/* Backdrop */}
+        <div className="fixed inset-0 z-50 flex lg:hidden">
           <div
             className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
           />
 
-          {/* Slide-in Drawer */}
           <div className="relative w-[85%] max-w-[320px] bg-white h-full shadow-2xl flex flex-col pt-6 pb-8 px-5 overflow-y-auto z-50 animate-in slide-in-from-left duration-300 ease-out">
 
-            {/* Header */}
             <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100">
               <Logo variant="header" />
               <button
@@ -242,7 +234,6 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Nav Links */}
             <nav className="flex flex-col gap-6">
 
               <NavLink
@@ -293,8 +284,8 @@ export default function Navbar() {
                 ))}
               </div>
 
-              <div className="mt-auto pt-6 border-t border-slate-100">
-                {usuario?.isFreelancer && (
+              {usuario?.isFreelancer && (
+                <div className="mt-auto pt-6 border-t border-slate-100">
                   <NavLink
                     to="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
@@ -306,8 +297,8 @@ export default function Navbar() {
                     <LayoutDashboard size={20} className="shrink-0" />
                     <span className="text-[1.05rem]">Dashboard</span>
                   </NavLink>
-                )}
-              </div>
+                </div>
+              )}
 
             </nav>
           </div>

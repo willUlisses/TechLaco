@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 public record BodyProjetoRequest(
         @NotBlank(message = "O titulo é obrigatório")
@@ -23,6 +24,8 @@ public record BodyProjetoRequest(
 
         @NotNull(message = "O valor máximo é obrigatório")
         @Positive(message = "O valor deve ser maior que zero")
-        BigDecimal valorMax
+        BigDecimal valorMax,
+
+        Set<String> tecnologias
 ) {
 }
