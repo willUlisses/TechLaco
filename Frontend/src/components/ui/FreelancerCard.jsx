@@ -1,57 +1,87 @@
-import { GraduationCap, ChevronRight, ExternalLink } from 'lucide-react'
+import { GraduationCap, ExternalLink, ChevronRight } from 'lucide-react'
 
-export default function FreelancerCard({ freelancer }) {
+const MAX_HABILIDADES_VISIVEIS = 3
+
+export default function FreelancerCard({ freelancer, onClick }) {
   const iniciais = `${freelancer.nome?.charAt(0) ?? ''}${freelancer.sobrenome?.charAt(0) ?? ''}`.toUpperCase()
   const nomeCompleto = `${freelancer.nome} ${freelancer.sobrenome}`
 
-  return (
-    <article className="bg-white border border-gray-200 rounded-[14px] flex flex-col sm:flex-row items-start sm:items-center p-4 sm:px-[25px] sm:py-4 gap-4 hover:shadow-md transition-shadow cursor-pointer w-full">
+  const habilidades = freelancer.habilidades ?? []
+  const habilidadesVisiveis = habilidades.slice(0, MAX_HABILIDADES_VISIVEIS)
+  const habilidadesExtra    = habilidades.length - MAX_HABILIDADES_VISIVEIS
 
-      {/* Container principal para alinhar Avatar e Info em mobile */}
-      <div className="flex w-full sm:w-auto items-start sm:items-center gap-4 flex-1">
-        {/* Avatar com iniciais */}
-        <div className="relative shrink-0">
-          <div className="w-12 h-12 rounded-[14px] bg-[#0D63C1] text-white text-sm font-bold flex items-center justify-center">
-            {iniciais}
-          </div>
+  return (
+    <article
+      onClick={onClick}
+      className="bg-white border border-[#e5e7eb] rounded-[14px] p-5 sm:px-6 hover:border-[#0D63C1] hover:shadow-md transition-all cursor-pointer w-full"
+    >
+      <div className="flex items-start gap-4">
+
+        {/* Avatar */}
+        <div className="w-11 h-11 rounded-[12px] bg-[#0D63C1] text-white text-sm font-bold flex items-center justify-center shrink-0">
+          {iniciais}
         </div>
 
-        {/* Info principal */}
+        {/* Info */}
         <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-0.5">
-            <span className="text-[#101828] text-sm font-medium">{nomeCompleto}</span>
-          </div>
 
+          {/* Nome + especialidade */}
+          <p className="text-[#101828] text-sm font-semibold leading-tight">{nomeCompleto}</p>
           {freelancer.especialidade && (
-            <p className="text-[#6a7282] text-[12px] mb-1.5 truncate">{freelancer.especialidade}</p>
+            <p className="text-[#6a7282] text-xs mt-0.5 truncate">{freelancer.especialidade}</p>
           )}
 
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            {freelancer.faculdade && (
-              <div className="flex items-center gap-1 shrink-0">
-                <GraduationCap size={12} className="text-[#99a1af]" />
-                <span className="text-[#99a1af] text-[12px] truncate max-w-[140px] sm:max-w-none">{freelancer.faculdade}</span>
-              </div>
-            )}
+          {/* Bio truncada */}
+          {freelancer.bio && (
+            <p className="text-[#6a7282] text-xs mt-2 leading-relaxed line-clamp-2">
+              {freelancer.bio}
+            </p>
+          )}
 
+          {/* Habilidades */}
+          {habilidades.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5 mt-3">
+              {habilidadesVisiveis.map(skill => (
+                <span
+                  key={skill}
+                  className="px-2 py-0.5 rounded-full bg-[#EFF6FF] text-[#0D63C1] text-[11px] font-medium"
+                >
+                  {skill}
+                </span>
+              ))}
+              {habilidadesExtra > 0 && (
+                <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[11px] font-medium">
+                  +{habilidadesExtra}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Faculdade + GitHub */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3">
+            {freelancer.faculdade && (
+              <span className="flex items-center gap-1 text-[#99a1af] text-[11px]">
+                <GraduationCap size={11} />
+                <span className="truncate max-w-[160px]">{freelancer.faculdade}</span>
+              </span>
+            )}
             {freelancer.githubUrl && (
               <a
                 href={freelancer.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={e => e.stopPropagation()}
-                className="flex items-center gap-1 shrink-0 no-underline hover:text-[#0D63C1] transition-colors"
+                className="flex items-center gap-1 text-[#99a1af] text-[11px] no-underline hover:text-[#0D63C1] transition-colors"
               >
-                <ExternalLink size={12} className="text-[#99a1af]" />
-                <span className="text-[#99a1af] text-[12px]">Ver GitHub</span>
+                <ExternalLink size={11} />
+                GitHub
               </a>
             )}
           </div>
         </div>
-      </div>
 
-      <div className="flex sm:flex-col flex-row-reverse items-center sm:items-end justify-between sm:justify-center w-full sm:w-auto mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-none border-gray-100 shrink-0 gap-3 sm:gap-1.5">
-        <ChevronRight size={20} className="text-[#99a1af] shrink-0 hidden sm:block" />
+        {/* Chevron — indica clicabilidade */}
+        <ChevronRight size={18} className="text-[#cbd5e1] shrink-0 mt-0.5" />
       </div>
     </article>
   )
