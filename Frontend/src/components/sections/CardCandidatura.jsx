@@ -31,6 +31,17 @@ export default function CardCandidatura({ candidatura, onVerDetalhes }) {
           </p>
         </div>
 
+        {candidatura.feedbackCliente && (
+          <div className="mt-1 bg-[#f8f9fb] border-l-[3px] border-[#d1d5db] rounded-[10px] px-3 py-2.5">
+            <p className="text-[11px] font-semibold text-[#99a1af] uppercase tracking-wide mb-1">
+              Feedback do cliente
+            </p>
+            <p className="text-[13px] text-[#2c3442] leading-relaxed">
+              {candidatura.feedbackCliente}
+            </p>
+          </div>
+        )}
+
         <div className="pb-3">
           <button
             type="button"

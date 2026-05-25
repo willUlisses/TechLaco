@@ -47,6 +47,19 @@ export default function ModalDetalhesCandidatura({ candidatura, aberto, onFechar
         </p>
       </div>
 
+      {candidatura?.feedbackCliente && (
+        <div className="mt-4">
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+            Feedback do cliente
+          </p>
+          <div className="bg-[#f8f9fb] border-l-[3px] border-[#0066cc] rounded-r-[10px] px-4 py-3">
+            <p className="text-[14px] text-[#2c3442] leading-relaxed">
+              {candidatura.feedbackCliente}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Botão fechar */}
       <div className="pt-4 mt-2 border-t border-[#f3f4f6]">
         <button

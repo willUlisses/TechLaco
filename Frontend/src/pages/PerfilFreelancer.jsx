@@ -243,6 +243,11 @@ export default function PerfilFreelancer() {
                                                     {cand.mensagem && (
                                                         <p className="text-sm text-slate-600 mt-1 line-clamp-2">{cand.mensagem}</p>
                                                     )}
+                                                    {cand.feedbackCliente && (
+                                                        <p className="text-xs text-slate-500 mt-1 italic">
+                                                            "{cand.feedbackCliente}"
+                                                        </p>
+                                                    )}
                                                 </div>
                                                 <span className="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold">
                                                     <CheckCircle2 size={14} />

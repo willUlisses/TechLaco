@@ -9,7 +9,8 @@ const icones = { Clock, CheckCircle, XCircle }
 export default function ModalCandidaturasRecebidas({ projeto, aberto, onFechar }) {
   const [candidaturas, setCandidaturas] = useState([])
   const [carregando, setCarregando] = useState(false)
-  const [atualizandoId, setAtualizandoId] = useState(null)
+  const [acaoPendente, setAcaoPendente] = useState(null)
+  const [salvando, setSalvando] = useState(false)
   const [erro, setErro] = useState(null)
 
   useEffect(() => {
@@ -24,21 +25,36 @@ export default function ModalCandidaturasRecebidas({ projeto, aberto, onFechar }
       .finally(() => setCarregando(false))
   }, [aberto, projeto])
 
-  async function handleAtualizarStatus(id, novoStatus) {
-    setAtualizandoId(id)
+  function iniciarAcao(candidaturaId, novoStatus) {
+    if (acaoPendente?.candidaturaId === candidaturaId) {
+      setAcaoPendente(null)
+      return
+    }
+    setAcaoPendente({ candidaturaId, novoStatus, feedback: '' })
+  }
+
+  async function confirmarAcao() {
+    if (!acaoPendente) return
+    setSalvando(true)
     setErro(null)
 
     try {
-      const atualizada = await candidaturaService.atualizarStatus(id, { status: novoStatus })
+      const atualizada = await candidaturaService.atualizarStatus(acaoPendente.candidaturaId, { 
+        status: acaoPendente.novoStatus,
+        feedbackCliente: acaoPendente.feedback.trim() || null
+      })
 
       // Atualiza localmente com o status novo que vem da API
       setCandidaturas(prev => prev.map(c =>
-        c.id === id ? { ...c, status: atualizada.status } : c
+        c.id === acaoPendente.candidaturaId 
+          ? { ...c, status: atualizada.status, feedbackCliente: atualizada.feedbackCliente } 
+          : c
       ))
+      setAcaoPendente(null)
     } catch (err) {
       setErro(err?.mensagem ?? 'Erro ao atualizar status.')
     } finally {
-      setAtualizandoId(null)
+      setSalvando(false)
     }
   }
 
@@ -115,23 +131,93 @@ export default function ModalCandidaturasRecebidas({ projeto, aberto, onFechar }
 
                 {/* Ações de status */}
                 {isPendente && (
-                  <div className="flex flex-col sm:flex-row items-center gap-3 mt-3 pt-4 border-t border-[#f3f4f6]">
-                    <button
-                      type="button"
-                      disabled={atualizandoId === c.id}
-                      onClick={() => handleAtualizarStatus(c.id, 'ACEITA')}
-                      className="w-full sm:flex-1 flex items-center justify-center gap-2 bg-[#00a86b] text-white text-[14px] font-semibold py-2.5 rounded-[10px] hover:bg-[#00925d] transition-all hover:-translate-y-0.5 shadow-sm disabled:opacity-60 disabled:hover:translate-y-0 cursor-pointer border-none outline-none"
-                    >
-                      <Check size={16} /> Aceitar Proposta
-                    </button>
-                    <button
-                      type="button"
-                      disabled={atualizandoId === c.id}
-                      onClick={() => handleAtualizarStatus(c.id, 'RECUSADA')}
-                      className="w-full sm:flex-1 flex items-center justify-center gap-2 bg-white border border-[#e5e7eb] text-[#dc2626] text-[14px] font-semibold py-2.5 rounded-[10px] hover:bg-[#fef2f2] hover:border-[#fca5a5] transition-all cursor-pointer disabled:opacity-60 outline-none"
-                    >
-                      <XIcon size={16} /> Recusar Proposta
-                    </button>
+                  <div className="flex flex-col gap-3 mt-3 pt-4 border-t border-[#f3f4f6]">
+                
+                    {/* Botões de escolha da ação */}
+                    {acaoPendente?.candidaturaId !== c.id && (
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <button
+                          type="button"
+                          onClick={() => iniciarAcao(c.id, 'ACEITA')}
+                          className="w-full sm:flex-1 flex items-center justify-center gap-2 bg-[#00a86b] text-white text-[14px] font-semibold py-2.5 rounded-[10px] hover:bg-[#00925d] transition-all hover:-translate-y-0.5 shadow-sm cursor-pointer border-none outline-none"
+                        >
+                          <Check size={16} /> Aceitar Proposta
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => iniciarAcao(c.id, 'RECUSADA')}
+                          className="w-full sm:flex-1 flex items-center justify-center gap-2 bg-white border border-[#e5e7eb] text-[#dc2626] text-[14px] font-semibold py-2.5 rounded-[10px] hover:bg-[#fef2f2] hover:border-[#fca5a5] transition-all cursor-pointer disabled:opacity-60 outline-none"
+                        >
+                          <XIcon size={16} /> Recusar Proposta
+                        </button>
+                      </div>
+                    )}
+                
+                    {/* Painel de feedback — aparece após escolher a ação */}
+                    {acaoPendente?.candidaturaId === c.id && (
+                      <div className="flex flex-col gap-3 bg-[#f8f9fb] border border-[#e5e7eb] rounded-[12px] p-4">
+                
+                        <div className="flex items-center justify-between">
+                          <p className="text-[13px] font-semibold text-[#101828]">
+                            {acaoPendente.novoStatus === 'ACEITA' ? '✅ Aceitar proposta' : '❌ Recusar proposta'}
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => setAcaoPendente(null)}
+                            className="text-[#99a1af] hover:text-[#6a7282] transition-colors p-1 rounded"
+                            aria-label="Cancelar"
+                          >
+                            <XIcon size={14} />
+                          </button>
+                        </div>
+                
+                        <div>
+                          <label className="block text-[12px] font-medium text-[#6a7282] mb-1.5">
+                            Mensagem para o freelancer{' '}
+                            <span className="font-normal text-[#99a1af]">(opcional)</span>
+                          </label>
+                          <textarea
+                            value={acaoPendente.feedback}
+                            onChange={e =>
+                              setAcaoPendente(prev => ({ ...prev, feedback: e.target.value }))
+                            }
+                            maxLength={1000}
+                            rows={3}
+                            placeholder={
+                              acaoPendente.novoStatus === 'ACEITA'
+                                ? 'Ex: Seu perfil é exatamente o que precisávamos. Entrando em contato em breve!'
+                                : 'Ex: Infelizmente seu perfil não atende aos requisitos deste projeto no momento.'
+                            }
+                            className="w-full rounded-[10px] border border-[#e5e7eb] px-3 py-2 text-[13px] text-[#2c3442] resize-none focus:outline-none focus:border-[#0066cc] focus:ring-1 focus:ring-[#0066cc] transition"
+                          />
+                          <p className="text-[11px] text-[#99a1af] mt-1 text-right">
+                            {acaoPendente.feedback.length}/1000
+                          </p>
+                        </div>
+                
+                        <div className="flex gap-2 justify-end">
+                          <button
+                            type="button"
+                            onClick={() => setAcaoPendente(null)}
+                            className="px-4 py-2 rounded-[10px] text-[13px] font-medium text-[#6a7282] hover:bg-[#e5e7eb] transition border-none bg-transparent cursor-pointer"
+                          >
+                            Cancelar
+                          </button>
+                          <button
+                            type="button"
+                            onClick={confirmarAcao}
+                            disabled={salvando}
+                            className={`px-4 py-2 rounded-[10px] text-[13px] font-semibold text-white transition disabled:opacity-60 border-none cursor-pointer
+                              ${acaoPendente.novoStatus === 'ACEITA'
+                                ? 'bg-[#00a86b] hover:bg-[#00925d]'
+                                : 'bg-[#dc2626] hover:bg-[#b91c1c]'
+                              }`}
+                          >
+                            {salvando ? 'Salvando...' : 'Confirmar'}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
