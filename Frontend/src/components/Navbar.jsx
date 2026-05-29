@@ -14,7 +14,7 @@ const paraFreelancersLinks = [
   { label: 'Minhas Candidaturas', to: '/freelancers/candidaturas' },
 ]
 
-function DropdownMenu({ label, icon: Icon, links, activeColor }) {
+function DropdownMenu({ label, icon: Icon, links }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
   const location = useLocation()
@@ -190,13 +190,6 @@ export default function Navbar() {
                   className="block px-4 py-2.5 text-sm font-medium text-slate-700 no-underline hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg mx-1 mt-1 outline-none focus-visible:bg-slate-50 focus-visible:text-blue-600"
                 >
                   Meu Perfil
-                </NavLink>
-                <NavLink
-                  to="/configuracoes"
-                  onClick={() => setUserMenuOpen(false)}
-                  className="block px-4 py-2.5 text-sm font-medium text-slate-700 no-underline hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-lg mx-1 outline-none focus-visible:bg-slate-50 focus-visible:text-blue-600"
-                >
-                  Configurações
                 </NavLink>
                 <hr className="my-1 border-slate-100 mx-3" />
                 <button

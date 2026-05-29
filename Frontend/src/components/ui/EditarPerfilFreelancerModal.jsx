@@ -13,10 +13,10 @@ export default function EditarPerfilFreelancerModal({ perfil, onClose, onSaved }
   const { register, handleSubmit, formState: { errors }, getValues, resetField } = useForm({
     resolver: zodResolver(perfilFreelancerSchema),
     defaultValues: {
-      especialidade:  perfil.especialidade ?? '',
-      faculdade:      perfil.faculdade     ?? '',
-      bio:            perfil.bio           ?? '',
-      githubUrl:      perfil.githubUrl     ?? '',
+      especialidade: perfil.especialidade ?? '',
+      faculdade: perfil.faculdade ?? '',
+      bio: perfil.bio ?? '',
+      githubUrl: perfil.githubUrl ?? '',
       novaHabilidade: '',
     },
   });
@@ -27,9 +27,9 @@ export default function EditarPerfilFreelancerModal({ perfil, onClose, onSaved }
     try {
       const body = {};
       if (data.especialidade !== '') body.especialidade = data.especialidade;
-      if (data.faculdade     !== '') body.faculdade     = data.faculdade;
-      if (data.bio           !== '') body.bio           = data.bio;
-      if (data.githubUrl     !== '') body.githubUrl     = data.githubUrl;
+      if (data.faculdade !== '') body.faculdade = data.faculdade;
+      if (data.bio !== '') body.bio = data.bio;
+      if (data.githubUrl !== '') body.githubUrl = data.githubUrl;
 
       await api.patch('/perfis/freelancer/me', body);
       onSaved();
@@ -188,7 +188,7 @@ export default function EditarPerfilFreelancerModal({ perfil, onClose, onSaved }
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition"
+            className="px-4 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-100 transition"
           >
             Cancelar
           </button>

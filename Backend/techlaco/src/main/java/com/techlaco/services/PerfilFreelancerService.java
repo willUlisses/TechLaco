@@ -24,66 +24,69 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PerfilFreelancerService {
 
-    private final PerfilFreelancerRepository perfilFreelancerRepository;
-    private final CandidaturasRepository candidaturasRepository;
+        private final PerfilFreelancerRepository perfilFreelancerRepository;
+        private final CandidaturasRepository candidaturasRepository;
 
-    public PageResponse<PerfilFreelancerCompletoResponse> listarFreelancers(FiltroBuscarFreelancer filtro, Integer pagina, Integer size) {
-        Pageable pageable = PageRequest.of(pagina, size);
-        Page<PerfilFreelancer> paginas = perfilFreelancerRepository.buscarTodosFreelancers(filtro.busca(), pageable);
+        public PageResponse<PerfilFreelancerCompletoResponse> listarFreelancers(FiltroBuscarFreelancer filtro,
+                        Integer pagina, Integer size) {
+                Pageable pageable = PageRequest.of(pagina, size);
+                Page<PerfilFreelancer> paginas = perfilFreelancerRepository.buscarTodosFreelancers(filtro.busca(),
+                                pageable);
 
-        return PageResponse.from(paginas.map(PerfilFreelancerCompletoResponse::from));
-    }
+                return PageResponse.from(paginas.map(PerfilFreelancerCompletoResponse::from));
+        }
 
-    public PerfilFreelancerCompletoResponse buscarPerfilFreelancer(Long id) {
-        PerfilFreelancer perfil = perfilFreelancerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Perfil não encontrado"));
+        public PerfilFreelancerCompletoResponse buscarPerfilFreelancer(Long id) {
+                PerfilFreelancer perfil = perfilFreelancerRepository.findById(id)
+                                .orElseThrow(() -> new NotFoundException("Perfil não encontrado"));
 
-        return  PerfilFreelancerCompletoResponse.from(perfil);
-    }
+                return PerfilFreelancerCompletoResponse.from(perfil);
+        }
 
-    public PerfilFreelancerCompletoResponse getPerfilFreelancerLogado(Usuario usuario) {
-        PerfilFreelancer perfil = perfilFreelancerRepository.findByUsuario(usuario)
-                .orElseThrow(() -> new NotFoundException("Perfil não encontrado a partir do usuário"));
+        public PerfilFreelancerCompletoResponse getPerfilFreelancerLogado(Usuario usuario) {
+                PerfilFreelancer perfil = perfilFreelancerRepository.findByUsuario(usuario)
+                                .orElseThrow(() -> new NotFoundException("Perfil não encontrado a partir do usuário"));
 
-        BigDecimal receita = candidaturasRepository
-                .calcularReceitaTotalPorFreelancerId(perfil.getId());
+                BigDecimal receita = candidaturasRepository
+                                .calcularReceitaTotalPorFreelancerId(perfil.getId());
 
-        return PerfilFreelancerCompletoResponse.from(perfil, receita);
-    }
+                return PerfilFreelancerCompletoResponse.from(perfil, receita);
+        }
 
-    @Transactional
-    public PerfilFreelancerCompletoResponse atualizarPerfilFreelancerLogado(Usuario usuario, AtualizarPerfilFreelancerRequest body) {
+        @Transactional
+        public PerfilFreelancerCompletoResponse atualizarPerfilFreelancerLogado(Usuario usuario,
+                        AtualizarPerfilFreelancerRequest body) {
 
-        PerfilFreelancer perfil = perfilFreelancerRepository.findByUsuario(usuario)
-                .orElseThrow(() -> new NotFoundException("Perfil freelancer não encontrado."));
+                PerfilFreelancer perfil = perfilFreelancerRepository.findByUsuario(usuario)
+                                .orElseThrow(() -> new NotFoundException("Perfil freelancer não encontrado."));
 
-        Optional.ofNullable(body.especialidade()).ifPresent(perfil::setEspecialidade);
-        Optional.ofNullable(body.faculdade()).ifPresent(perfil::setFaculdade);
-        Optional.ofNullable(body.bio()).ifPresent(perfil::setBio);
-        Optional.ofNullable(body.githubUrl()).ifPresent(perfil::setGithubUrl);
+                Optional.ofNullable(body.especialidade()).ifPresent(perfil::setEspecialidade);
+                Optional.ofNullable(body.faculdade()).ifPresent(perfil::setFaculdade);
+                Optional.ofNullable(body.bio()).ifPresent(perfil::setBio);
+                Optional.ofNullable(body.githubUrl()).ifPresent(perfil::setGithubUrl);
 
-        perfil = perfilFreelancerRepository.save(perfil);
+                perfil = perfilFreelancerRepository.save(perfil);
 
-        BigDecimal receita = candidaturasRepository
-                .calcularReceitaTotalPorFreelancerId(perfil.getId());
+                BigDecimal receita = candidaturasRepository
+                                .calcularReceitaTotalPorFreelancerId(perfil.getId());
 
-        return PerfilFreelancerCompletoResponse.from(perfil, receita);
-    }
+                return PerfilFreelancerCompletoResponse.from(perfil, receita);
+        }
 
-    @Transactional
-    public PerfilFreelancerCompletoResponse adicionarHabilidade(Usuario usuario, AdicionarHabilidadeRequest body) {
+        @Transactional
+        public PerfilFreelancerCompletoResponse adicionarHabilidade(Usuario usuario, AdicionarHabilidadeRequest body) {
 
-        PerfilFreelancer perfil = perfilFreelancerRepository.findByUsuario(usuario)
-                .orElseThrow(() -> new NotFoundException("Perfil de freelancer não encontrado."));
+                PerfilFreelancer perfil = perfilFreelancerRepository.findByUsuario(usuario)
+                                .orElseThrow(() -> new NotFoundException("Perfil de freelancer não encontrado."));
 
-        String novaHabilidade = body.habilidade().trim().toUpperCase();
+                String novaHabilidade = body.habilidade().trim().toUpperCase();
 
-        perfil.getHabilidades().add(novaHabilidade);
-        perfil = perfilFreelancerRepository.save(perfil);
+                perfil.getHabilidades().add(novaHabilidade);
+                perfil = perfilFreelancerRepository.save(perfil);
 
-        BigDecimal receita = candidaturasRepository
-                .calcularReceitaTotalPorFreelancerId(perfil.getId());
-        return PerfilFreelancerCompletoResponse.from(perfil, receita);
-    }
+                BigDecimal receita = candidaturasRepository
+                                .calcularReceitaTotalPorFreelancerId(perfil.getId());
+                return PerfilFreelancerCompletoResponse.from(perfil, receita);
+        }
 
 }

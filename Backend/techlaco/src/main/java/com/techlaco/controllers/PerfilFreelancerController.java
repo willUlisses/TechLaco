@@ -38,7 +38,8 @@ public class PerfilFreelancerController {
                 .busca(busca)
                 .build();
 
-        return new ResponseEntity<>(perfilFreelancerService.listarFreelancers(filtro, pagina, limiteSeguro), HttpStatus.OK);
+        return new ResponseEntity<>(perfilFreelancerService.listarFreelancers(filtro, pagina, limiteSeguro),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -47,27 +48,26 @@ public class PerfilFreelancerController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<PerfilFreelancerCompletoResponse> getPerfilFreelancerLogado(@AuthenticationPrincipal Usuario usuario) {
+    public ResponseEntity<PerfilFreelancerCompletoResponse> getPerfilFreelancerLogado(
+            @AuthenticationPrincipal Usuario usuario) {
         return new ResponseEntity<>(perfilFreelancerService.getPerfilFreelancerLogado(usuario), HttpStatus.OK);
     }
 
     @PatchMapping("/me")
     public ResponseEntity<PerfilFreelancerCompletoResponse> atualizarPerfilFreelancerLogado(
             @AuthenticationPrincipal Usuario usuario,
-            @RequestBody AtualizarPerfilFreelancerRequest request
-    ) {
-        return new ResponseEntity<>(perfilFreelancerService.atualizarPerfilFreelancerLogado(usuario, request), HttpStatus.OK);
+            @RequestBody AtualizarPerfilFreelancerRequest request) {
+        return new ResponseEntity<>(perfilFreelancerService.atualizarPerfilFreelancerLogado(usuario, request),
+                HttpStatus.OK);
     }
 
     @PatchMapping("/me/habilidades")
     public ResponseEntity<PerfilFreelancerCompletoResponse> atualizarHabilidades(
             @AuthenticationPrincipal Usuario usuario,
-            @RequestBody AdicionarHabilidadeRequest request
-    ) {
+            @RequestBody AdicionarHabilidadeRequest request) {
         return new ResponseEntity<>(
                 perfilFreelancerService.adicionarHabilidade(usuario, request),
-                HttpStatus.OK
-        );
+                HttpStatus.OK);
     }
 
 }
