@@ -89,4 +89,18 @@ public class PerfilFreelancerService {
                 return PerfilFreelancerCompletoResponse.from(perfil, receita);
         }
 
+        @Transactional
+        public PerfilFreelancerCompletoResponse removerHabilidade(Usuario usuario, String habilidade) {
+                PerfilFreelancer perfil = perfilFreelancerRepository.findByUsuario(usuario)
+                        .orElseThrow(() -> new NotFoundException("Perfil de freelancer não encontrado."));
+
+                perfil.getHabilidades().remove(habilidade.trim().toUpperCase());
+                perfil = perfilFreelancerRepository.save(perfil);
+
+                BigDecimal receita = candidaturasRepository
+                        .calcularReceitaTotalPorFreelancerId(perfil.getId());
+
+                return PerfilFreelancerCompletoResponse.from(perfil, receita);
+        }
+
 }

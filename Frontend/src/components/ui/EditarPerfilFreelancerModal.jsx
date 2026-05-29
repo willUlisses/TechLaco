@@ -4,11 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { X, Plus } from 'lucide-react';
 import { api } from '../../services/api';
 import { perfilFreelancerSchema } from './schemas/perfilFreelancerSchema';
+import SkillBadge from './SkillBadge';
 
 export default function EditarPerfilFreelancerModal({ perfil, onClose, onSaved }) {
   const [salvando, setSalvando] = useState(false);
   const [adicionandoSkill, setAdicionandoSkill] = useState(false);
   const [erroGlobal, setErroGlobal] = useState(null);
+  const [removendoSkill, setRemovendoSkill] = useState(null);
 
   const { register, handleSubmit, formState: { errors }, getValues, resetField } = useForm({
     resolver: zodResolver(perfilFreelancerSchema),
@@ -54,6 +56,20 @@ export default function EditarPerfilFreelancerModal({ perfil, onClose, onSaved }
       setErroGlobal('Erro ao adicionar habilidade. Verifique se ela já existe.');
     } finally {
       setAdicionandoSkill(false);
+    }
+  }
+
+  async function handleRemoverHabilidade(habilidade) {
+    if (removendoSkill) return; // evita múltiplas remoções simultâneas
+    setRemovendoSkill(habilidade);
+    setErroGlobal(null);
+    try {
+      await api.delete(`/perfis/freelancer/me/habilidades/${encodeURIComponent(habilidade)}`);
+      onSaved(); // refetch atualiza perfil.habilidades no pai
+    } catch (err) {
+      setErroGlobal('Erro ao remover habilidade. Tente novamente.');
+    } finally {
+      setRemovendoSkill(null);
     }
   }
 
@@ -146,17 +162,29 @@ export default function EditarPerfilFreelancerModal({ perfil, onClose, onSaved }
               Habilidades
             </label>
 
-            {perfil.habilidades && perfil.habilidades.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-3">
+            {/* Habilidades salvas — com botão X para remover */}
+            {perfil.habilidades && perfil.habilidades.length > 0 ? (
+              <ul
+                role="list"
+                aria-label="Habilidades cadastradas"
+                className="flex flex-wrap gap-2 mb-3"
+              >
                 {perfil.habilidades.map(skill => (
-                  <span
+                  <SkillBadge
                     key={skill}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 text-xs text-slate-600 bg-slate-50"
-                  >
-                    {skill}
-                  </span>
+                    label={skill}
+                    onRemove={
+                      removendoSkill === skill
+                        ? undefined
+                        : () => handleRemoverHabilidade(skill)
+                    }
+                  />
                 ))}
-              </div>
+              </ul>
+            ) : (
+              <p className="text-sm text-slate-400 italic mb-3">
+                Nenhuma habilidade cadastrada ainda.
+              </p>
             )}
 
             <div className="flex gap-2">
